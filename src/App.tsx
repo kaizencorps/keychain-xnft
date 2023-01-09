@@ -15,8 +15,6 @@ import { HomeScreen } from "./screens/HomeScreen";
 import Home from "./screens/Home";
 import Gallery from "./screens/Gallery";
 
-import './index.css';
-
 dotenv.config();
 console.log(process.env);
 
