@@ -3,13 +3,15 @@
   "scripts": {
     "start": "npx xnft native start",
     "build": "expo export:web",
-    "dev": "expo start --web & npx xnft dev --iframe http://localhost:19006"
+    "dev": "expo start --web & npx xnft dev --iframe http://localhost:19006",
+    "web": "expo start --web"
   },
   "dependencies": {
     "@coral-xyz/common-public": "^0.2.0-latest.971",
     "@expo-google-fonts/dev": "*",
     "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.2",
+    "@project-serum/anchor": "^0.26.0",
     "@react-native-community/masked-view": "*",
     "@react-navigation/bottom-tabs": "6.3.1",
     "@react-navigation/drawer": "6.4.1",
@@ -19,14 +21,22 @@
     "@react-navigation/native": "6.0.10",
     "@react-navigation/native-stack": "6.6.1",
     "@react-navigation/stack": "6.2.1",
-    "@solana/web3.js": "^1.67.2",
+    "@solana/wallet-adapter-base": "^0.9.20",
+    "@solana/wallet-adapter-react": "^0.15.28",
+    "@solana/wallet-adapter-react-ui": "^0.9.27",
+    "@solana/wallet-adapter-wallets": "^0.19.10",
+    "@solana/web3.js": "^1.73.0",
+    "daisyui": "^2.46.1",
     "expo": "~47.0.8",
     "expo-constants": "~14.0.2",
-    "expo-linking": "~3.2.3",
+    "expo-linking": "~3.3.0",
     "expo-status-bar": "~1.4.2",
+    "jwt-decode": "^3.1.2",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-error-overlay": "6.0.9",
     "react-native": "0.70.5",
+    "react-native-dotenv": "^3.4.7",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-pager-view": "6.0.1",
     "react-native-paper": "^4.7.2",
@@ -35,17 +45,17 @@
     "react-native-screens": "~3.18.0",
     "react-native-tab-view": "^3.0.0",
     "react-native-web": "~0.18.9",
-    "react-error-overlay": "6.0.9",
     "recoil": "*",
     "twrnc": "*",
+    "use-async-effect": "^2.2.7",
     "uuid": "*"
   },
   "devDependencies": {
-    "xnft": "latest",
-    "@babel/core": "^7.12.9",
+    "@babel/core": "^7.20.12",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.70.6",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "xnft": "latest"
   },
   "resolutions": {
     "react-error-overlay": "6.0.9"

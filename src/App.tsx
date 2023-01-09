@@ -7,12 +7,24 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts, Inter_900Black } from "@expo-google-fonts/dev";
 
 import { ExamplesScreens } from "./screens/ExamplesScreen";
-import { HomeScreen } from "./screens/HomeScreen";
 import { TokenListNavigator } from "./screens/TokenNavigator";
+import {ProviderComponentWrapper} from "./components/provider-component-wrapper";
+
+import * as dotenv from 'dotenv';
+import { HomeScreen } from "./screens/HomeScreen";
+import Home from "./screens/Home";
+import Gallery from "./screens/Gallery";
+
+import './index.css';
+
+dotenv.config();
+console.log(process.env);
 
 const Tab = createBottomTabNavigator();
 
 function TabNavigator() {
+
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -25,6 +37,26 @@ function TabNavigator() {
         component={HomeScreen}
         options={{
           tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Keychain Home"
+        component={Home}
+        options={{
+          tabBarLabel: "Keychain Home",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Gallery"
+        component={Gallery}
+        options={{
+          tabBarLabel: "Gallery",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
@@ -71,7 +103,7 @@ function App() {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <TabNavigator />
+        <ProviderComponentWrapper component={<TabNavigator />} />
       </NavigationContainer>
     </RecoilRoot>
   );

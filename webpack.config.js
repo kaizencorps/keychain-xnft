@@ -4,6 +4,17 @@ const fs = require("fs");
 module.exports = async function (env, argv) {
   const config = await createExpoWebpackConfigAsync(env, argv);
 
+  config.module.rules.push({
+    test: /\.mjs$/,
+    type: 'javascript/auto',
+  })
+
+  const r = JSON.parse(JSON.stringify(config.module.rules[1].oneOf[2]))
+
+  r.include = /node_modules/
+  r.test = /\.mjs|js$/
+  config.module.rules[1].oneOf.push(r);
+
   // keep everything the same for expo start
   if(env.mode === "development") {
     return config;
