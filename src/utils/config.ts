@@ -2,7 +2,11 @@ import { Idl } from '@project-serum/anchor';
 import keychainIdl from '../programs/idl/keychain.json';
 import {consoleLog} from "../_helpers/debug";
 
-import {REACT_APP_RPC_ENDPOINT, REACT_APP_SOLANA_NETWORK} from '@env';
+/* stupid babel type error: TypeError: [BABEL] /Users/si/projects/crypto/sol/kaizen/keychain-xnft/node_modules/webpack/hot/dev-server.js: api.addExternalDependency is not a function (While processing: "/Users/si/projects/crypto/sol/kaizen/keychain-xnft/node_modules/react-native-dotenv/index.js")
+
+// import {REACT_APP_RPC_ENDPOINT, REACT_APP_SOLANA_NETWORK} from '@env';
+
+ */
 
 // import { Metaplex } from "@metaplex-foundation/js";
 
@@ -10,8 +14,10 @@ import {REACT_APP_RPC_ENDPOINT, REACT_APP_SOLANA_NETWORK} from '@env';
 const anchor = require('@project-serum/anchor');
 
 // network config
-export const SOLANA_NETWORK = REACT_APP_SOLANA_NETWORK;
-export const RPC_URL: string = REACT_APP_RPC_ENDPOINT;
+// export const SOLANA_NETWORK = REACT_APP_SOLANA_NETWORK;
+// export const RPC_URL: string = REACT_APP_RPC_ENDPOINT;
+export const RPC_URL: string = 'https://api.devnet.solana.com';
+export const SOLANA_NETWORK = 'devnet';
 
 const CONFIRM_TIMEOUT_MILLIS = 1000 * 30; // 30 sec
 
