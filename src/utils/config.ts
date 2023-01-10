@@ -14,10 +14,12 @@ import { Metaplex } from "@metaplex-foundation/js";
 const anchor = require('@project-serum/anchor');
 
 // network config
-// export const SOLANA_NETWORK = REACT_APP_SOLANA_NETWORK;
+// export const SOLANA_NETWORK = process.env.REACT_APP_SOLANA_NETWORK;
 // export const RPC_URL: string = REACT_APP_RPC_ENDPOINT;
+
+// for now these are just hard-coded cause env variables are tricky
 export const RPC_URL: string = 'https://white-late-diagram.solana-mainnet.discover.quiknode.pro/841f2637070526fd43f742034e9070f1a69702a2';
-export const SOLANA_NETWORK = 'devnet';
+export const SOLANA_NETWORK = 'mainnet-beta';
 
 const CONFIRM_TIMEOUT_MILLIS = 1000 * 30; // 30 sec
 

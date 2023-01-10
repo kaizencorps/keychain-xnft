@@ -1,8 +1,8 @@
 import { PublicKey } from '@solana/web3.js';
 import axios from 'axios';
+import { NFT } from '../types/kaizen';
 import { consoleLog } from '../_helpers/debug';
 import {metaplex, RPC_URL} from "./config";
-import {NFT} from "../_state/keychain";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 export async function getTokensByOwner(owner: PublicKey): Promise<PublicKey[]> {
@@ -43,7 +43,7 @@ export async function getTokensByOwner(owner: PublicKey): Promise<PublicKey[]> {
             // eslint-disable-next-line no-restricted-syntax
             for (const asset of fetchedTokens.data.result.assets) {
                 consoleLog(`got back tokenAddress: ${asset.tokenAddress}`);
-                tokens.push(asset.tokenAddress as PublicKey);
+                tokens.push(new PublicKey(asset.tokenAddress));
             }
         }
         page += 1;
@@ -57,6 +57,7 @@ export async function getNFTsForOwner(owner: PublicKey): Promise<NFT[]> {
     const mints: PublicKey[] = await getTokensByOwner(owner);
     const nfts: NFT[] = [];
     if (mints) {
+        consoleLog('mints: ', mints);
         const metadatas = await metaplex.nfts().findAllByMintList({mints})
         for (const metadata of metadatas) {
             if (metadata) {
@@ -64,12 +65,16 @@ export async function getNFTsForOwner(owner: PublicKey): Promise<NFT[]> {
                 // @ts-ignore
                 const metaNft = await metaplex.nfts().load({metadata});
                 console.log('fetched metaplex nft: ', metaNft);
-                const nft: NFT = {
-                    imgUrl: metaNft.uri,
-                    mdUrl: metaNft.uri,
-                    mint: metaNft.mint.address
+                if (metaNft.json) {
+                    const nft: NFT = {
+                        owner,
+                        name: metaNft.json.name as string,
+                        imageUrl: metaNft.json.image,
+                        mdUrl: metaNft.uri,
+                        mint: metaNft.mint.address
+                    }
+                    nfts.push(nft);
                 }
-                nfts.push(nft);
             }
         }
     }

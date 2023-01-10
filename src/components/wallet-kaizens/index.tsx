@@ -2,7 +2,6 @@ import React, { FC, ReactElement } from 'react';
 
 //Compponents
 import GalleryKaizen from '../kaizen';
-import { Kaizen } from '../../types/kaizen';
 import { SubHeaderText, ThinText } from '../ui/text';
 
 //SVGs
@@ -13,10 +12,11 @@ import Numeric2Box from '../../assets/svgs/Icons/numeric-2-box';
 import Numeric4Box from '../../assets/svgs/Icons/numeric-4-box';
 import Numeric5Box from '../../assets/svgs/Icons/numeric-5-box';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
+import {NFT} from "../../types/kaizen";
 
 
 interface Props {
-    items: Kaizen[],
+    items: NFT[],
     index: number,
     walletAddress: string,
 }

@@ -1,3 +1,4 @@
+import {Suspense} from "react";
 import { registerRootComponent } from "expo";
 import { RecoilRoot } from "recoil";
 import { ActivityIndicator, View } from "react-native";
@@ -10,13 +11,10 @@ import { ExamplesScreens } from "./screens/ExamplesScreen";
 import { TokenListNavigator } from "./screens/TokenNavigator";
 import {ProviderComponentWrapper} from "./components/provider-component-wrapper";
 
-import * as dotenv from 'dotenv';
+
 import { HomeScreen } from "./screens/HomeScreen";
 import Home from "./screens/Home";
 import Gallery from "./screens/Gallery";
-
-dotenv.config();
-console.log(process.env);
 
 const Tab = createBottomTabNavigator();
 
@@ -101,7 +99,9 @@ function App() {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <ProviderComponentWrapper component={<TabNavigator />} />
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <ProviderComponentWrapper component={<TabNavigator />} />
+        </Suspense>
       </NavigationContainer>
     </RecoilRoot>
   );

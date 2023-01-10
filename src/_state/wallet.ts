@@ -1,9 +1,7 @@
 import { atom } from 'recoil';
 import {PublicKey} from "@solana/web3.js";
+import { WalletState } from '../types/kaizen';
 
-export interface WalletState {
-    address: PublicKey | null
-}
 // set to wallet's PublicKey
 export const walletAtom = atom<WalletState>({
     key: 'wallet',

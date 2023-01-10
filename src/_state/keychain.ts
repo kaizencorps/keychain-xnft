@@ -3,37 +3,32 @@ import {PublicKey} from "@solana/web3.js";
 import {userAtom, UserState} from "./user";
 import {getNFTsForOwner} from "../utils/chain-utils";
 import {consoleLog} from "../_helpers/debug";
+import { KeychainState, NFT, WalletState } from '../types/kaizen';
+import {walletAtom} from "./wallet";
 
-interface KeyState {
-    keyAccount: PublicKey | null,
-    wallet: PublicKey | null,
-    verified: boolean
-}
-interface KeychainState {
-    keychainAccount: PublicKey | null,
-    exists: boolean,
-    keys: KeyState[]
-}
+
 // set to wallet's PublicKey
 export const keychainAtom = selector<KeychainState>({
     key: 'keychain',
     get: ({get}) => {
 
-        const userState: UserState = get(userAtom);
+        const walletState: WalletState = get(walletAtom);
 
         // todo: logic to check for keychain existence using the username in userState
 
         // for now, fake a keychain
-        if (userState.username) {
+        if (walletState.address) {
+            consoleLog('fake fetching keychain...');
             return {
                 keychainAccount: new PublicKey('YfixBHW1YKJZHmZE9dksSZandNdz6XBvEs91w2b124T'),
                 exists: true,
                 keys: [
-                    {
-                        wallet: new PublicKey('r3cXGs7ku4Few6J1rmNwwUNQbvrSPoLAAU9C2TVKfow'),
-                        keyAccount: new PublicKey('EfaoENNuu9qofNMVKnqRzxPNa4U33wkdPbEDjADZm3tX'),
-                        verified: true
-                    },
+                    // this wallet takes a long time to laod
+                    // {
+                    //     wallet: new PublicKey('r3cXGs7ku4Few6J1rmNwwUNQbvrSPoLAAU9C2TVKfow'),
+                    //     keyAccount: new PublicKey('EfaoENNuu9qofNMVKnqRzxPNa4U33wkdPbEDjADZm3tX'),
+                    //     verified: true
+                    // },
                     {
                         wallet: new PublicKey('6JUZSv2KZp5x4AurxWWWjNyADu8FPkKDp7hGnW7ckhQm'),
                         keyAccount: new PublicKey('8ND4gt665bfZQGb4tURH9ysik82eEcdEsCgw1ws571nJ'),
@@ -47,6 +42,7 @@ export const keychainAtom = selector<KeychainState>({
                 ]
             }
         } else {
+            consoleLog('no wallet address, returning empty keychain');
             return {
                 keychainAccount: null,
                 exists: false,
@@ -57,28 +53,34 @@ export const keychainAtom = selector<KeychainState>({
     }
 });
 
-export interface NFT {
-    imgUrl: string,
-    mdUrl: string
-    mint: PublicKey,
-}
+
+export const nftsAtom = selector<NFT[]>({
+    key: 'nfts',
+    get: async ({get}) => {
+        const nfts: NFT[] = [];
+        const keychainState: KeychainState = get(keychainAtom);
+        if (keychainState.exists) {
+            for (let key of keychainState.keys) {
+                consoleLog('fetching nfts from wallet: ', key.wallet?.toBase58());
+                nfts.push(...await getNFTsForOwner(key.wallet));
+            }
+        }
+        consoleLog('setting derived nfts: ', nfts);
+        return nfts;
+    }
+})
 
 export interface WalletHoldings {
     nfts: NFT[]
 }
 
 
-export const walletHoldingsSelector = selectorFamily({
+export const walletNftsSelector = selectorFamily<NFT[], PublicKey>({
     key: 'walletHoldings',
     get: (walletAddress: PublicKey) => async ({get}) => {
-
-        consoleLog(`fetching nfts for wallet: ${walletAddress.toBase58()}`);
-
-        // fetch the contents of the given wallet
-        const nfts: NFT[] = await getNFTsForOwner(walletAddress);
-        return {
-            nfts
-        };
+        const nfts: NFT[] = get(nftsAtom);
+        consoleLog(`filtering nfts by wallet: ${walletAddress.toBase58()}`);
+        return nfts.filter(nft => nft.owner.equals(walletAddress));
     }
 });
 
