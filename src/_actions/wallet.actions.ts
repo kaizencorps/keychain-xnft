@@ -13,6 +13,7 @@ import {
 
 import { LOCAL_STORAGE_KEYS } from '../_state/_constants';
 import { consoleLog } from '../_helpers/debug';
+import {getNFTsForOwner} from "../utils/chain-utils";
 
 function useWalletActions() {
     const baseUrl = `${process.env.REACT_APP_BASE_API_URL}/wallet`;
@@ -56,6 +57,9 @@ function useWalletActions() {
             const walletPublicKey: PublicKey = anchorWallet.publicKey;
             consoleLog('connecting wallet: ', walletPublicKey.toBase58());
             setWallet({address: walletPublicKey});
+
+            // test if this works
+            // await getNFTsForOwner(anchorWallet.publicKey);
 
             // consoleLog(`setting anchor wallet:`, anchorWallet);
             // setProvider(anchorWallet);

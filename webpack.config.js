@@ -4,6 +4,8 @@ const fs = require("fs");
 module.exports = async function (env, argv) {
   const config = await createExpoWebpackConfigAsync(env, argv);
 
+  // this section from a dev in the backpack discord: https://discord.com/channels/985994296337498182/1004775994193875064/1058527142343884870
+  // -- for getting metaplex js working
   config.module.rules.push({
     test: /\.mjs$/,
     type: 'javascript/auto',
@@ -14,6 +16,8 @@ module.exports = async function (env, argv) {
   r.include = /node_modules/
   r.test = /\.mjs|js$/
   config.module.rules[1].oneOf.push(r);
+
+  /// -- end of section
 
   // keep everything the same for expo start
   if(env.mode === "development") {

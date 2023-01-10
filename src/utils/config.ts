@@ -8,7 +8,7 @@ import {consoleLog} from "../_helpers/debug";
 
  */
 
-// import { Metaplex } from "@metaplex-foundation/js";
+import { Metaplex } from "@metaplex-foundation/js";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const anchor = require('@project-serum/anchor');
@@ -16,7 +16,7 @@ const anchor = require('@project-serum/anchor');
 // network config
 // export const SOLANA_NETWORK = REACT_APP_SOLANA_NETWORK;
 // export const RPC_URL: string = REACT_APP_RPC_ENDPOINT;
-export const RPC_URL: string = 'https://api.devnet.solana.com';
+export const RPC_URL: string = 'https://white-late-diagram.solana-mainnet.discover.quiknode.pro/841f2637070526fd43f742034e9070f1a69702a2';
 export const SOLANA_NETWORK = 'devnet';
 
 const CONFIRM_TIMEOUT_MILLIS = 1000 * 30; // 30 sec
@@ -36,7 +36,7 @@ export const KeychainProgramId = new anchor.web3.PublicKey(keychainIdl.metadata.
 export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('EQmj1DE52peMbjvuHGaALG75cxuXtLPjKbufaKrhDpD6');
 
 
-// export const metaplex = new Metaplex(connection);
+export const metaplex = new Metaplex(connection);
 
 /*
 export const getApiUrl = (path: string) => {

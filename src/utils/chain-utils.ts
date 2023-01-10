@@ -1,9 +1,8 @@
 import { PublicKey } from '@solana/web3.js';
 import axios from 'axios';
 import { consoleLog } from '../_helpers/debug';
-import {RPC_URL} from "./config";
+import {metaplex, RPC_URL} from "./config";
 import {NFT} from "../_state/keychain";
-// import {Metadata} from "@metaplex-foundation/js";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 export async function getTokensByOwner(owner: PublicKey): Promise<PublicKey[]> {
@@ -58,7 +57,6 @@ export async function getNFTsForOwner(owner: PublicKey): Promise<NFT[]> {
     const mints: PublicKey[] = await getTokensByOwner(owner);
     const nfts: NFT[] = [];
     if (mints) {
-        /*
         const metadatas = await metaplex.nfts().findAllByMintList({mints})
         for (const metadata of metadatas) {
             if (metadata) {
@@ -74,7 +72,6 @@ export async function getNFTsForOwner(owner: PublicKey): Promise<NFT[]> {
                 nfts.push(nft);
             }
         }
-         */
     }
     return nfts;
 }
