@@ -1,0 +1,32 @@
+export const SPACING = {
+  SM: 4,
+  MD: 8, 
+  LG: 12,
+  XL: 16,
+  XXL: 20
+}
+
+export const COLORS = {
+  LABEL_BLACK: '#0C0D0E',
+  BACKGROUND_BLACK: "#131417",
+  
+  LABEL_TEXT_WHITE: "#FFFFFF",
+  
+  HEADER_GRAY: "#D5DDF9",
+  HEADER_BACKGROUND_GRAY: "#343848",
+  USER_BACKGROUND_GRAY: "#0000009E",
+  BUTTON_BACKGROUND_GRAY: "#373A47",
+  INACTIVE_GRAY: "#73788A",
+
+  USER_GREEN: "#00FFBA",
+  ACTIVE_PINK: "#BE7DFF",
+  FAV_GOLD: "#F8B600"
+}
+
+export const BRADIUS = {
+  SM: 4,
+  MD: 8, 
+  LG: 12,
+  XL: 16,
+  XXL: 20
+}

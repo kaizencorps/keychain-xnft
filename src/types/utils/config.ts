@@ -1,6 +1,6 @@
 import { Idl } from '@project-serum/anchor';
-import keychainIdl from '../programs/idl/keychain.json';
-import {consoleLog} from "../_helpers/debug";
+import keychainIdl from '../../programs/idl/keychain.json';
+import {consoleLog} from "../../_helpers/debug";
 
 /* stupid babel type error: TypeError: [BABEL] /Users/si/projects/crypto/sol/kaizen/keychain-xnft/node_modules/webpack/hot/dev-server.js: api.addExternalDependency is not a function (While processing: "/Users/si/projects/crypto/sol/kaizen/keychain-xnft/node_modules/react-native-dotenv/index.js")
 

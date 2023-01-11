@@ -4,7 +4,6 @@ export interface WalletState {
   address: PublicKey | null
 }
 
-
 export interface KeyState {
   keyAccount: PublicKey,
   wallet: PublicKey,
@@ -23,4 +22,12 @@ export interface NFT {
   imageUrl: string,
   mdUrl: string,
   collection: string
+}
+
+export interface Kaizen {
+  name: string,
+  imageUrl: string,
+  isCurrent: boolean,
+  isFavorited: boolean,
+  // TODO stats
 }

@@ -1,7 +1,7 @@
 import {atom, selector, selectorFamily} from 'recoil';
 import {PublicKey} from "@solana/web3.js";
 import {userAtom, UserState} from "./user";
-import {getNFTsForOwner} from "../utils/chain-utils";
+import {getNFTsForOwner} from "../types/utils/chain-utils";
 import {consoleLog} from "../_helpers/debug";
 import { KeychainState, NFT, WalletState } from '../types/kaizen';
 import {walletAtom} from "./wallet";

@@ -2,7 +2,7 @@ import * as anchor from '@project-serum/anchor';
 import {Connection, PublicKey} from '@solana/web3.js';
 import {AnchorProvider, Program, Provider, Wallet} from '@project-serum/anchor';
 // import { Keychain } from './types/keychain';
-import { KeychainIdl, KeychainProgramId } from '../utils/config';
+import { KeychainIdl, KeychainProgramId } from '../types/utils/config';
 
 // const { SystemProgram } = anchor.web3;
 

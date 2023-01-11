@@ -3,9 +3,10 @@ import React, { FC, ReactElement } from 'react';
 //Compponents
 import GalleryKaizen from '../kaizen';
 import { SubHeaderText, ThinText } from '../ui/text';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';  
 
 //SVGs
-import ChevronRight from '../../assets/svgs/Icons/chevron-right';
+import ChevronRight from '../../assets/svgs/Icons/chevron';
 import Star from '../../assets/svgs/Icons/star';
 import Numeric1Box from '../../assets/svgs/Icons/numeric-1-box';
 import Numeric2Box from '../../assets/svgs/Icons/numeric-2-box';
@@ -14,6 +15,8 @@ import Numeric5Box from '../../assets/svgs/Icons/numeric-5-box';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import {NFT} from "../../types/kaizen";
 
+//Styles
+import * as Theme from '../../constants/theme';
 
 interface Props {
     items: NFT[],
@@ -34,7 +37,6 @@ export const WalletKaizens : FC<Props> = (props: Props) : ReactElement => {
     const [isExpanded, toggleExpanded] = React.useState(false);
     const [viewportWidth, setViewportWidth] = React.useState(dims.width >= MAX_VIEWPORT_WIDTH ? MAX_VIEWPORT_WIDTH : dims.width)
     const [numOfColumns, setNumOfColumns] = React.useState(calcNumOfColumns(viewportWidth))
-
 
     const formatAddress = React.useMemo(() => {
         const { walletAddress } = props;
@@ -57,27 +59,49 @@ export const WalletKaizens : FC<Props> = (props: Props) : ReactElement => {
     }, [isExpanded])
 
     return (
-        <div className="mb-1">
-          <div
-            className={`flex flex-row justify-between cursor-pointer rounded-md p-2 ${!isExpanded && 'bg-headerBackgroundGray'}`}
-            onClick={() => toggleExpanded(!isExpanded)}
+        <View style={styles.con}>
+          <TouchableOpacity
+            style={[isExpanded && { backgroundColor: Theme.COLORS.HEADER_BACKGROUND_GRAY}, styles.main]}
+            onPress={() => toggleExpanded(!isExpanded)}
           >
-            <div className='flex flex-row'>
+            <View style={styles.row}>
                 {getIcon()}
-                <SubHeaderText className={`${getTextColor} ml-2`}>{formatAddress}</SubHeaderText>
-            </div>
-            <div className='flex flex-row'>
-                <ThinText className={`${getTextColor} font-blenderpromedium`}>
+                <SubHeaderText style={{ marginLeft: Theme.SPACING.SM, color: getTextColor }}>{formatAddress}</SubHeaderText>
+            </View>
+            <View style={styles.row}>
+                <ThinText style={{ color: getTextColor }}>
                     {props.items.length.toString()}
                 </ThinText>
                 <ChevronRight color={isExpanded ? "#F8B600" : "#D5DDF9"} rotation={90} />
-            </div>
-          </div>
-          <div className="flex flex-wrap content-start justify-start w-full gap-2">
+            </View>
+          </TouchableOpacity>
+          <View style={styles.kaizensCon}>
             { isExpanded && props.items.map((kaizen, i: number) => <GalleryKaizen key={i} index={i} kaizen={kaizen} dimension={Math.round(viewportWidth / numOfColumns)}/>) }
-          </div>
-        </div>
+          </View>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    con: {
+        marginBottom: Theme.SPACING.SM
+    },
+    main: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderRadius: Theme.BRADIUS.MD,
+        padding: Theme.SPACING.SM
+    },
+    row: {
+        flex: 1,
+        flexDirection: 'row'
+    },
+    kaizensCon: {
+        flexWrap: 'wrap',
+        alignContent: 'flex-start',
+        justifyContent: 'flex-start',
+        width: '100%'
+    }
+})
 
 export default WalletKaizens;

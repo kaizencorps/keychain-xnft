@@ -1,13 +1,27 @@
 import * as React from 'react';
+import { Text, StyleProp, TextStyle, StyleSheet } from 'react-native';
 
 interface Props {
   children: string
-  className?: string
+  style?: StyleProp<TextStyle>
 }
 
-export const SubHeaderText: React.FunctionComponent<Props> = (props) : React.ReactElement =>  <p className={`${props.className} font-blenderpromedium`}>{props.children}</p>;
-export const HeaderText: React.FunctionComponent<Props> = (props) : React.ReactElement =>  <p className={props.className}>{props.children}</p>;
-export const NormalText: React.FunctionComponent<Props> = (props) : React.ReactElement =>  <p className={props.className}>{props.children}</p>;
-export const ThinText: React.FunctionComponent<Props> = (props) : React.ReactElement =>  <p className={props.className}>{props.children}</p>;
+export const SubHeaderText: React.FunctionComponent<Props> = (props) : React.ReactElement => <Text style={[styles.subheader, props.style]}>{props.children}</Text>;
+export const HeaderText: React.FunctionComponent<Props> = (props) : React.ReactElement => <Text style={[styles.header, props.style]}>{props.children}</Text>;
+export const NormalText: React.FunctionComponent<Props> = (props) : React.ReactElement => <Text style={[styles.normal, props.style]}>{props.children}</Text>;
+export const ThinText: React.FunctionComponent<Props> = (props) : React.ReactElement => <Text style={[styles.thin, props.style]}>{props.children}</Text>;
 
+const styles = StyleSheet.create({
+  normal: {
 
+  },
+  subheader: {
+
+  },
+  header: {
+
+  },
+  thin: {
+
+  }
+})

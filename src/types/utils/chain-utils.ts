@@ -1,7 +1,7 @@
 import { PublicKey } from '@solana/web3.js';
 import axios from 'axios';
-import { NFT } from '../types/kaizen';
-import { consoleLog } from '../_helpers/debug';
+import { NFT } from '../kaizen';
+import { consoleLog } from '../../_helpers/debug';
 import {metaplex, RPC_URL} from "./config";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars

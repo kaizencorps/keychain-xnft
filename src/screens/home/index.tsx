@@ -1,11 +1,21 @@
 import React, {FC, ReactElement, useState} from "react";
+
+//Components
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { HeaderText } from "../../components/ui/text";
+
+//Web3
 import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
-import useAsyncEffect from "use-async-effect";
 import {AnchorWallet, useAnchorWallet, useWallet} from "@solana/wallet-adapter-react";
-import {useWalletActions} from "../_actions/wallet.actions";
-import {consoleLog} from "../_helpers/debug";
-import {useUserActions} from "../_actions/user.actions";
-import {keychainAtom} from "../_state/keychain";
+
+//Libs
+import useAsyncEffect from "use-async-effect";
+
+//Data
+import {useWalletActions} from "../../_actions/wallet.actions";
+import {consoleLog} from "../../_helpers/debug";
+import {useUserActions} from "../../_actions/user.actions";
+import {keychainAtom} from "../../_state/keychain";
 import {useRecoilValue} from "recoil";
 
 const Home : FC<any> = () : ReactElement => {
@@ -40,16 +50,16 @@ const Home : FC<any> = () : ReactElement => {
 
   return (
       <>
-        <div className="flex flex-1">
-          <h2>Home</h2>
-          <div className={'mx-auto'}>
+        <View className="flex flex-1">
+          <HeaderText>Home</HeaderText>
+          <View className={'mx-auto'}>
             <WalletMultiButton>
               Connect Wallet
             </WalletMultiButton>
-          </div>
+          </View>
 
-        </div>
-        <div className="flex flex-col justify-center items-center pb-10">
+        </View>
+        <View className="flex flex-col justify-center items-center pb-10">
           <label
               className="text-center text-gray-700 font-bold"
           >
@@ -61,14 +71,14 @@ const Home : FC<any> = () : ReactElement => {
                 onChange={handleChange}
             />
           </label>
-          <button
+          <TouchableOpacity
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleSubmit}
           >
             Submit
-          </button>
-          {keychain.exists && <div className={"text-white"}>Got the keychain: {keychain.keychainAccount?.toBase58()}</div>}
-        </div>
+          </TouchableOpacity>
+          {keychain.exists && <View className={"text-white"}>Got the keychain: {keychain.keychainAccount?.toBase58()}</View>}
+        </View>
 
       </>
   );
