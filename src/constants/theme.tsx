@@ -34,3 +34,4 @@ export const BRADIUS = {
   XL: 16,
   XXL: 20
 }
+
