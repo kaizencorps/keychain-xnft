@@ -1,5 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { NormalText } from '../text';
 
 import * as Theme from "../../../constants/theme";
 
@@ -12,7 +13,7 @@ interface Props {
 export const Box: React.FC<any> = (props: Props) : React.ReactElement => {
     return(
         <View style={styles.con}>
-            <Text style={styles.text}>{props.letras}</Text>
+            <NormalText style={styles.text}>{props.letras}</NormalText>
         </View>
     )
 }
@@ -21,14 +22,12 @@ export const Box: React.FC<any> = (props: Props) : React.ReactElement => {
 const styles = StyleSheet.create({
     con: {
         width: "100%",
-        borderRadius: Theme.BRADIUS.XL,
+        borderRadius: Theme.BRADIUS.SM,
         backgroundColor: Theme.COLORS.BUTTON_BACKGROUND_GRAY, 
         padding: Theme.SPACING.XL
     },
     text:{
-        fontFamily: 'BlenderPro-Bold', 
         color: Theme.COLORS.LABEL_TEXT_WHITE,
-        lineHeight: 12,
         textAlign: "center"
     }
   })

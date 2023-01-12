@@ -4,6 +4,7 @@ import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text} from 'react-native';
 import { Box } from '../../components/ui/text-box/index';
 import { NormalText } from '../../components/ui/text';
+import { FatPinkButton } from '../../components/ui/buttons';
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -23,13 +24,15 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> {
 
 const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
+  const connectWallet = () => {}
+
   return (
     <View style={styles.con}>
       <View style={styles.subCon}>
         <View style={styles.card1}>
           <Image source={require("../../assets/pngs/Keychain-Logo.png")} style={styles.logo} />
-          <NormalText style={styles.text}>Keychain is an on-chain component that combines your NFTs from multiple wallets to be accessible by one account</NormalText>
         </View>
+        <NormalText style={styles.text}>Keychain is an on-chain component that combines your NFTs from multiple wallets to be accessible by one account</NormalText>
         <View style={styles.card2}>
           <NormalText style={styles.text2}>HOW IT WORKS</NormalText>
           <Box letras='Connect a wallet to create a profile.' />
@@ -37,10 +40,11 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
           <Box letras='Add another wallet to your profile.' />
           <Chevron color={Theme.COLORS.ACTIVE_PINK} rotation={90}/>
           <Box letras='View all your NFTs in the gallery.' />
-          <TouchableOpacity style={styles.text2}>
-            <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} width={10} height={10}/>
-            <NormalText >CONNECT WALLET</NormalText>
-          </TouchableOpacity>
+          <FatPinkButton
+            text="CONNECT WALLET"
+            icon={<Wallet color={Theme.COLORS.LABEL_TEXT_WHITE}/>}
+            func={connectWallet}
+          />
         </View>
       </View>      
     </View>
@@ -50,9 +54,11 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 const styles = StyleSheet.create({
   con: {
     display:"flex",
+    flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: Theme.COLORS.BACKGROUND_BLACK
   }, 
   subCon:{
     display:"flex",
@@ -79,24 +85,19 @@ const styles = StyleSheet.create({
     margin: 10
   },
   logo:{
-    width:16,
-    height: 16, 
+    width: 150,
+    height: 150, 
   },
   text: {
     color: Theme.COLORS.LABEL_TEXT_WHITE,
-    lineHeight: 6,
-    maxWidth: 500,
     textAlign: "center",
-    fontFamily: 'BlenderPro-Bold',
-    paddingVertical: 16,
-  },
-  text2: {
-    fontFamily: 'BlenderPro-Bold',
-    color: Theme.COLORS.ACTIVE_PINK,
-    paddingBottom: 16 
   },
   tex3:{
     margin:32
+  },
+  text2: {
+    color: Theme.COLORS.ACTIVE_PINK,
+    marginBottom: Theme.SPACING.MD
   },
   button:{
     width: "100%",

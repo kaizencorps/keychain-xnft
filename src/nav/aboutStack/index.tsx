@@ -19,7 +19,7 @@ export default () => {
 
     return (
         <Stack.Navigator
-            initialRouteName='About'
+            initialRouteName='Socials'
             screenOptions={{
                 headerShown: false
             }}

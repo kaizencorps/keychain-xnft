@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Theme.COLORS.LABEL_TEXT_WHITE,
-    lineHeight: 6,
+    lineHeight: 16,
     maxWidth: 500,
     textAlign: "center",
     fontFamily: 'BlenderPro-Bold',
