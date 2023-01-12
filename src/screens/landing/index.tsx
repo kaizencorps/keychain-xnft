@@ -1,37 +1,48 @@
 import React from 'react';
+
+//Components
 import { View, StyleSheet, Image, TouchableOpacity, Text} from 'react-native';
 import { Box } from '../../components/ui/text-box/index';
-import * as Theme from "../../constants/theme";
-import  Chevron from '../../assets/svgs/Icons/chevron';
-import Wallet from '../../assets/svgs/Icons/wallet'
 import { NormalText } from '../../components/ui/text';
 
-const Landing : React.FC<any> = () : React.ReactElement => {
+//Types
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootStackParamList } from '../../nav/homeStack';
+
+//SVGs
+import  Chevron from '../../assets/svgs/Icons/chevron';
+import Wallet from '../../assets/svgs/Icons/wallet'
+
+//Styles
+import * as Theme from "../../constants/theme";
+
+
+interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> {
+  // other props ...
+}
+
+const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
   return (
     <View style={styles.con}>
       <View style={styles.subCon}>
         <View style={styles.card1}>
           <Image source={require("../../assets/pngs/Keychain-Logo.png")} style={styles.logo} />
-          <NormalText style={styles.text}>Keychain is an on-chain component that combines your NFTs from multiple wallets to be accessible by one account.
-          </NormalText>
+          <NormalText style={styles.text}>Keychain is an on-chain component that combines your NFTs from multiple wallets to be accessible by one account</NormalText>
         </View>
         <View style={styles.card2}>
           <NormalText style={styles.text2}>HOW IT WORKS</NormalText>
-          <Box letras='Connect a wallet to create a profile.'></Box>
+          <Box letras='Connect a wallet to create a profile.' />
           <Chevron color={Theme.COLORS.ACTIVE_PINK} rotation={90}/>
-          <Box letras='Add another wallet to your profile.'></Box>
+          <Box letras='Add another wallet to your profile.' />
           <Chevron color={Theme.COLORS.ACTIVE_PINK} rotation={90}/>
-          <Box letras='View all your NFTs in the gallery.'></Box>
+          <Box letras='View all your NFTs in the gallery.' />
           <TouchableOpacity style={styles.text2}>
             <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} width={10} height={10}/>
             <NormalText >CONNECT WALLET</NormalText>
           </TouchableOpacity>
-
         </View>
-        
       </View>      
-
     </View>
   )
 }

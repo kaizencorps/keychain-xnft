@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Gallery from '../../screens/gallery';
 import KaizenData from '../../screens/kaizen-data';
 
-type RootStackParamList = { 
+export type RootStackParamList = { 
     Gallery: undefined,
     KaizenData: { initialKaizenIndex: number, walletAddress: string }
 }

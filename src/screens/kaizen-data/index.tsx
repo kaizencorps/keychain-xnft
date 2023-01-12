@@ -2,12 +2,16 @@ import React from 'react';
 
 //Components
 import { Kaizen } from '../../types/kaizen';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import KaizenFocused from '../../components/kaizen/focused';
 import { FatButton } from '../../components/ui/buttons';
 
 //Placeholder
 // import dummyData from '../gallery/dummy-data';
+
+//Types
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootStackParamList } from '../../nav/galleryStack';
 
 //SVGs
 import Chevron from '../../assets/svgs/Icons/chevron';
@@ -20,9 +24,12 @@ import Close from '../../assets/svgs/Icons/close';
 //Styles
 import * as Theme from '../../constants/theme';
 
+interface Props extends BottomTabScreenProps<RootStackParamList, 'KaizenData'> {
+  // other props ...
+}
 
-const KaizenData : React.FC<any> = (props) : React.ReactElement => {
 
+const KaizenData : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const [focusedKaizen, setFocusedKaizen] = React.useState<Kaizen>()
   const [kaizenIndex, setKaizenIndex] = React.useState(props.route.params.initialKaizenIndex)
@@ -30,9 +37,9 @@ const KaizenData : React.FC<any> = (props) : React.ReactElement => {
 
   // TODO recoil get full kaizen array
 
-  React.useEffect(() => {
-    setFocusedKaizen(dummyData.find(data => data.name === wallet.name)?.kaizens[kaizenIndex]); // TODO change out dummyData for recoil data
-  }, [])
+  // React.useEffect(() => {
+  //   setFocusedKaizen(dummyData.find(data => data.name === wallet.name)?.kaizens[kaizenIndex]); // TODO change out dummyData for recoil data
+  // }, [])
 
   const toggleFavorite = () => {
 
@@ -46,12 +53,14 @@ const KaizenData : React.FC<any> = (props) : React.ReactElement => {
 
   }
 
+  const goBack = () => props.navigation.goBack();
+
   return (
     <View>
       {/* TODO index value is placeholder. Get from recoil */}
       {/* TODO make this section swipeable */}
       <View style={styles.kaizenCon}>
-        <KaizenFocused kaizen={focusedKaizen} wallet={{ name: dummyData.find(data => data.name === wallet.name), index: 1 }}/> 
+        {/* <KaizenFocused kaizen={focusedKaizen} wallet={{ name: dummyData.find(data => data.name === wallet.name), index: 1 }}/>  */}
       </View>
       <View style={styles.botCon}>
         <View style={styles.botCon}>
@@ -89,7 +98,9 @@ const KaizenData : React.FC<any> = (props) : React.ReactElement => {
         </View>
         <View style={styles.swipeCon}>
           <Chevron height={40} width={40} color={"#D5DDF9"} rotation={270} />
-            <Close color={Theme.COLORS.INACTIVE_GRAY }/>
+            <TouchableOpacity onPress={goBack}>
+              <Close color={Theme.COLORS.INACTIVE_GRAY }/>
+            </TouchableOpacity>
           <Chevron height={40} width={40} color={"#D5DDF9"} rotation={90} />
         </View>
       </View>

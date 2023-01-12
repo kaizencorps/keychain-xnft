@@ -6,7 +6,8 @@ import { FatButton, FatPinkButton } from "../../components/ui/buttons";
 import { BannerText, HeaderText, SubHeaderText } from "../../components/ui/text";
 
 //Types
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootStackParamList } from "../../nav/homeStack";
 
 //SVGs
 import Numeric1Box from '../../assets/svgs/Icons/numeric-1-box';
@@ -23,9 +24,8 @@ import * as Theme from '../../constants/theme';
 import { formatAddress } from "../../utils/stringFormatting";
 
 
-interface Props {
-  navigation: BottomTabNavigationProp<ParamList>,
-  route: RouteProp<ParamList, T>
+interface Props extends BottomTabScreenProps<RootStackParamList, 'WalletDetails'> {
+  // other props ...
 }
 
 
@@ -47,7 +47,7 @@ const WalletDetails : FC<any> = (props: Props) : ReactElement => {
 
   }
 
-  const goBack = () => {}
+  const goBack = () => props.navigation.goBack();
 
   return (
     <View style={styles.con}>

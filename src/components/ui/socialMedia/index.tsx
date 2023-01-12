@@ -7,13 +7,15 @@ import * as Theme from "../../../constants/theme";
 interface Props {
     icon: React.ReactElement,
     link: string,
-    bg_Color: string
+    bgColor: string
 }
 
+// TODO maybe need a different linking system for web vs mobile
 
-export const SocialMedia: React.FC<any> = (props: Props) : React.ReactElement => {
+
+export const SocialMedia: FC<any> = (props: Props) : ReactElement => {
     return(
-        <TouchableOpacity style={[styles.con, {backgroundColor: props.bg_Color}]} onPress={() => Linking.openURL(props.link)}>
+        <TouchableOpacity style={[styles.con, {backgroundColor: props.bgColor}]} onPress={() => Linking.openURL(props.link)}>
             {props.icon}
         </TouchableOpacity>
     )

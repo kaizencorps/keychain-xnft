@@ -5,7 +5,8 @@ import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Input from "../../components/ui/inputs";
 
 //Types
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootStackParamList } from "../../nav/homeStack";
 
 //SVGs
 import Wallet from '../../assets/svgs/Icons/wallet';
@@ -19,13 +20,12 @@ import { FatPinkButton } from "../../components/ui/buttons";
 //Utils
 import { formatAddress } from "../../utils/stringFormatting";
 
-// interface Props {
-//   navigation: BottomTabNavigationProp<ParamList>,
-//   route: RouteProp<ParamList, T>
-// }
+interface Props extends BottomTabScreenProps<RootStackParamList, 'VerifyWalletDetails'> {
+  // other props ...
+}
 
 
-const VerifyWalletDetails : FC<any> = () : ReactElement => {
+const VerifyWalletDetails : FC<any> = (props: Props) : ReactElement => {
 
   const [input, setInput] = React.useState('')
 
@@ -33,7 +33,7 @@ const VerifyWalletDetails : FC<any> = () : ReactElement => {
 
   }
 
-  const goBack = () => {}
+  const goBack = () => props.navigation.goBack();
 
   return (
     <View style={styles.con}>

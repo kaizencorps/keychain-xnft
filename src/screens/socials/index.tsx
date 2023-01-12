@@ -1,12 +1,25 @@
 import React from 'react';
+
+//Components
 import { View, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native';
 import { SocialMedia } from '../../components/ui/socialMedia/index';
-import * as Theme from "../../constants/theme";
-import  Chevron from '../../assets/svgs/Icons/chevron';
-import Wallet from '../../assets/svgs/Icons/wallet'
 import { NormalText } from '../../components/ui/text';
+import { FatPinkButton } from '../../components/ui/buttons';
 
-const Landing : React.FC<any> = () : React.ReactElement => {
+//Types
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootStackParamList } from '../../nav/aboutStack';
+
+//Styles
+import * as Theme from "../../constants/theme";
+
+interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {
+  // other props ...
+}
+
+const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
+
+  const handleSubscribe = () => {}
    
   return (
     <View style={styles.con}>
@@ -35,9 +48,7 @@ const Landing : React.FC<any> = () : React.ReactElement => {
                         placeholder="Enter your email"
                     />
                     
-                    <TouchableOpacity style={styles.text2}>
-                        <NormalText >SUBSCRIBE</NormalText>
-                    </TouchableOpacity>
+                    <FatPinkButton text='SUBSCRIBE' func={handleSubscribe} />
                 </View>
 
             </View>

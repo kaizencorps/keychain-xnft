@@ -4,6 +4,10 @@ import { View, StyleSheet } from 'react-native';
 //Components
 import WalletKaizens from '../../components/wallet-kaizens';
 
+//Types
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootStackParamList } from '../../nav/galleryStack';
+
 //Data
 import DummyData from '../dummy-data';
 import {useRecoilValue} from "recoil";
@@ -12,8 +16,11 @@ import { keychainAtom, walletNftsSelector } from '../../_state/keychain';
 //Styles
 import * as Theme from '../../constants/theme';
 
+interface Props extends BottomTabScreenProps<RootStackParamList, 'Gallery'> {
+  // other props ...
+}
 
-const Gallery : React.FC<any> = () : React.ReactElement => {
+const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
 

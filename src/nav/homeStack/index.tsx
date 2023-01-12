@@ -13,7 +13,7 @@ import WalletDetails from '../../screens/walletDetails';
 //Types
 import { Wallet } from '../../types/wallet';
 
-type RootStackParamList = { 
+export type RootStackParamList = { 
     Home: undefined,
     Landing: undefined,
     AddNewWallet: undefined,
