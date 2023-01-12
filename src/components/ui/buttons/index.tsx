@@ -2,7 +2,7 @@ import React from 'react';
 
 //Components
 import { StyleSheet, TouchableOpacity, GestureResponderEvent } from 'react-native';
-import { NormalText } from '../text';
+import { NormalText, HeaderText } from '../text';
 
 //Styles
 import * as Theme from '../../../constants/theme';
@@ -12,8 +12,14 @@ interface FatButtonProps {
   color: string,
   backgroundColor?: string,
   borderColor?: string,
-  icon: React.ReactElement,
+  icon?: React.ReactElement,
   func: (event: GestureResponderEvent) => void
+}
+
+interface FatPinkButtonProps {
+  text: string,
+  func: (event: GestureResponderEvent) => void
+  icon?: React.ReactElement,
 }
 
 export const FatButton : React.FC<any> = (props: FatButtonProps) : React.ReactElement => {
@@ -29,9 +35,22 @@ export const FatButton : React.FC<any> = (props: FatButtonProps) : React.ReactEl
         styles.con
       ]}
     >
-      {props.icon}
+      {!!props.icon && props.icon}
       <NormalText style={{ color: props.color }}>{props.text}</NormalText>
     </TouchableOpacity>
+  )
+}
+
+export const FatPinkButton = (props: FatPinkButtonProps) => {
+
+  return (
+    <TouchableOpacity 
+      onPress={props.func} 
+      style={[{ backgroundColor: Theme.COLORS.ACTIVE_PINK }, styles.con]}
+    >
+    {!!props.icon && props.icon}
+    <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{props.text}</HeaderText>
+  </TouchableOpacity>
   )
 }
 

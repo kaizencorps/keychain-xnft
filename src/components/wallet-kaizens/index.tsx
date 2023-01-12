@@ -10,10 +10,14 @@ import ChevronRight from '../../assets/svgs/Icons/chevron';
 import Star from '../../assets/svgs/Icons/star';
 import Numeric1Box from '../../assets/svgs/Icons/numeric-1-box';
 import Numeric2Box from '../../assets/svgs/Icons/numeric-2-box';
+import Numeric3Box from '../../assets/svgs/Icons/numeric-3-box';
 import Numeric4Box from '../../assets/svgs/Icons/numeric-4-box';
 import Numeric5Box from '../../assets/svgs/Icons/numeric-5-box';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import {NFT} from "../../types/kaizen";
+
+//Utils
+import { formatAddress } from '../../utils/stringFormatting';
 
 //Styles
 import * as Theme from '../../constants/theme';
@@ -38,10 +42,10 @@ export const WalletKaizens : FC<Props> = (props: Props) : ReactElement => {
     const [viewportWidth, setViewportWidth] = React.useState(dims.width >= MAX_VIEWPORT_WIDTH ? MAX_VIEWPORT_WIDTH : dims.width)
     const [numOfColumns, setNumOfColumns] = React.useState(calcNumOfColumns(viewportWidth))
 
-    const formatAddress = React.useMemo(() => {
+    const formatWalletAddress = React.useMemo(() => {
         const { walletAddress } = props;
         if(walletAddress === 'MY FAVORITES') return walletAddress;
-        else return `${walletAddress.substring(0, 4)}...${walletAddress.substring(walletAddress.length - 4, walletAddress.length)}`
+        else return formatAddress(walletAddress);
     // eslint-disable-next-line
     }, [props.walletAddress])
 
@@ -52,7 +56,7 @@ export const WalletKaizens : FC<Props> = (props: Props) : ReactElement => {
             case 0: return <Star color={isExpanded ? "#F8B600" : "#D5DDF9"} />
             case 1: return <Numeric1Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
             case 2: return <Numeric2Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
-            case 3: return <Numeric2Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
+            case 3: return <Numeric3Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
             case 4: return <Numeric4Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
             case 5: return <Numeric5Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
         }
@@ -66,7 +70,7 @@ export const WalletKaizens : FC<Props> = (props: Props) : ReactElement => {
           >
             <View style={styles.row}>
                 {getIcon()}
-                <SubHeaderText style={{ marginLeft: Theme.SPACING.SM, color: getTextColor }}>{formatAddress}</SubHeaderText>
+                <SubHeaderText style={{ marginLeft: Theme.SPACING.SM, color: getTextColor }}>{formatWalletAddress}</SubHeaderText>
             </View>
             <View style={styles.row}>
                 <ThinText style={{ color: getTextColor }}>

@@ -15,6 +15,7 @@ import Star from '../../assets/svgs/Icons/star';
 import StarCrossed from '../../assets/svgs/Icons/star-crossed';
 import Download from '../../assets/svgs/Icons/download';
 import AccountCircle from '../../assets/svgs/Icons/account-circle';
+import Close from '../../assets/svgs/Icons/close';
 
 //Styles
 import * as Theme from '../../constants/theme';
@@ -25,7 +26,7 @@ const KaizenData : React.FC<any> = (props) : React.ReactElement => {
 
   const [focusedKaizen, setFocusedKaizen] = React.useState<Kaizen>()
   const [kaizenIndex, setKaizenIndex] = React.useState(props.route.params.initialKaizenIndex)
-  const [wallet, setWallet] = React.useState(props.route.params.initialWalletAddress)
+  const [wallet, setWallet] = React.useState(props.route.params.walletAddress) // TODO this will likely change
 
   // TODO recoil get full kaizen array
 
@@ -88,7 +89,7 @@ const KaizenData : React.FC<any> = (props) : React.ReactElement => {
         </View>
         <View style={styles.swipeCon}>
           <Chevron height={40} width={40} color={"#D5DDF9"} rotation={270} />
-
+            <Close color={Theme.COLORS.INACTIVE_GRAY }/>
           <Chevron height={40} width={40} color={"#D5DDF9"} rotation={90} />
         </View>
       </View>

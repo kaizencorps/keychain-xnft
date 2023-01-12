@@ -20,7 +20,11 @@ export const COLORS = {
 
   USER_GREEN: "#00FFBA",
   ACTIVE_PINK: "#BE7DFF",
-  FAV_GOLD: "#F8B600"
+  SUBTLE_PINK: "#41265B",
+  ALERT_YELLOW: "#F29339",
+  SUBTLE_YELLOW: "#43332C",
+  FAV_GOLD: "#F8B600",
+  SCARY_RED: "#C84242"
 }
 
 export const BRADIUS = {

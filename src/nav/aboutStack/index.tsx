@@ -6,7 +6,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 //Pages
 import About from '../../screens/about';
 
-const Stack = createStackNavigator();
+type RootStackParamList = { 
+    About: undefined
+}
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default () => {
     
