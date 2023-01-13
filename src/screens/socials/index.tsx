@@ -17,7 +17,9 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {
   // other props ...
 }
 
-const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
+const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
+
+  
 
   const handleSubscribe = () => {}
    
@@ -35,13 +37,13 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
                     Curabitur turpis neque, hendrerit a nulla quis, mattis dapibus diam. Vivamus auctor accumsan orci, 
                     vitae scelerisque quam dapibus eget. Quisque magna tellus, congue ut rhoncus posuere, condimentum at tortor.
                 </NormalText>
-                <View>
-                    <SocialMedia></SocialMedia>
-                    <SocialMedia></SocialMedia>
-                    <SocialMedia></SocialMedia>
+                <View style={styles.card2_1}>
+                    <SocialMedia backgroundColor={Theme.COLORS.DISCORD}></SocialMedia>
+                    <SocialMedia backgroundColor={Theme.COLORS.TWITTER}></SocialMedia>
+                    <SocialMedia backgroundColor={Theme.COLORS.EMAIL}></SocialMedia>
                 </View>
 
-                <View>
+                <View style={styles.card2_2}>
                     <NormalText style={styles.text2}>Don't miss our updates!</NormalText>
                     <TextInput
                         style={styles.input}
@@ -62,9 +64,11 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 const styles = StyleSheet.create({
   con: {
     display:"flex",
+    flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: Theme.COLORS.BACKGROUND_BLACK
   }, 
   subCon:{
     display:"flex",
@@ -90,9 +94,18 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 10
   },
+  card2_1:{
+    
+  },
+  card2_2:{
+    display: "flex", 
+    flexDirection: 'column',
+    gap : 50
+
+  },
   logo:{
-    width:16,
-    height: 16, 
+    width:100,
+    height: 100, 
   },
   text: {
     color: Theme.COLORS.LABEL_TEXT_WHITE,
@@ -105,7 +118,8 @@ const styles = StyleSheet.create({
   text2: {
     fontFamily: 'BlenderPro-Bold',
     color: Theme.COLORS.ACTIVE_PINK,
-    paddingBottom: 16 
+    paddingBottom: 16,
+    textAlign : "center"
   },
   tex3:{
     margin:32
@@ -128,4 +142,4 @@ const styles = StyleSheet.create({
    }
 });
 
-export default Landing;
+export default Socials;

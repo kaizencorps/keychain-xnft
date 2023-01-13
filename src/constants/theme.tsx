@@ -24,7 +24,11 @@ export const COLORS = {
   ALERT_YELLOW: "#F29339",
   SUBTLE_YELLOW: "#43332C",
   FAV_GOLD: "#F8B600",
-  SCARY_RED: "#C84242"
+  SCARY_RED: "#C84242",
+
+  DISCORD : '#7388DA', 
+  TWITTER: '#1DA0F2',
+  EMAIL: '#F01C79'
 }
 
 export const BRADIUS = {

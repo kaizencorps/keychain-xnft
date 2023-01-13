@@ -16,7 +16,7 @@ interface Props {
 export const SocialMedia: FC<any> = (props: Props) : ReactElement => {
     return(
         <TouchableOpacity style={[styles.con, {backgroundColor: props.bgColor}]} onPress={() => Linking.openURL(props.link)}>
-            {props.icon}
+            
         </TouchableOpacity>
     )
 }
