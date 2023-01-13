@@ -48,7 +48,7 @@ export const Wallet : FC<any> = (props: WalletProps) : ReactElement => {
   return (
     <TouchableOpacity style={[styles.con, { backgroundColor: Theme.COLORS.HEADER_BACKGROUND_GRAY }]}>
       {getIcon()}
-      <SubHeaderText style={{ marginLeft: Theme.SPACING.SM, color: Theme.COLORS.HEADER_GRAY }}>{formatAddress(props.address)}</SubHeaderText>
+      <SubHeaderText style={{ marginLeft: Theme.SPACING.MD, color: Theme.COLORS.HEADER_GRAY }}>{formatAddress(props.address)}</SubHeaderText>
     </TouchableOpacity>
   )
 }
@@ -58,7 +58,7 @@ export const NewWallet : FC<any> = (props: NewWalletProps) : ReactElement => {
   return(
     <TouchableOpacity onPress={props.func} style={[styles.con, { backgroundColor: Theme.COLORS.SUBTLE_PINK }]}>
       <Plus color={Theme.COLORS.ACTIVE_PINK} />
-      <SubHeaderText style={{ marginLeft: Theme.SPACING.SM, color: Theme.COLORS.HEADER_GRAY }}>Add new wallet</SubHeaderText>
+      <SubHeaderText style={{ marginLeft: Theme.SPACING.MD, color: Theme.COLORS.ACTIVE_PINK }}>Add new wallet</SubHeaderText>
     </TouchableOpacity>
   )
 }
@@ -68,7 +68,7 @@ export const VerifyWallet : FC<any> = (props: VeryifyWalletProps) : ReactElement
   return (
     <View style={[styles.con, { backgroundColor: Theme.COLORS.SUBTLE_YELLOW }]}>
       <Alert color={Theme.COLORS.ALERT_YELLOW} />
-      <SubHeaderText style={{ marginLeft: Theme.SPACING.SM, color: Theme.COLORS.HEADER_GRAY }}>{formatAddress(props.address)}</SubHeaderText>
+      <SubHeaderText style={{ marginLeft: Theme.SPACING.MD, color: Theme.COLORS.HEADER_GRAY }}>{formatAddress(props.address)}</SubHeaderText>
     </View>
   )
 }
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
   con: {
     width: '100%',
     justifyContent: 'flex-start',
+    flexDirection: 'row',
     alignItems: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.SPACING.SM,

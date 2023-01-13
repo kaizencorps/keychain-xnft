@@ -8,6 +8,9 @@ import TabNavigator from "./nav";
 
 import {ProviderComponentWrapper} from "./components/provider-component-wrapper";
 
+//Styles
+import '../src/assets/fonts/BlenderPro/fonts.css';
+
 function App() {
   let [fontsLoaded] = useFonts({
     Inter_900Black,

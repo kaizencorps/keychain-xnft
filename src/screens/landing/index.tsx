@@ -1,30 +1,53 @@
 import React from 'react';
 
 //Components
-import { View, StyleSheet, Image, TouchableOpacity, Text} from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Box } from '../../components/ui/text-box/index';
-import { NormalText } from '../../components/ui/text';
-import { FatPinkButton } from '../../components/ui/buttons';
+import { HeaderText, NormalText } from '../../components/ui/text';
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../../nav/homeStack';
 
+//Web3
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+
+//Hooks
+import { useWalletActions } from "../../_actions/wallet.actions";
+
 //SVGs
-import  Chevron from '../../assets/svgs/Icons/chevron';
+import Chevron from '../../assets/svgs/Icons/chevron';
 import Wallet from '../../assets/svgs/Icons/wallet'
 
 //Styles
 import * as Theme from "../../constants/theme";
 
 
-interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> {
-  // other props ...
-}
+interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> { }
+
 
 const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
-  const connectWallet = () => {}
+  const walletActions = useWalletActions();
+
+  const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
+  const { signMessage } = useWallet();
+
+  React.useEffect(() => { 
+    autoConnect();
+  }, [anchorWallet])
+
+  const autoConnect = async () => {
+    // if (anchorWallet && !loggedIn) {
+    if (anchorWallet) {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      await walletActions.connectWallet(anchorWallet, signMessage);
+      props.navigation.navigate('Profile')
+    } else {
+      walletActions.disconnectWallet();
+    }
+  }
 
   return (
     <View style={styles.con}>
@@ -40,13 +63,13 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
           <Box letras='Add another wallet to your profile.' />
           <Chevron color={Theme.COLORS.ACTIVE_PINK} rotation={90}/>
           <Box letras='View all your NFTs in the gallery.' />
-          
+          <WalletMultiButton>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} />
+              <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginLeft: 5 }}>CONNECT WALLET</HeaderText>
+            </View>
+          </WalletMultiButton>
         </View>
-        <FatPinkButton
-            text="CONNECT WALLET"
-            icon={<Wallet color={Theme.COLORS.LABEL_TEXT_WHITE}/>}
-            func={connectWallet}
-          />
       </View>      
     </View>
   )

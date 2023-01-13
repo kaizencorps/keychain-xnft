@@ -5,10 +5,11 @@ import * as Theme from '../../../constants/theme';
 
 interface Props {
   val: string,
-  isPassword: boolean,
   onChangeText: (text: string) => void,
+  isPassword?: boolean,
   style?: TextStyle,
   placeholder?: string,
+  isError?: boolean
 }
 
 export const Input : FC<any> = (props: Props) : ReactElement => {
@@ -18,7 +19,11 @@ export const Input : FC<any> = (props: Props) : ReactElement => {
       value={props.val}
       onChangeText={props.onChangeText}
       secureTextEntry={props.isPassword}
-      style={[styles.con, props.style]}
+      style={[
+        styles.con, 
+        props.style, 
+        { borderColor: props.isError ? Theme.COLORS.SCARY_RED : Theme.COLORS.ACTIVE_PINK }
+      ]}
       placeholder={props.placeholder}
     />
   );
@@ -26,7 +31,7 @@ export const Input : FC<any> = (props: Props) : ReactElement => {
 
 const styles = StyleSheet.create({
   con: {
-    borderColor: Theme.COLORS.ACTIVE_PINK,
+    borderWidth: StyleSheet.hairlineWidth,
     borderRadius: Theme.BRADIUS.MD,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
     marginBottom: Theme.SPACING.MD,
