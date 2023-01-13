@@ -6,6 +6,9 @@ export const SPACING = {
   XXL: 20
 }
 
+export const MAX_WIDTH_CON = 700;
+export const MIN_HEIGHT_CON = 700;
+
 export const COLORS = {
   LABEL_BLACK: '#0C0D0E',
   BACKGROUND_BLACK: "#131417",

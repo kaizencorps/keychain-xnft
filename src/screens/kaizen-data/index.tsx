@@ -24,9 +24,7 @@ import Close from '../../assets/svgs/Icons/close';
 //Styles
 import * as Theme from '../../constants/theme';
 
-interface Props extends BottomTabScreenProps<RootStackParamList, 'KaizenData'> {
-  // other props ...
-}
+interface Props extends BottomTabScreenProps<RootStackParamList, 'KaizenData'> {}
 
 
 const KaizenData : React.FC<any> = (props: Props) : React.ReactElement => {

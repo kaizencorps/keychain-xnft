@@ -14,7 +14,9 @@ export const BannerText: React.FunctionComponent<Props> = (props) : React.ReactE
 
 const styles = StyleSheet.create({
   normal: {
-
+    fontSize: 14,
+    lineHeight: 16,
+    fontFamily: 'BlenderPro-Medium'
   },
   subheader: {
 
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
 
   },
   banner: {
-
+    fontSize: 30,
+    fontFamily: 'BlenderPro-Bold'
   }
 })
