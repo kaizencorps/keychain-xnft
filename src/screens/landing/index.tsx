@@ -63,13 +63,14 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
           <Box letras='Add another wallet to your profile.' />
           <Chevron color={Theme.COLORS.ACTIVE_PINK} rotation={90}/>
           <Box letras='View all your NFTs in the gallery.' />
-          <WalletMultiButton>
+          
+        </View>
+        <WalletMultiButton>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} />
               <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginLeft: 5 }}>CONNECT WALLET</HeaderText>
             </View>
           </WalletMultiButton>
-        </View>
       </View>      
     </View>
   )

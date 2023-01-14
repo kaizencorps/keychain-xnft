@@ -14,6 +14,7 @@ interface Props {
 
 export const Input : FC<any> = (props: Props) : ReactElement => {
 
+  
   return (
     <TextInput
       value={props.val}
@@ -22,7 +23,7 @@ export const Input : FC<any> = (props: Props) : ReactElement => {
       style={[
         styles.con, 
         props.style, 
-        { borderColor: props.isError ? Theme.COLORS.SCARY_RED : Theme.COLORS.ACTIVE_PINK }
+        { borderColor: props.isError ? Theme.COLORS.SCARY_RED : Theme.COLORS.MEDIA_BORDER }
       ]}
       placeholder={props.placeholder}
     />
