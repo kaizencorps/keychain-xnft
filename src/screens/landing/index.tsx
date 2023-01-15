@@ -65,7 +65,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
           <Box letras='View all your NFTs in the gallery.' />
           
         </View>
-        <WalletMultiButton>
+        <WalletMultiButton style={styles.fatPinkButton}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} />
               <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginLeft: 5 }}>CONNECT WALLET</HeaderText>
@@ -137,7 +137,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: Theme.SPACING.XL, 
     marginHorizontal: Theme.SPACING.SM
-}
+  },
+  fatPinkButton: {
+    backgroundColor: Theme.COLORS.ACTIVE_PINK
+  }
 });
 
 export default Landing;

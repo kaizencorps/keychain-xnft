@@ -35,7 +35,9 @@ export const FatButton : React.FC<any> = (props: FatButtonProps) : React.ReactEl
         styles.con
       ]}
     >
-      {!!props.icon && props.icon}
+      <View style={styles.iconCon}>
+        {!!props.icon && props.icon}
+      </View>
       <NormalText style={{ color: props.color }}>{props.text}</NormalText>
     </TouchableOpacity>
   )
@@ -48,7 +50,9 @@ export const FatPinkButton = (props: FatPinkButtonProps) => {
       onPress={props.func} 
       style={[{ backgroundColor: Theme.COLORS.ACTIVE_PINK }, styles.con]}
     >
-      {!!props.icon && props.icon}
+      <View style={styles.iconCon}>
+        {!!props.icon && props.icon}
+      </View>
       <View style={{ flex: 1 }}>
         <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, textAlign: 'center' }}>{props.text}</HeaderText>
       </View>
@@ -58,13 +62,19 @@ export const FatPinkButton = (props: FatPinkButtonProps) => {
 
 const styles = StyleSheet.create({
   con: {
-    flex: 1,
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.BRADIUS.XL,
     marginBottom: Theme.SPACING.MD,
-    
+  },
+  iconCon: {
+    position: 'absolute',
+    left: Theme.SPACING.MD,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center', 
   }
 })

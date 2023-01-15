@@ -38,7 +38,7 @@ export default () => {
 
     return (
         <Stack.Navigator
-            initialRouteName='RemoveWallet'
+            initialRouteName='WalletDetected'
             screenOptions={{
                 headerShown: false
             }}

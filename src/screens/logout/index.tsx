@@ -17,6 +17,7 @@ import { useRecoilValue } from "recoil";
 
 //SVGs
 import Close from "../../assets/svgs/Icons/close";
+import LogoutIcon from "../../assets/svgs/Icons/logout";
 import AccountCircle from "../../assets/svgs/Icons/account-circle";
 
 //Styles
@@ -60,6 +61,7 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
             color={Theme.COLORS.SCARY_RED}
             backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
             func={logout}
+            icon={<LogoutIcon color={Theme.COLORS.SCARY_RED} />}
           />
           <View style={styles.closeCon}>
             <TouchableOpacity onPress={goBack}>
@@ -76,7 +78,9 @@ const styles = StyleSheet.create({
   con: {
     flex: 1,
     paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.USER_BACKGROUND_GRAY,
+    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   maxCon: {
     width: '100%',
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: Theme.SPACING.LG,
     justifyContent: 'space-between',
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_GRAY,
   },
   pinkText: {

@@ -23,14 +23,12 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 //React
 
 
-interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {
-  // other props ...
-}
+interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
 
 const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
 
-  
   const [inputValue, setInputValue] = React.useState("");
+  
   const handleSubscribe = () => {}
    
   return (
@@ -41,8 +39,6 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
                 <View style={styles.ImageBox}>
                   <Image source={require("../../assets/pngs/KaizenCorpslogo3.png")} style={styles.logo2} />
                 </View>
-                
-            
             </View>
             <View style={styles.card2}>
                 <NormalText style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -55,7 +51,6 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
                     <SocialMedia bgColor={Theme.COLORS.TWITTER} icon = {<Twitter width={25} height={25}/>}/>
                     <SocialMedia bgColor={Theme.COLORS.EMAIL} icon= {<Email color= {Theme.COLORS.LABEL_TEXT_WHITE} width={20} height={20}/>}/>
                 </View>
-
                 <View style={styles.card2_2}>
                     <NormalText style={styles.text2}>Don't miss our updates!</NormalText>
                     <Input
@@ -63,15 +58,11 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
                       placeholder="Enter your email"
                       val={inputValue}
                       onChangeText= {setInputValue}
-
                     />
                     <FatPinkButton text='SUBSCRIBE' func={handleSubscribe} />
                 </View>
-
             </View>
-        
       </View>      
-
     </View>
   )
 }
@@ -130,8 +121,8 @@ const styles = StyleSheet.create({
     gap:16
   },
   logo:{
-    width:100,
-    height: 100, 
+    width: 150,
+    height: 150, 
   },
   logo2:{
     width:'100%',

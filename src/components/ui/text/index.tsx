@@ -19,13 +19,19 @@ const styles = StyleSheet.create({
     fontFamily: 'BlenderPro-Medium'
   },
   subheader: {
-
+    fontSize: 16,
+    lineHeight: 18,
+    fontFamily: 'BlenderPro-Bold'
   },
   header: {
-
+    fontSize: 20,
+    lineHeight: 22,
+    fontFamily: 'BlenderPro-Book'
   },
   thin: {
-
+    fontSize: 14,
+    lineHeight: 16,
+    fontFamily: 'BlenderPro-Thin'
   },
   banner: {
     fontSize: 30,
