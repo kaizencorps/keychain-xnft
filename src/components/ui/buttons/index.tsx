@@ -61,8 +61,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.BRADIUS.XL,
-    marginBottom: Theme.SPACING.MD
+    marginBottom: Theme.SPACING.MD,
+    
   }
 })

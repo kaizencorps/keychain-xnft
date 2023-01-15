@@ -63,13 +63,14 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
           <Box letras='Add another wallet to your profile.' />
           <Chevron color={Theme.COLORS.ACTIVE_PINK} rotation={90}/>
           <Box letras='View all your NFTs in the gallery.' />
-          <WalletMultiButton>
+          
+        </View>
+        <WalletMultiButton>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} />
               <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginLeft: 5 }}>CONNECT WALLET</HeaderText>
             </View>
           </WalletMultiButton>
-        </View>
       </View>      
     </View>
   )
@@ -106,7 +107,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    margin: 10
+    margin: 10,
+    
   },
   logo:{
     width: 150,
@@ -129,12 +131,12 @@ const styles = StyleSheet.create({
     margin: 16,
     backgroundColor: Theme.COLORS.ACTIVE_PINK, 
     color: Theme.COLORS.LABEL_TEXT_WHITE,
-    fontSize: 32,
+    fontSize: Theme.SPACING.MD,
     fontFamily: 'BlenderPro-Bold',
     display: "flex",
     justifyContent: "center",
-    padding: 10, 
-    marginHorizontal: 5
+    padding: Theme.SPACING.XL, 
+    marginHorizontal: Theme.SPACING.SM
 }
 });
 
