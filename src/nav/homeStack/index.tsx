@@ -38,7 +38,7 @@ export default () => {
 
     return (
         <Stack.Navigator
-            initialRouteName='WalletDetected'
+            initialRouteName='Landing'
             screenOptions={{
                 headerShown: false
             }}
