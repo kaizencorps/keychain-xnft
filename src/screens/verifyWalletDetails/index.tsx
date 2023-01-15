@@ -35,30 +35,32 @@ const VerifyWalletDetails : FC<any> = (props: Props) : ReactElement => {
 
   return (
     <View style={styles.con}>
-      <View style={styles.topCon}>
-        <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
-        <BannerText style={{ color: Theme.COLORS.ALERT_YELLOW, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>Wallet pending</BannerText>
-        <View style={styles.addressCon}>
-          <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(props.route.params.address)}</HeaderText>
+      <View style={styles.maxCon}>
+        <View style={styles.topCon}>
+          <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
+          <BannerText style={{ color: Theme.COLORS.ALERT_YELLOW, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>Wallet pending</BannerText>
+          <View style={styles.addressCon}>
+            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(props.route.params.address)}</HeaderText>
+          </View>
         </View>
-      </View>
-      <View style={styles.botCon}>
-        <View>
-          <SubHeaderText style={styles.pinkText}>To link this wallet to this keychain account, please sign in to verify the wallet</SubHeaderText>
-          <Input 
-            val={input}
-            onChangeText={setInput}
-          />
-          <FatPinkButton 
-            text="CONNECT WALLET" 
-            func={connectWallet} 
-            icon={<Wallet color={Theme.COLORS.LABEL_TEXT_WHITE }/>}
-          />
-        </View>
-        <View style={styles.closeCon}>
-          <TouchableOpacity onPress={goBack}>
-            <Close color={Theme.COLORS.INACTIVE_GRAY} />
-          </TouchableOpacity>
+        <View style={styles.botCon}>
+          <View style={{ justifyContent: 'center' }}>
+            <SubHeaderText style={styles.pinkText}>To link this wallet to this keychain account, please sign in to verify the wallet</SubHeaderText>
+            <Input 
+              val={input}
+              onChangeText={setInput}
+            />
+            <FatPinkButton 
+              text="CONNECT WALLET" 
+              func={connectWallet} 
+              icon={<Wallet color={Theme.COLORS.LABEL_TEXT_WHITE }/>}
+            />
+          </View>
+          <View style={styles.closeCon}>
+            <TouchableOpacity onPress={goBack}>
+              <Close color={Theme.COLORS.INACTIVE_GRAY} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -69,7 +71,14 @@ const styles = StyleSheet.create({
   con: {
     flex: 1,
     paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.USER_BACKGROUND_GRAY,
+    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  maxCon: {
+    width: '100%',
+    maxWidth: Theme.MAX_WIDTH_CON,
+    minHeight: Theme.MIN_HEIGHT_CON,
   },
   addressCon: {
     justifyContent: 'center', 
@@ -79,7 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
   },
   topCon: {
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
+    backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
     justifyContent: 'center', 
     alignItems: 'center'
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: Theme.SPACING.LG,
     justifyContent: 'space-between',
-    flexDirection: 'row'
+    backgroundColor: Theme.COLORS.MAIN_BACKGROUND_GRAY
   },
   pinkText: {
     textAlign: 'center',

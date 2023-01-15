@@ -6,8 +6,9 @@ import { HeaderText, NormalText, SubHeaderText, BannerText } from "../../compone
 import { NewWallet } from "../../components/wallet-header";
 
 //Data
-import {keychainAtom} from "../../_state/keychain";
-import {useRecoilValue} from "recoil";
+import { keychainAtom } from "../../_state/keychain";
+import { userAtom } from "../../_state/user";
+import { useRecoilValue } from "recoil";
 
 //SVGs
 import AccountCircle from "../../assets/svgs/Icons/account-circle";
@@ -25,6 +26,7 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'Profile'> {}
 const Profile : FC<any> = (props: Props) : ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
+  const user = useRecoilValue(userAtom);
 
   const goToWalletCreation = () => props.navigation.navigate('AddNewWallet')
 
@@ -39,14 +41,17 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
           :
             <Image />
           }
-          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>Placeholder</BannerText>
+          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</BannerText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>--- NFTs</NormalText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>--- Collections</NormalText>
         </View>
         <View style={styles.botCon}>
           <View style={styles.profileCon}>
             <NormalText style={{ color: Theme.COLORS.INACTIVE_GRAY }}>PROFILE WALLETS</NormalText>
-            {[null, null, null].map(() => <NewWallet func={goToWalletCreation}/>)}
+            {/* {keychain.keys.map(wallet => 
+              <Wallet  />
+            )} */}
+            {Array.apply(null, Array(5 - keychain.keys.length)).map(() => <NewWallet func={goToWalletCreation}/>)}
           </View>
         </View>
       </View>

@@ -1,13 +1,13 @@
 import { atom } from 'recoil';
 
 export interface UserState {
-    username: string | null
+    username: string
 }
 // set to wallet's PublicKey
 export const userAtom = atom<UserState>({
     key: 'user',
     default: {
-        username: null
+        username: ''
     }
 });
 

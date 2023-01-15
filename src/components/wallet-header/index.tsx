@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image, GestureResponderEvent } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, GestureResponderEvent, ViewStyle } from 'react-native';
 import { HeaderText, NormalText, SubHeaderText } from "../../components/ui/text";
 
 //SVGs
@@ -22,7 +22,8 @@ import { formatAddress } from "../../utils/stringFormatting";
 interface WalletProps {
   index: number,
   address: string
-  func: (event: GestureResponderEvent) => void
+  func?: (event: GestureResponderEvent) => void,
+  conStyles?: ViewStyle
 }
 
 interface NewWalletProps {
@@ -46,7 +47,15 @@ export const Wallet : FC<any> = (props: WalletProps) : ReactElement => {
   }, [])
 
   return (
-    <TouchableOpacity style={[styles.con, { backgroundColor: Theme.COLORS.HEADER_BACKGROUND_GRAY }]}>
+    <TouchableOpacity 
+      onPress={() => props.func}
+      disabled={props.func === undefined}
+      style={[
+        styles.con,
+        { backgroundColor: Theme.COLORS.HEADER_BACKGROUND_GRAY },
+        props.conStyles
+      ]}
+    >
       {getIcon()}
       <SubHeaderText style={{ marginLeft: Theme.SPACING.MD, color: Theme.COLORS.HEADER_GRAY }}>{formatAddress(props.address)}</SubHeaderText>
     </TouchableOpacity>

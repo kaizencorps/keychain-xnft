@@ -5,7 +5,8 @@ import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Input from "../../components/ui/inputs";
 
 //Types
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootStackParamList } from "../../nav/homeStack";
 
 //SVGs
 import Wallet from '../../assets/svgs/Icons/wallet';
@@ -16,41 +17,41 @@ import { BannerText, SubHeaderText } from "../../components/ui/text";
 import Close from "../../assets/svgs/Icons/close";
 import { FatPinkButton } from "../../components/ui/buttons";
 
-// interface Props {
-//   navigation: BottomTabNavigationProp<ParamList>,
-//   route: RouteProp<ParamList, T>
-// }
+interface Props extends BottomTabScreenProps<RootStackParamList, 'AddNewWallet'> {}
 
 
-const Home : FC<any> = () : ReactElement => {
+const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
 
   const [input, setInput] = React.useState('')
 
   const submitNewWallet = () => {
-
+    // TODO
+    props.navigation.navigate('VerifyWalletDetails', { address: input })
   }
 
-  const goBack = () => {}
+  const goBack = () => props.navigation.goBack();
 
   return (
     <View style={styles.con}>
-      <View style={styles.topCon}>
-        <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
-        <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG }}>Add new wallet</BannerText>
-      </View>
-      <View style={styles.botCon}>
-        <View>
-          <SubHeaderText style={styles.pinkText}>Enter a wallet address you want to add to your keychain account</SubHeaderText>
-          <Input 
-            val={input}
-            onChangeText={setInput}
-          />
-          <FatPinkButton text="SUBMIT" func={submitNewWallet} />
+      <View style={styles.maxCon}>
+        <View style={styles.topCon}>
+          <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
+          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG }}>Add new wallet</BannerText>
         </View>
-        <View style={styles.closeCon}>
-          <TouchableOpacity onPress={goBack}>
-            <Close color={Theme.COLORS.INACTIVE_GRAY} />
-          </TouchableOpacity>
+        <View style={styles.botCon}>
+          <View style={{ justifyContent: 'center' }}>
+            <SubHeaderText style={styles.pinkText}>Enter a wallet address you want to add to your keychain account</SubHeaderText>
+            <Input 
+              val={input}
+              onChangeText={setInput}
+            />
+            <FatPinkButton text="SUBMIT" func={submitNewWallet} />
+          </View>
+          <View style={styles.closeCon}>
+            <TouchableOpacity onPress={goBack}>
+              <Close color={Theme.COLORS.INACTIVE_GRAY} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -61,10 +62,17 @@ const styles = StyleSheet.create({
   con: {
     flex: 1,
     paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.USER_BACKGROUND_GRAY,
+    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  maxCon: {
+    width: '100%',
+    maxWidth: Theme.MAX_WIDTH_CON,
+    minHeight: Theme.MIN_HEIGHT_CON,
   },
   topCon: {
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
+    backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
     justifyContent: 'center', 
     alignItems: 'center'
@@ -73,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: Theme.SPACING.LG,
     justifyContent: 'space-between',
-    flexDirection: 'row'
+    backgroundColor: Theme.COLORS.MAIN_BACKGROUND_GRAY
   },
   pinkText: {
     textAlign: 'center',
@@ -87,4 +95,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default AddNewWallet;

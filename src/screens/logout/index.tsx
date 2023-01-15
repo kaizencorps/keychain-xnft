@@ -2,32 +2,40 @@ import React, { FC, ReactElement } from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { BannerText, HeaderText, NormalText } from "../../components/ui/text";
+import { FatButton } from "../../components/ui/buttons";
+import { BannerText, HeaderText, SubHeaderText } from "../../components/ui/text";
+import { Wallet } from "../../components/wallet-header";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from "../../nav/homeStack";
 
+//Data
+import { keychainAtom } from "../../_state/keychain";
+import { userAtom } from "../../_state/user";
+import { useRecoilValue } from "recoil";
+
 //SVGs
-import Wallet from '../../assets/svgs/Icons/wallet';
+import Close from "../../assets/svgs/Icons/close";
+import AccountCircle from "../../assets/svgs/Icons/account-circle";
 
 //Styles
 import * as Theme from '../../constants/theme';
-import Close from "../../assets/svgs/Icons/close";
 
 //Utils
 import { formatAddress } from "../../utils/stringFormatting";
-import { FatButton } from "../../components/ui/buttons";
 
-interface Props extends BottomTabScreenProps<RootStackParamList, 'RemoveWallet'> {}
+interface Props extends BottomTabScreenProps<RootStackParamList, 'Logout'> {}
 
 
-const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
+const Logout : FC<any> = (props: Props) : ReactElement => {
 
-  const { address, index } = props.route.params;
+  const keychain = useRecoilValue(keychainAtom);
+  const user = useRecoilValue(userAtom);
 
-  const removeWallet = () => {
+  const logout = () => {
     // TODO
+    props.navigation.navigate('Landing');
   }
 
   const goBack = () => props.navigation.goBack();
@@ -36,23 +44,23 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
     <View style={styles.con}>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
-          <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
-          <BannerText style={{ color: Theme.COLORS.ALERT_YELLOW, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>{`Wallet ${index}`}</BannerText>
-          <View style={styles.addressCon}>
-            <HeaderText style={{ color: Theme.COLORS.BACKGROUND_BLACK }}>{formatAddress(props.route.params.address)}</HeaderText>
-          </View>
+          {keychain ?
+            <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
+          :
+            <Image />
+          }
+          <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</SubHeaderText>
+          {/* {keychain.keys.map(wallet => 
+            <Wallet conStyle={{ width: '50%' }} />
+          )} */}
         </View>
         <View style={styles.botCon}>
-          <View style={{ alignItems: 'center' }}>
-            <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>--- NFTs</NormalText>
-            <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>--- Collections</NormalText>
-            <FatButton
-              text="REMOVE WALLET"
-              color={Theme.COLORS.SCARY_RED}
-              backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
-              func={removeWallet}
-            />
-          </View>
+          <FatButton
+            text="LOGOUT"
+            color={Theme.COLORS.SCARY_RED}
+            backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
+            func={logout}
+          />
           <View style={styles.closeCon}>
             <TouchableOpacity onPress={goBack}>
               <Close color={Theme.COLORS.INACTIVE_GRAY} />
@@ -69,8 +77,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Theme.SPACING.XXL,
     backgroundColor: Theme.COLORS.USER_BACKGROUND_GRAY,
-    justifyContent: 'center', 
-    alignItems: 'center'
   },
   maxCon: {
     width: '100%',
@@ -109,4 +115,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RemoveWallet;
+export default Logout;

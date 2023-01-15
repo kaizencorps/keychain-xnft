@@ -11,6 +11,9 @@ import VerifyWalletDetails from '../../screens/verifyWalletDetails';
 import WalletDetails from '../../screens/walletDetails';
 import WalletDetected from '../../screens/walletDetected';
 import CreateKeychain from '../../screens/createKeychain';
+import Logout from '../../screens/logout';
+import RemoveWallet from '../../screens/removeWallet';
+import NewWalletConnect from '../../screens/newWalletConnect';
 
 //Types
 import { Wallet } from '../../types/wallet';
@@ -19,10 +22,13 @@ export type RootStackParamList = {
     Profile: undefined,
     Landing: undefined,
     AddNewWallet: undefined,
+    RemoveWallet: { address: string, index: number },
+    NewWalletConnect: { address: string },
     VerifyWalletDetails: { address: string },
     WalletDetails: { wallet: Wallet },
     WalletDetected: { address: string },
     CreateKeychain: { address: string },
+    Logout: undefined,
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -32,7 +38,7 @@ export default () => {
 
     return (
         <Stack.Navigator
-            initialRouteName='Landing'
+            initialRouteName='RemoveWallet'
             screenOptions={{
                 headerShown: false
             }}
@@ -44,6 +50,8 @@ export default () => {
           <Stack.Screen name="WalletDetails" component={WalletDetails} />
           <Stack.Screen name="WalletDetected" component={WalletDetected} />
           <Stack.Screen name="CreateKeychain" component={CreateKeychain} />
+          <Stack.Screen name="Logout" component={Logout} />
+          <Stack.Screen name="RemoveWallet" component={RemoveWallet} />
         </Stack.Navigator>
     );
 };

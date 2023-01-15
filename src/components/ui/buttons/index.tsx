@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components
-import { StyleSheet, TouchableOpacity, GestureResponderEvent } from 'react-native';
+import { StyleSheet, TouchableOpacity, GestureResponderEvent, View } from 'react-native';
 import { NormalText, HeaderText } from '../text';
 
 //Styles
@@ -48,8 +48,10 @@ export const FatPinkButton = (props: FatPinkButtonProps) => {
       onPress={props.func} 
       style={[{ backgroundColor: Theme.COLORS.ACTIVE_PINK }, styles.con]}
     >
-    {!!props.icon && props.icon}
-    <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{props.text}</HeaderText>
+      {!!props.icon && props.icon}
+      <View style={{ flex: 1 }}>
+        <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, textAlign: 'center' }}>{props.text}</HeaderText>
+      </View>
   </TouchableOpacity>
   )
 }
