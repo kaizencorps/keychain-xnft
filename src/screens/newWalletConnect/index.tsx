@@ -86,7 +86,7 @@ const NewWalletConnect : FC<any> = (props: Props) : ReactElement => {
             }
           </View>
           <View style={styles.closeCon}>
-            <TouchableOpacity onPress={goBack} style={{display: 'none'}}>
+            <TouchableOpacity onPress={goBack}>
               <Close color={Theme.COLORS.INACTIVE_GRAY}/>
             </TouchableOpacity>
           </View>
@@ -148,11 +148,8 @@ const styles = StyleSheet.create({
     color: Theme.COLORS.ACTIVE_PINK
   },
   closeCon: {
-    
     justifyContent: 'center', 
     alignItems: 'center',
-    position: 'absolute',
-    left: 20
   }
 });
 
