@@ -38,7 +38,7 @@ export default () => {
 
     return (
         <Stack.Navigator
-            initialRouteName='Landing'
+            initialRouteName='NewWalletConnect'
             screenOptions={{
                 headerShown: false
             }}
@@ -52,6 +52,7 @@ export default () => {
           <Stack.Screen name="CreateKeychain" component={CreateKeychain} />
           <Stack.Screen name="Logout" component={Logout} />
           <Stack.Screen name="RemoveWallet" component={RemoveWallet} />
+          <Stack.Screen name="NewWalletConnect" component={NewWalletConnect} />
         </Stack.Navigator>
     );
 };

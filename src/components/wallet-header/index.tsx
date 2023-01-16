@@ -90,6 +90,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.SPACING.SM,
-    marginBottom: Theme.SPACING.SM
+    //marginBottom: Theme.SPACING.SM
   }
 });
