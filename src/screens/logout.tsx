@@ -3,8 +3,8 @@ import React, { FC, ReactElement } from "react";
 //Components
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FatButton } from "../components/ui/buttons/buttons";
-import { BannerText, HeaderText, SubHeaderText } from "../components/ui/text/text";
-import { Wallet } from "../components/wallet-header/wallet-header";
+import { SubHeaderText } from "../components/ui/text/text";
+import { Wallet as WalletHeader } from "../components/wallet-header/wallet-header";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -24,7 +24,7 @@ import AccountCircle from "../assets/svgs/Icons/account-circle";
 import * as Theme from '../constants/theme';
 
 //Utils
-import { formatAddress } from "../utils/stringFormatting";
+import { useWalletActions } from "../_actions/wallet.actions";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Logout'> {}
 
@@ -33,9 +33,11 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
   const user = useRecoilValue(userAtom);
+  const walletActions = useWalletActions();
 
   const logout = () => {
-    // TODO
+    // TODO clear localStorage and all other data
+    walletActions.disconnectWallet();
     props.navigation.navigate('Landing');
   }
 
@@ -51,9 +53,10 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
             <Image />
           }
           <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</SubHeaderText>
-          {/* {keychain.keys.map(wallet => 
-            <Wallet conStyle={{ width: '50%' }} />
-          )} */}
+          <WalletHeader index={0} address={keychain.keychainAccount.toBase58()} conStyle={{ width: '50%' }} />
+          {keychain.keys.map((wallet, i) => 
+            <WalletHeader index={i + 1} address={wallet.wallet.toBase58()} conStyle={{ width: '50%' }} />
+          )}
         </View>
         <View style={styles.botCon}>
           <FatButton

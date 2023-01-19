@@ -3,26 +3,26 @@ import { View, Image, StyleSheet, Text } from 'react-native';
 import { ThinText } from '../ui/text/text';
 
 //Types
-import { NFT } from '../../types/kaizen';
+import { NFT } from '../../types/NFT';
 
 //Styles
 import * as Theme from '../../constants/theme';
 
 interface Props {
-  kaizen: NFT,
+  nft: NFT,
   index: number,
   dimension: number
 }
 
 
-export const GalleryKaizen: FC<Props> = (props: Props) : ReactElement => {
+export const GalleryNFT: FC<Props> = (props: Props) : ReactElement => {
 
 
     return (
       <View style={styles.con}>
-        <Image style={styles.img} source={require(`${props.kaizen.imageUrl}`)}/>
+        <Image style={styles.img} source={require(`${props.nft.imageUrl}`)}/>
         <View style={styles.label}>
-          <ThinText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, fontSize: 10 }}>{props.kaizen.name}</ThinText>
+          <ThinText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, fontSize: 10 }}>{props.nft.name}</ThinText>
         </View>
       </View>
     );
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default GalleryKaizen;
+export default GalleryNFT;

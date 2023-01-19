@@ -8,6 +8,10 @@ import { BannerText, HeaderText, NormalText } from "../components/ui/text/text";
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from "../nav/homeStack";
 
+//Data
+import { useRecoilValue } from "recoil";
+import { nftsAtom } from "../_state/keychain";
+
 //SVGs
 import Numeric1Box from '../assets/svgs/Icons/numeric-1-box';
 import Numeric2Box from '../assets/svgs/Icons/numeric-2-box';
@@ -28,9 +32,9 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'RemoveWallet'>
 
 const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
 
-  // const { address, index } = props.route.params;
-  const address: string = "bgviruvrs78vrsv09rs"
-  const index: number = 2;
+  const { address, index } = props.route.params;
+
+  const nfts = useRecoilValue(nftsAtom);
 
   const removeWallet = () => {
     // TODO
@@ -40,11 +44,11 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
 
   const getIcon = React.useMemo(() => {
     switch(index){
-      case 1: return <Numeric1Box color={"#D5DDF9"} width={75} height={75} />
-      case 2: return <Numeric2Box color={"#D5DDF9"} width={75} height={75} />
-      case 3: return <Numeric3Box color={"#D5DDF9"} width={75} height={75} />
-      case 4: return <Numeric4Box color={"#D5DDF9"} width={75} height={75} />
-      case 5: return <Numeric5Box color={"#D5DDF9"} width={75} height={75} />
+      case 0: return <Numeric1Box color={"#D5DDF9"} width={75} height={75} />
+      case 1: return <Numeric2Box color={"#D5DDF9"} width={75} height={75} />
+      case 2: return <Numeric3Box color={"#D5DDF9"} width={75} height={75} />
+      case 3: return <Numeric4Box color={"#D5DDF9"} width={75} height={75} />
+      case 4: return <Numeric5Box color={"#D5DDF9"} width={75} height={75} />
     }
   }, [index])
 
@@ -54,14 +58,14 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           {getIcon}
-          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>{`Wallet ${index}`}</BannerText>
+          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>{`Wallet ${index + 1}`}</BannerText>
           <View style={styles.addressCon}>
             <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{formatAddress(address)}</HeaderText>
           </View>
         </View>
         <View style={styles.botCon}>
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- NFTs</NormalText>
+          <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>{`${nfts.length} NFTs`}</NormalText>
             <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>
             <FatButton
               text="REMOVE WALLET"

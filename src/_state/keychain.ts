@@ -1,9 +1,9 @@
 import {atom, selector, selectorFamily} from 'recoil';
 import {PublicKey} from "@solana/web3.js";
 import {userAtom, UserState} from "./user";
-import {getNFTsForOwner} from "../types/utils/chain-utils";
+import { getNFTsForOwner } from "../types/utils/chain-utils";
 import {consoleLog} from "../_helpers/debug";
-import { KeychainState, NFT, WalletState } from '../types/kaizen';
+import { KeychainState, NFT, WalletState } from '../types/NFT';
 import {walletAtom} from "./wallet";
 
 
@@ -23,12 +23,6 @@ export const keychainAtom = selector<KeychainState>({
                 keychainAccount: new PublicKey('YfixBHW1YKJZHmZE9dksSZandNdz6XBvEs91w2b124T'),
                 exists: true,
                 keys: [
-                    // this wallet takes a long time to laod
-                    // {
-                    //     wallet: new PublicKey('r3cXGs7ku4Few6J1rmNwwUNQbvrSPoLAAU9C2TVKfow'),
-                    //     keyAccount: new PublicKey('EfaoENNuu9qofNMVKnqRzxPNa4U33wkdPbEDjADZm3tX'),
-                    //     verified: true
-                    // },
                     {
                         wallet: new PublicKey('6JUZSv2KZp5x4AurxWWWjNyADu8FPkKDp7hGnW7ckhQm'),
                         keyAccount: new PublicKey('8ND4gt665bfZQGb4tURH9ysik82eEcdEsCgw1ws571nJ'),

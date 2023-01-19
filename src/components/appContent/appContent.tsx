@@ -36,7 +36,10 @@ export const AppContent : FC<any> = () : ReactElement => {
     }
   }
 
+  console.log("app loader")
   if(initialLoad) return <Loader />
+
+  console.log("getting to app")
 
   return(
     <TabNavigator />

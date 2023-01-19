@@ -35,9 +35,9 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
     <View style={styles.con}>
       <View style={styles.subCon}>
             <View style={styles.card1}>
-                <Image source={require("../../assets/pngs/Keychain-Logo.png")} style={styles.logo}/>
+                <Image source={require("../assets/pngs/Keychain-Logo.png")} style={styles.logo}/>
                 <View style={styles.ImageBox}>
-                  <Image source={require("../../assets/pngs/KaizenCorpslogo3.png")} style={styles.logo2} />
+                  <Image source={require("../assets/pngs/KaizenCorpslogo3.png")} style={styles.logo2} />
                 </View>
             </View>
             <View style={styles.card2}>

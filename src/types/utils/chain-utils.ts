@@ -1,130 +1,42 @@
+//Types
+import { NFT } from '../NFT';
+
+//Web3
 import { PublicKey } from '@solana/web3.js';
-import axios from 'axios';
-import { NFT } from '../kaizen';
-import { consoleLog } from '../../_helpers/debug';
-import {metaplex, RPC_URL} from "./config";
-
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-export async function getTokensByOwner(owner: PublicKey): Promise<PublicKey[]> {
-    // const tokens = await conn.getParsedTokenAccountsByOwner(owner, {
-    //   programId: TOKEN_PROGRAM_ID,
-    // });
-
-    // quicknode doesn't support the getParsedTokenAccountsByOwner method anymore. need to call their bs one
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-
-    // paging
-    let page = 1;
-    const resultsPerPage = 40;
-
-    const data = {
-        jsonrpc: '2.0',
-        id: 1,
-        method: 'qn_fetchNFTs',
-        params: {
-            wallet: owner,
-            omitFields: ['provenance', 'traits', 'description', 'collectionName', 'collectionAddress', 'creators'],
-            page,
-            perPage: resultsPerPage,
-        },
-    };
-
-    const tokens: PublicKey[] = [];
-    let fetchedTokens = null;
-    do {
-        // eslint-disable-next-line no-await-in-loop
-        fetchedTokens = await axios.post(RPC_URL, data, config);
-        consoleLog('fetchedTokens: ', fetchedTokens);
-        if (fetchedTokens) {
-            // eslint-disable-next-line no-restricted-syntax
-            for (const asset of fetchedTokens.data.result.assets) {
-                consoleLog(`got back tokenAddress: ${asset.tokenAddress}`);
-                tokens.push(new PublicKey(asset.tokenAddress));
-            }
-        }
-        page += 1;
-        data.params.page = page;
-    } while (fetchedTokens && page <= fetchedTokens.data.result.totalPages);
-    return tokens;
-}
+import { getMetadata } from '../../apis/helius/helius';
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { Connection } from "@solana/web3.js";
 
 
-export async function getNFTsForOwner(owner: PublicKey): Promise<NFT[]> {
-    const mints: PublicKey[] = await getTokensByOwner(owner);
-    const nfts: NFT[] = [];
-    if (mints) {
-        consoleLog('mints: ', mints);
-        const metadatas = await metaplex.nfts().findAllByMintList({mints})
-        for (const metadata of metadatas) {
-            if (metadata) {
-                // could be null
-                // @ts-ignore
-                const metaNft = await metaplex.nfts().load({metadata});
-                console.log('fetched metaplex nft: ', metaNft);
-                if (metaNft.json) {
-                    const nft: NFT = {
-                        owner,
-                        name: metaNft.json.name as string,
-                        imageUrl: metaNft.json.image,
-                        mdUrl: metaNft.uri,
-                        mint: metaNft.mint.address
-                    }
-                    nfts.push(nft);
-                }
-            }
-        }
-    }
-    return nfts;
-}
+export async function getNFTsForOwner(owner: PublicKey): Promise<NFT[]> { 
+    const conn = new Connection("https://rpc.helius.xyz/?api-key=a29cc29b-450f-44fa-8947-2909393c67bb"); // TODO use process.env
 
-/*
-export async function getNFTMetadata(mint: PublicKey, conn, pubkey) {
-    // console.log('Pulling metadata for:', mint);
-    try {
-        const metadataPDA = await Metadata.getPDA(mint);
-        const onchainMetadata = (await Metadata.load(conn, metadataPDA)).data;
-
-        // see if this is a kai
-        let cmCreator = null;
-        // eslint-disable-next-line no-restricted-syntax
-        for (const creator of onchainMetadata.data.creators) {
-            if (creator.address === CANDY_MACHINE_ID.toBase58() && creator.verified) {
-                cmCreator = creator;
-                break;
-            }
-        }
-        // couldn't find the candy machine as a creator
-        if (!cmCreator) {
-            return null;
-        }
-
-        const externalMetadata = (await axios.get(onchainMetadata.data.uri)).data;
-        return {
-            pubkey: pubkey ? new PublicKey(pubkey) : undefined,
-            mint: new PublicKey(mint),
-            onchainMetadata,
-            externalMetadata,
-        };
-    } catch (e) {
-        consoleLog(`failed to pull metadata for token ${mint}`);
-        return null;
-    }
-}
-*/
-
-/*
-export async function getNFTMetadataForMany(tokens, conn) {
-    const promises = [];
-    const returnedNfts = [];
-    tokens.forEach((t) => promises.push(getNFTMetadata(t.mint, conn, t.pubkey)));
-    const nfts = (await Promise.all(promises)).filter((n) => !!n);
-    nfts.map((nft) => {
-        returnedNfts.push(nft.onchainMetadata);
+    const tokenAccounts = await conn.getParsedTokenAccountsByOwner(owner, {
+        programId: TOKEN_PROGRAM_ID,
     });
-    return nfts;
+    
+    const parsedTokens = tokenAccounts.value
+        .filter((t: any) => {
+            const amount = t.account.data.parsed.info.tokenAmount;
+            return amount.decimals === 0 && amount.uiAmount === 1;
+        })
+        .map((t: any) => {
+            return { pubkey: t.pubkey, mint: t.account.data.parsed.info.mint };
+        });
+        
+    const getTokenMetaDatas = async (tokenAddresses: string[]) => {
+        return await getMetadata(tokenAddresses)
+            .then(res => {
+                // TODO parse out errored responses 
+                // TODO add all NFT information to recoil state
+                const nfts: NFT[] = [];
+                return nfts;
+            })
+            .catch(e => {
+                const nfts: NFT[] = [];
+                return nfts;
+            });
+    }
+    
+    return await getTokenMetaDatas(parsedTokens.map(tokenAccount => tokenAccount.mint));
 }
-*/

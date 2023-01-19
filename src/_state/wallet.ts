@@ -1,13 +1,12 @@
 import { atom } from 'recoil';
 import {PublicKey} from "@solana/web3.js";
-import { WalletState } from '../types/kaizen';
+import { WalletState } from '../types/NFT';
 
 // set to wallet's PublicKey
 export const walletAtom = atom<WalletState>({
     key: 'wallet',
     default: {
         address: null,
-        nfts: []
     }
 });
 

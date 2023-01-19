@@ -371,7 +371,6 @@ function useWalletActions() {
     }
 
     return {
-
         connectWallet,
         disconnectWallet,
         addWalletToKeychain,

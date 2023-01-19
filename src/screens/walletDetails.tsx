@@ -2,8 +2,8 @@ import React, {FC, ReactElement, useState} from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { FatButton, FatPinkButton } from "../components/ui/buttons";
-import { BannerText, HeaderText, SubHeaderText } from "../components/ui/text";
+import { FatButton, FatPinkButton } from "../components/ui/buttons/buttons";
+import { BannerText, HeaderText, SubHeaderText } from "../components/ui/text/text";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';

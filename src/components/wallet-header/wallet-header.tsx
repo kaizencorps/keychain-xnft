@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, GestureResponderEvent, ViewStyle } from 'react-native';
-import { HeaderText, NormalText, SubHeaderText } from "../ui/text/text";
+import { SubHeaderText } from "../ui/text/text";
 
 //SVGs
 import Numeric1Box from '../../assets/svgs/Icons/numeric-1-box';
@@ -23,7 +23,7 @@ interface WalletProps {
   index: number,
   address: string
   func?: (event: GestureResponderEvent) => void,
-  conStyles?: ViewStyle
+  conStyle?: ViewStyle
 }
 
 interface NewWalletProps {
@@ -34,15 +34,16 @@ interface VeryifyWalletProps {
   address: string
 }
 
+
 export const Wallet : FC<any> = (props: WalletProps) : ReactElement => {
 
   const getIcon = React.useCallback(() => {
     switch(props.index){
-      case 1: return <Numeric1Box color={"#D5DDF9"} />
-      case 2: return <Numeric2Box color={"#D5DDF9"} />
-      case 3: return <Numeric3Box color={"#D5DDF9"} />
-      case 4: return <Numeric4Box color={"#D5DDF9"} />
-      case 5: return <Numeric5Box color={"#D5DDF9"} />
+      case 0: return <Numeric1Box color={"#D5DDF9"} />
+      case 1: return <Numeric2Box color={"#D5DDF9"} />
+      case 2: return <Numeric3Box color={"#D5DDF9"} />
+      case 3: return <Numeric4Box color={"#D5DDF9"} />
+      case 4: return <Numeric5Box color={"#D5DDF9"} />
     }
   }, [])
 
@@ -53,7 +54,7 @@ export const Wallet : FC<any> = (props: WalletProps) : ReactElement => {
       style={[
         styles.con,
         { backgroundColor: Theme.COLORS.HEADER_BACKGROUND_GRAY },
-        props.conStyles
+        props.conStyle
       ]}
     >
       {getIcon()}

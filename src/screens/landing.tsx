@@ -34,7 +34,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
     <View style={styles.con}>
       <View style={styles.subCon}>
         <View style={styles.card1}>
-          <Image source={require("../../assets/pngs/Keychain-Logo.png")} style={styles.logo} />
+          <Image source={require("../assets/pngs/Keychain-Logo.png")} style={styles.logo} />
         </View>
         <NormalText style={styles.text}>Keychain is an on-chain component that combines your NFTs from multiple wallets to be accessible by one account</NormalText>
         <View style={styles.card2}>

@@ -5,11 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 //Pages
 import Gallery from '../screens/gallery';
-import KaizenData from '../screens/kaizen-data';
+import NFTData from '../screens/nft-data';
 
 export type RootStackParamList = { 
     Gallery: undefined,
-    KaizenData: { initialKaizenIndex: number, walletAddress: string }
+    NFTData: { initialNFTIndex: number, walletAddress: string }
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -26,7 +26,7 @@ export default () => {
             }}
         >
           <Stack.Screen name="Gallery" component={Gallery} />
-          <Stack.Screen name="KaizenData" component={KaizenData} />
+          <Stack.Screen name="NFTData" component={NFTData} />
         </Stack.Navigator>
     );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components
-import WalletKaizens from '../components/wallet-kaizens/wallet-kaizens';
+import WalletNFTs from '../components/wallet-NFTs/wallet-NFTs';
 import { View, StyleSheet } from 'react-native';
 
 //Types
@@ -9,13 +9,13 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../nav/aboutStack';
 
 //Data
-import DummyData from './dummy-data';
 import {useRecoilValue} from "recoil";
 import { keychainAtom, walletNftsSelector } from '../_state/keychain';
 
-interface Props extends BottomTabScreenProps<RootStackParamList, 'About'> {
-  // other props ...
-}
+// TODO Might not actually use this page. About tab might only be 'Socials' screen
+
+
+interface Props extends BottomTabScreenProps<RootStackParamList, 'About'> {}
 
 
 const About : React.FC<any> = (props: Props) : React.ReactElement => {

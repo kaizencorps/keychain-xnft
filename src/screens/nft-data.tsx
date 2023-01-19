@@ -1,13 +1,10 @@
 import React from 'react';
 
 //Components
-import { Kaizen } from '../types/kaizen';
+import { NFT } from '../types/NFT';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import KaizenFocused from '../components/kaizen/focused/focused-kaizen';
+import NFTFocused from '../components/galleryNFT/focused/focused-nft';
 import { FatButton } from '../components/ui/buttons/buttons';
-
-//Placeholder
-// import dummyData from '../gallery/dummy-data';
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -24,19 +21,19 @@ import Close from '../assets/svgs/Icons/close';
 //Styles
 import * as Theme from '../constants/theme';
 
-interface Props extends BottomTabScreenProps<RootStackParamList, 'KaizenData'> {}
+interface Props extends BottomTabScreenProps<RootStackParamList, 'NFTData'> {}
 
 
-const KaizenData : React.FC<any> = (props: Props) : React.ReactElement => {
+const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
 
-  const [focusedKaizen, setFocusedKaizen] = React.useState<Kaizen>()
-  const [kaizenIndex, setKaizenIndex] = React.useState(props.route.params.initialKaizenIndex)
+  const [focusedNFT, setFocusedNFT] = React.useState<NFT>()
+  const [nftIndex, setNFTIndex] = React.useState(props.route.params.initialNFTIndex)
   const [wallet, setWallet] = React.useState(props.route.params.walletAddress) // TODO this will likely change
 
-  // TODO recoil get full kaizen array
+  // TODO recoil get full NFT array
 
   // React.useEffect(() => {
-  //   setFocusedKaizen(dummyData.find(data => data.name === wallet.name)?.kaizens[kaizenIndex]); // TODO change out dummyData for recoil data
+  //   setFocusedNFT(dummyData.find(data => data.name === wallet.name)?.nfts[nftIndex]); // TODO change out dummyData for recoil data
   // }, [])
 
   const toggleFavorite = () => {
@@ -57,12 +54,12 @@ const KaizenData : React.FC<any> = (props: Props) : React.ReactElement => {
     <View>
       {/* TODO index value is placeholder. Get from recoil */}
       {/* TODO make this section swipeable */}
-      <View style={styles.kaizenCon}>
-        {/* <KaizenFocused kaizen={focusedKaizen} wallet={{ name: dummyData.find(data => data.name === wallet.name), index: 1 }}/>  */}
+      <View style={styles.nftCon}>
+        {/* <NFTFocused nft={focusedNFT} wallet={{ name: dummyData.find(data => data.name === wallet.name), index: 1 }}/>  */}
       </View>
       <View style={styles.botCon}>
         <View style={styles.botCon}>
-          {focusedKaizen?.isFavorited ?
+          {focusedNFT?.isFavorited ?
             <FatButton 
               text="Unpin from favorites" 
               borderColor="buttonBackgroundGray"
@@ -107,7 +104,7 @@ const KaizenData : React.FC<any> = (props: Props) : React.ReactElement => {
 }
 
 const styles = StyleSheet.create({
-  kaizenCon: {
+  nftCon: {
     padding: Theme.SPACING.SM,
     flex: 1,
     flexDirection: 'row',
@@ -128,4 +125,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default KaizenData;
+export default NFTData;

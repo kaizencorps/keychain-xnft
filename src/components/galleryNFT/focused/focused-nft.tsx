@@ -1,5 +1,5 @@
 import React from 'react';
-import { Kaizen } from '../../../types/kaizen';
+import { NFT } from '../../../types/NFT';
 
 //Components
 import { HeaderText, NormalText } from '../../ui/text/text';
@@ -15,7 +15,7 @@ import Numeric5Box from '../../../assets/svgs/Icons/numeric-5-box';
 import * as Theme from '../../../constants/theme';
 
 interface props {
-  kaizen: Kaizen,
+  nft: NFT,
   wallet: { name: string, index: number }
 }
 
@@ -34,9 +34,9 @@ const KaizenFocused : React.FC<any> = (props: props) : React.ReactElement => {
 
   return (
     <View>
-      <HeaderText style={styles.name}>{props.kaizen?.name}</HeaderText>
+      <HeaderText style={styles.name}>{props.nft?.name}</HeaderText>
       {/* TODO get proper source */}
-      <Image source={require(props.kaizen?.imageUrl)} style={styles.img} /> 
+      <Image source={require(props.nft?.imageUrl)} style={styles.img} /> 
       <View style={styles.walletInfo}>
         <NormalText>{props.wallet.name}</NormalText>
         {getIcon()}

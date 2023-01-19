@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react';
 
 //Compponents
-import GalleryKaizen from '../kaizen/kaizen';
+import GalleryNFT from '../galleryNFT/galleryNFT';
 import { SubHeaderText, ThinText } from '../ui/text/text';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';  
 
@@ -14,7 +14,7 @@ import Numeric3Box from '../../assets/svgs/Icons/numeric-3-box';
 import Numeric4Box from '../../assets/svgs/Icons/numeric-4-box';
 import Numeric5Box from '../../assets/svgs/Icons/numeric-5-box';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
-import {NFT} from "../../types/kaizen";
+import {NFT} from "../../types/NFT";
 
 //Utils
 import { formatAddress } from '../../utils/stringFormatting';
@@ -28,13 +28,13 @@ interface Props {
     walletAddress: string,
 }
 
-const MAX_KAIZEN_WIDTH = 150;
+const MAX_NFT_WIDTH = 150;
 const MAX_VIEWPORT_WIDTH = 1024;
 
-const calcNumOfColumns = (screenWidth: number) => Math.floor(screenWidth / MAX_KAIZEN_WIDTH) // TODO incorpoarte horizontal margins
+const calcNumOfColumns = (screenWidth: number) => Math.floor(screenWidth / MAX_NFT_WIDTH) // TODO incorpoarte horizontal margins
 
 
-export const WalletKaizens : FC<Props> = (props: Props) : ReactElement => {
+export const WalletNFTs : FC<Props> = (props: Props) : ReactElement => {
 
     const dims = useWindowDimensions();
 
@@ -49,7 +49,7 @@ export const WalletKaizens : FC<Props> = (props: Props) : ReactElement => {
     // eslint-disable-next-line
     }, [props.walletAddress])
 
-    const getTextColor = React.useMemo(() => isExpanded ? "text-shinyGold" : "text-headerGray", [isExpanded])
+    const getTextColor = React.useMemo(() => isExpanded ? Theme.COLORS.FAV_GOLD : Theme.COLORS.HEADER_GRAY, [isExpanded])
 
     const getIcon = React.useCallback(() => {
         switch(props.index){
@@ -64,31 +64,31 @@ export const WalletKaizens : FC<Props> = (props: Props) : ReactElement => {
 
     return (
         <View style={styles.con}>
-          <TouchableOpacity
-            style={[isExpanded && { backgroundColor: Theme.COLORS.HEADER_BACKGROUND_GRAY}, styles.main]}
-            onPress={() => toggleExpanded(!isExpanded)}
-          >
-            <View style={styles.row}>
-                {getIcon()}
-                <SubHeaderText style={{ marginLeft: Theme.SPACING.SM, color: getTextColor }}>{formatWalletAddress}</SubHeaderText>
+            <TouchableOpacity
+                style={[!isExpanded && { backgroundColor: Theme.COLORS.HEADER_BACKGROUND_GRAY}, styles.main]}
+                onPress={() => toggleExpanded(!isExpanded)}
+            >
+                <View style={styles.row}>
+                    {getIcon()}
+                    <SubHeaderText style={{ marginLeft: Theme.SPACING.SM, color: getTextColor }}>{formatWalletAddress}</SubHeaderText>
+                </View>
+                <View style={styles.row}>
+                    <ThinText style={{ color: getTextColor }}>
+                        {props.items.length.toString()}
+                    </ThinText>
+                    <ChevronRight color={isExpanded ? "#F8B600" : "#D5DDF9"} rotation={90} />
+                </View>
+            </TouchableOpacity>
+            <View style={styles.nftsCon}>
+                { isExpanded && props.items.map((nft, i: number) => <GalleryNFT key={i} index={i} nft={nft} dimension={Math.round(viewportWidth / numOfColumns)}/>) }
             </View>
-            <View style={styles.row}>
-                <ThinText style={{ color: getTextColor }}>
-                    {props.items.length.toString()}
-                </ThinText>
-                <ChevronRight color={isExpanded ? "#F8B600" : "#D5DDF9"} rotation={90} />
-            </View>
-          </TouchableOpacity>
-          <View style={styles.kaizensCon}>
-            { isExpanded && props.items.map((kaizen, i: number) => <GalleryKaizen key={i} index={i} kaizen={kaizen} dimension={Math.round(viewportWidth / numOfColumns)}/>) }
-          </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     con: {
-        marginBottom: Theme.SPACING.SM
+        paddingTop: Theme.SPACING.XXL,
     },
     main: {
         flexDirection: 'row',
@@ -97,10 +97,10 @@ const styles = StyleSheet.create({
         padding: Theme.SPACING.SM
     },
     row: {
-        flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    kaizensCon: {
+    nftsCon: {
         flexWrap: 'wrap',
         alignContent: 'flex-start',
         justifyContent: 'flex-start',
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default WalletKaizens;
+export default WalletNFTs;

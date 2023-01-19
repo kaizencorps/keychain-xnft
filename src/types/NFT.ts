@@ -2,7 +2,6 @@ import {PublicKey} from "@solana/web3.js";
 
 export interface WalletState {
   address: PublicKey | null,
-  nfts: NFT[]
 }
 
 export interface KeyState {
@@ -26,7 +25,7 @@ export interface NFT {
   collection: string
 }
 
-export interface Kaizen {
+export interface NFT {
   name: string,
   imageUrl: string,
   isCurrent: boolean,
