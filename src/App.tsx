@@ -1,11 +1,16 @@
+//Components
 import {Suspense} from "react";
-import { registerRootComponent } from "expo";
-import { RecoilRoot } from "recoil";
 import { ActivityIndicator, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { useFonts, Inter_900Black } from "@expo-google-fonts/dev";
-import TabNavigator from "./nav";
+import AppContent from "./components/appContent/appContent";
+import Loader from "./components/loader/loader";
 
+//Data
+import { RecoilRoot } from "recoil";
+
+//Libs
+import { registerRootComponent } from "expo";
+import { NavigationContainer } from "@react-navigation/native"; 
+import { useFonts, Inter_900Black } from "@expo-google-fonts/dev";
 import {ProviderComponentWrapper} from "./components/provider-component-wrapper";
 
 //Styles
@@ -17,18 +22,14 @@ function App() {
   });
 
   if (!fontsLoaded) {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <ActivityIndicator />
-      </View>
-    );
+    return <Loader />;
   }
 
   return (
     <RecoilRoot>
       <NavigationContainer>
         <Suspense fallback={<h1>Loading...</h1>}>
-          <ProviderComponentWrapper component={<TabNavigator />} />
+          <ProviderComponentWrapper component={<AppContent />} />
         </Suspense>
       </NavigationContainer>
     </RecoilRoot>

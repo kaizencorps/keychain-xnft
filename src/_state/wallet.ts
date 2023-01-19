@@ -6,7 +6,8 @@ import { WalletState } from '../types/kaizen';
 export const walletAtom = atom<WalletState>({
     key: 'wallet',
     default: {
-        address: null
+        address: null,
+        nfts: []
     }
 });
 
