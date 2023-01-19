@@ -47,9 +47,12 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
                     vitae scelerisque quam dapibus eget. Quisque magna tellus, congue ut rhoncus posuere, condimentum at tortor.
                 </NormalText>
                 <View style={styles.card2_1}>
-                    <SocialMedia bgColor={Theme.COLORS.DISCORD} icon = {<Discord  width={25} height={25}/>}/>
-                    <SocialMedia bgColor={Theme.COLORS.TWITTER} icon = {<Twitter width={25} height={25}/>}/>
-                    <SocialMedia bgColor={Theme.COLORS.EMAIL} icon= {<Email color= {Theme.COLORS.LABEL_TEXT_WHITE} width={20} height={20}/>}/>
+                    {/* https://discord.gg/shyrW3CmTB */}
+                    <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord  width={25} height={25}/>}/>
+                    {/* https://twitter.com/KaizenCorps_ */}
+                    <SocialMedia bgColor={Theme.COLORS.TWITTER} icon={<Twitter width={25} height={25}/>}/>
+                    {/* hoorah@kaizencorps.com */}
+                    <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={20} height={20}/>}/>
                 </View>
                 <View style={styles.card2_2}>
                     <NormalText style={styles.text2}>Don't miss our updates!</NormalText>
