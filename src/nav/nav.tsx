@@ -22,6 +22,8 @@ import Landing from '../screens/landing';
 
 //Styles
 import * as Theme from '../constants/theme';
+import TestStack from "./testStack";
+import Test from "../screens/test";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,9 +35,9 @@ export const TabNavigator = () => {
   const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
 
 
-  return !!anchorWallet ? 
+  return !!anchorWallet ?
     <Tab.Navigator
-      initialRouteName="Gallery"
+      initialRouteName="Test"
       screenOptions={{
         headerShown: false,
         tabBarLabelPosition: 'below-icon',
@@ -76,10 +78,20 @@ export const TabNavigator = () => {
           ),
         }}
       />
+      <Tab.Screen
+          name="Test"
+          component={TestStack}
+          options={{
+            tabBarLabel: "Test",
+            tabBarIcon: ({ color }) => (
+                <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
+            ),
+          }}
+      />
     </Tab.Navigator>
   :
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Test"
       screenOptions={{
         headerShown: false,
         tabBarLabelPosition: 'below-icon',
@@ -109,6 +121,16 @@ export const TabNavigator = () => {
             <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
           ),
         }}
+      />
+      <Tab.Screen
+          name="Test"
+          component={Test}
+          options={{
+            tabBarLabel: "Test",
+            tabBarIcon: ({ color }) => (
+                <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
+            ),
+          }}
       />
     </Tab.Navigator>
 }

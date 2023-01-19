@@ -34,13 +34,13 @@ const KaizenFocused : React.FC<any> = (props: props) : React.ReactElement => {
 
   return (
     <View>
-      <HeaderText style={styles.name}>{props.nft?.name}</HeaderText>
-      {/* TODO get proper source */}
-      <Image source={require(props.nft?.imageUrl)} style={styles.img} /> 
-      <View style={styles.walletInfo}>
-        <NormalText>{props.wallet.name}</NormalText>
-        {getIcon()}
-      </View>
+      {/*<HeaderText style={styles.name}>{props.nft?.name}</HeaderText>*/}
+      {/*/!* TODO get proper source *!/*/}
+      {/*<Image source={require(props.nft?.imageUrl)} style={styles.img} /> */}
+      {/*<View style={styles.walletInfo}>*/}
+      {/*  <NormalText>{props.wallet.name}</NormalText>*/}
+      {/*  {getIcon()}*/}
+      {/*</View>*/}
     </View>
   )
 }
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   walletInfo: {
     flex: 1,
-    flexDirection: 'row', 
+    flexDirection: 'row',
     justifyContent: 'space-between'
   }
 })

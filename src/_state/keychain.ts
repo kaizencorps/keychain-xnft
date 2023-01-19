@@ -6,7 +6,7 @@ import { KeychainState, NFT, WalletState } from '../types/NFT';
 
 
 export const keychainAtom = atom<KeychainState | null>({
-    key: 'wallet',
+    key: 'keychain',
     default: null
 });
 

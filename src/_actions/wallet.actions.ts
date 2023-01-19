@@ -78,7 +78,7 @@ function useWalletActions() {
     }
 
     // connects a wallet. returns false if the wallet doesn't get properly connected
-    async function connectWallet(anchorWallet: AnchorWallet, signMessage: ((message: Uint8Array) => Promise<Uint8Array>) | undefined) {
+    async function connectWallet(anchorWallet: AnchorWallet, signMessage: ((message: Uint8Array) => Promise<Uint8Array> ) | undefined = null) {
 
         try {
             const walletPublicKey: PublicKey = anchorWallet.publicKey;
@@ -184,8 +184,7 @@ function useWalletActions() {
 
     async function disconnectWallet() {
         await disconnect();
-        setWallet({address: null});
-        // usePlayerActions().logout();
+        setWallet(null);
         // setAuth({});
         localStorage.removeItem(LOCAL_STORAGE_KEYS.authData);
         localStorage.removeItem(LOCAL_STORAGE_KEYS.walletStatus);
