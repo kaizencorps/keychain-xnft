@@ -22,6 +22,13 @@ import Wallet from '../assets/svgs/Icons/wallet'
 
 //Styles
 import * as Theme from "../constants/theme";
+import {useRecoilValue} from "recoil";
+import {keychainAtom} from "../_state/keychain";
+import {consoleLog} from "../_helpers/debug";
+import {walletAtom} from "../_state";
+import {useKeychainActions} from "../_actions/keychain.actions";
+
+import useAsyncEffect from 'use-async-effect';
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> { }
@@ -29,6 +36,45 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> { }
 
 const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
+  const walletActions = useWalletActions();
+  const keychainActions = useKeychainActions();
+
+  const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
+  const { signMessage } = useWallet();
+
+  const keychainState = useRecoilValue(keychainAtom);
+  const walletState = useRecoilValue(walletAtom);
+
+  React.useEffect(() => {
+    autoConnect();
+  }, [anchorWallet])
+
+  const autoConnect = async () => {
+    // if (anchorWallet && !loggedIn) {
+    if (anchorWallet) {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      await walletActions.connectWallet(anchorWallet, signMessage);
+      consoleLog('wallet has been set up');
+      // props.navigation.navigate('Profile')
+    } else {
+      await walletActions.disconnectWallet();
+    }
+  }
+
+  useAsyncEffect(async () => {
+    consoleLog('wallet state changed: ', walletState);
+    if (walletState.address) {
+      consoleLog('checking keychain by connected wallet');
+      await keychainActions.checkKeychainByKey();
+    }
+    /*
+    consoleLog(`connected: ${keychainState.connected}, exists: ${keychainState.exists}`);
+    if (keychainState.connected && !keychainState.exists) {
+      consoleLog('navigating to WalletDetected');
+      props.navigation.navigate('WalletDetected');
+    }
+     */
+  }, [walletState]);
 
   return (
     <View style={styles.con}>
@@ -44,7 +90,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
           <Box letras='Add another wallet to your profile.' />
           <Chevron color={Theme.COLORS.ACTIVE_PINK} rotation={90}/>
           <Box letras='View all your NFTs in the gallery.' />
-          
+
         </View>
         <WalletMultiButton style={styles.fatPinkButton}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -52,7 +98,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
             <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginLeft: 5 }}>CONNECT WALLET</HeaderText>
           </View>
         </WalletMultiButton>
-      </View>      
+      </View>
     </View>
   )
 }
@@ -65,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
-  }, 
+  },
   subCon:{
     display:"flex",
     flexDirection: "column",
@@ -89,11 +135,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     margin: 10,
-    
+
   },
   logo:{
     width: 150,
-    height: 150, 
+    height: 150,
   },
   text: {
     color: Theme.COLORS.LABEL_TEXT_WHITE,
@@ -110,13 +156,13 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: Theme.BRADIUS.XL,
     margin: 16,
-    backgroundColor: Theme.COLORS.ACTIVE_PINK, 
+    backgroundColor: Theme.COLORS.ACTIVE_PINK,
     color: Theme.COLORS.LABEL_TEXT_WHITE,
     fontSize: Theme.SPACING.MD,
     fontFamily: 'BlenderPro-Bold',
     display: "flex",
     justifyContent: "center",
-    padding: Theme.SPACING.XL, 
+    padding: Theme.SPACING.XL,
     marginHorizontal: Theme.SPACING.SM
   },
   fatPinkButton: {

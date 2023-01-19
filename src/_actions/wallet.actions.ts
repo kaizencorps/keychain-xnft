@@ -1,4 +1,4 @@
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilTransaction_UNSTABLE, useSetRecoilState} from 'recoil';
 import { PublicKey } from '@solana/web3.js';
 import {AnchorWallet, useWallet} from '@solana/wallet-adapter-react';
 // import { toast } from 'react-toastify';
@@ -8,46 +8,73 @@ import { useFetchWrapper, createErrorResponse } from '../_helpers';
 import {
     authAtom,
     walletAtom,
-    WalletState,
 } from '../_state';
 
 import { LOCAL_STORAGE_KEYS } from '../_state/_constants';
 import { consoleLog } from '../_helpers/debug';
-import {getNFTsForOwner} from "../types/utils/chain-utils";
+import {createProvider, getKeychainProgram} from "../programs/keychain-utils";
+import {Wallet} from "@project-serum/anchor";
+import {providerAtom} from "../_state/provider";
+import {programsAtom} from "../_state/programs";
+import {useKeychainActions} from "./keychain.actions";
 
 function useWalletActions() {
     const baseUrl = `${process.env.REACT_APP_BASE_API_URL}/wallet`;
     const fetchWrapper = useFetchWrapper();
     const [wallet, setWallet] = useRecoilState(walletAtom);
+    const setProvider = useSetRecoilState(providerAtom);
+    const setPrograms = useSetRecoilState(programsAtom);
+
+    const keychainActions = useKeychainActions();
+
     // const setAuth = useSetRecoilState(authAtom);
     // const [provider, setProvider] = useRecoilState(providerAtom);
 
     const { disconnect } = useWallet();
 
-/*
-    function setAuthState(response: any, walletBase58: string) {
-        if (response.data && response.data.player) {
-            setLoggedIn(true);
-            setPlayer(setLocalPlayerData(response.data.player));
-            setAuth(createAndSetLocalAuthData(response.data.accessToken));
-            setBadges(setLocalBadgesData(response.data.badges));
-            analyticsActions.identify(response.data.player.id);
-            analyticsActions.alias(walletBase58, response.data.player.id);
-            bugsnagActions.setUser(response.data.player.id, walletBase58);
-        }
-        if (response.data && response.data.stats) {
-            setPlayerStats(response.data.stats);
-        }
-    }
-*/
+    // set the wallet + provider + programs atomically
+    /*
+    const setWalletStates = useRecoilTransaction_UNSTABLE(({get, set}) => (anchorWallet: AnchorWallet) => {
+        const walletPublicKey: PublicKey = anchorWallet.publicKey;
 
-    async function disconnectWallet() {
-        await disconnect();
-        setWallet({address: null});
-        // usePlayerActions().logout();
-        // setAuth({});
-        localStorage.removeItem(LOCAL_STORAGE_KEYS.authData);
-        localStorage.removeItem(LOCAL_STORAGE_KEYS.walletStatus);
+        consoleLog('setting provider, creating programs, connecting  wallet: ', walletPublicKey.toBase58());
+
+        // set the wallet
+        set(walletAtom, { address: walletPublicKey });
+
+        // create and set the provider
+        const provider = createProvider(anchorWallet as Wallet);
+        set(providerAtom, provider);
+
+        // create and set the keychain program
+
+        const keychainProgram = getKeychainProgram(provider);
+        consoleLog(`created keychain program: ${keychainProgram.programId.toBase58()}`);
+
+        // todo: get the profile program
+        set(programsAtom, { keychain: keychainProgram, profile: null});
+    });
+     */
+
+    function setWalletStates(anchorWallet: AnchorWallet) {
+        const walletPublicKey: PublicKey = anchorWallet.publicKey;
+
+        consoleLog('setting provider, creating programs, connecting  wallet: ', walletPublicKey.toBase58());
+
+        // create and set the provider
+        const provider = createProvider(anchorWallet as Wallet);
+        setProvider(provider);
+
+        // create and set the keychain program
+        const keychainProgram = getKeychainProgram(provider);
+        consoleLog(`created keychain program: ${keychainProgram.programId.toBase58()}`);
+        setPrograms({ keychain: keychainProgram, profile: null})
+
+        // set this last, as other atoms that depend on the wallet also depend on the provider and programs
+        const walletState = { address: walletPublicKey };
+        consoleLog(`setting wallet state: ${walletState}`);
+        setWallet(walletState);
+
     }
 
     // connects a wallet. returns false if the wallet doesn't get properly connected
@@ -56,7 +83,13 @@ function useWalletActions() {
         try {
             const walletPublicKey: PublicKey = anchorWallet.publicKey;
             consoleLog('connecting wallet: ', walletPublicKey.toBase58());
-            setWallet({address: walletPublicKey});
+
+            // this will set the wallet, provider, and programs atomically
+            setWalletStates(anchorWallet);
+
+            // await keychainActions.checkKeychainByKey(anchorWallet.publicKey);
+
+            // try to get a keychain
 
             // test if this works
             // await getNFTsForOwner(anchorWallet.publicKey);
@@ -130,6 +163,34 @@ function useWalletActions() {
             return createErrorResponse(error as string);
         }
     }
+
+
+    /*
+        function setAuthState(response: any, walletBase58: string) {
+            if (response.data && response.data.player) {
+                setLoggedIn(true);
+                setPlayer(setLocalPlayerData(response.data.player));
+                setAuth(createAndSetLocalAuthData(response.data.accessToken));
+                setBadges(setLocalBadgesData(response.data.badges));
+                analyticsActions.identify(response.data.player.id);
+                analyticsActions.alias(walletBase58, response.data.player.id);
+                bugsnagActions.setUser(response.data.player.id, walletBase58);
+            }
+            if (response.data && response.data.stats) {
+                setPlayerStats(response.data.stats);
+            }
+        }
+    */
+
+    async function disconnectWallet() {
+        await disconnect();
+        setWallet({address: null});
+        // usePlayerActions().logout();
+        // setAuth({});
+        localStorage.removeItem(LOCAL_STORAGE_KEYS.authData);
+        localStorage.removeItem(LOCAL_STORAGE_KEYS.walletStatus);
+    }
+
 
     // adds an unverified wallet to the player's keychain AND creates a new keychain in the same tx if it doesn't exist yet
     async function addWalletToKeychain(walletAddress: string) {

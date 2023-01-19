@@ -23,6 +23,8 @@ import { formatAddress } from "../utils/stringFormatting";
 
 //Styles
 import * as Theme from '../constants/theme';
+import {consoleLog} from "../_helpers/debug";
+import { useKeychainActions } from "../_actions/keychain.actions";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'WalletDetected'> {}
@@ -34,6 +36,7 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
   const address = "egvhw7e9vrsebv0w8vhrw89vw";
 
   const userActions = useUserActions();
+  const keychainActions = useKeychainActions();
 
   const [username, setUsername] = React.useState('')
   const [errorText, setErrorText] = React.useState('');
@@ -42,7 +45,10 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
   const goToCreateNew = () => props.navigation.navigate('CreateKeychain', { address })
 
   const submitUsername = () => {
-    // TODO
+    // check for the keychain
+    // todo: pull this name from the input
+    const name = "test";
+    keychainActions.checkKeychainByName(name);
     // If success userActions()
     // If fails, toggleError(true)
   }
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Theme.SPACING.XXL,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   maxCon: {
@@ -93,8 +99,8 @@ const styles = StyleSheet.create({
     minHeight: Theme.MIN_HEIGHT_CON,
   },
   addressCon: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.BRADIUS.XL,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
@@ -102,7 +108,7 @@ const styles = StyleSheet.create({
   topCon: {
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   botCon: {
@@ -118,7 +124,7 @@ const styles = StyleSheet.create({
   },
   closeCon: {
     width: '100%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   swipeCon: {
@@ -127,10 +133,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  topText: { 
-    color: Theme.COLORS.ACTIVE_PINK, 
-    textAlign: 'center', 
-    marginBottom: Theme.SPACING.SM 
+  topText: {
+    color: Theme.COLORS.ACTIVE_PINK,
+    textAlign: 'center',
+    marginBottom: Theme.SPACING.SM
   }
 });
 

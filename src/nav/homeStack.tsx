@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 //Libs
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,7 +18,7 @@ import NewWalletConnect from '../screens/newWalletConnect';
 //Types
 import { Wallet } from '../types/wallet';
 
-export type RootStackParamList = { 
+export type RootStackParamList = {
     Profile: undefined,
     Landing: undefined,
     AddNewWallet: undefined,
@@ -26,7 +26,7 @@ export type RootStackParamList = {
     NewWalletConnect: { address: string },
     VerifyWalletDetails: { address: string },
     WalletDetails: { wallet: Wallet },
-    WalletDetected: { address: string },
+    WalletDetected: undefined,
     CreateKeychain: { address: string },
     Logout: undefined,
 }
@@ -34,7 +34,7 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default () => {
-    
+
 
     return (
         <Stack.Navigator

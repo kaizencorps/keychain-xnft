@@ -20,7 +20,7 @@ export const AppContent : FC<any> = () : ReactElement => {
   const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
   const { signMessage } = useWallet();
 
-  React.useEffect(() => { 
+  React.useEffect(() => {
     autoConnect();
   }, [anchorWallet])
 
@@ -36,14 +36,11 @@ export const AppContent : FC<any> = () : ReactElement => {
     }
   }
 
-  console.log("app loader")
   if(initialLoad) return <Loader />
-
-  console.log("getting to app")
 
   return(
     <TabNavigator />
-  ) 
+  )
 };
 
 export default AppContent

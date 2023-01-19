@@ -6,8 +6,7 @@ import { NormalText, BannerText } from "../components/ui/text/text";
 import { NewWallet, Wallet as WalletHeader } from "../components/wallet-header/wallet-header";
 
 //Data
-import { keychainAtom, nftsAtom } from "../_state/keychain";
-import { userAtom } from "../_state/user";
+import { keychainAtom, nftsAtom, userAtom } from "../_state";
 import { useRecoilValue } from "recoil";
 
 //SVGs
@@ -33,7 +32,6 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
   const goToLogout = () => props.navigation.navigate("Logout");
   const goToRemoveWallet = (address: string, index: number) => props.navigation.navigate('RemoveWallet', { address, index })
 
-  
   return (
     <View style={styles.con}>
       <View style={styles.maxCon}>
@@ -55,7 +53,7 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
             <TouchableOpacity onPress={() => goToRemoveWallet(keychain.keychainAccount.toBase58(), 0)}>
               <WalletHeader index={0} address={keychain.keychainAccount.toBase58()}/>
             </TouchableOpacity>
-            {keychain.keys.map((wallet, i) => 
+            {keychain.keys.map((wallet, i) =>
               <TouchableOpacity onPress={() => goToRemoveWallet(wallet.wallet.toBase58(), (i + 1))}>
                 <WalletHeader index={i + 1} address={wallet.wallet.toBase58()} />
               </TouchableOpacity>
