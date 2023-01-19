@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@coral-xyz/common-public": "^0.2.0-latest.971",
-    "@expo-google-fonts/dev": "*",
+    "@expo-google-fonts/inter": "^0.2.2",
     "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.2",
     "@metaplex-foundation/js": "^0.17.12",
