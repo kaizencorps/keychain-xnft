@@ -26,6 +26,7 @@ interface Props {
     items: NFT[],
     index: number,
     walletAddress: string,
+    goToFocusNFT: (nft: NFT, walletAddress: string) => void
 }
 
 const MAX_NFT_WIDTH = 150;
@@ -62,6 +63,7 @@ export const WalletNFTs : FC<Props> = (props: Props) : ReactElement => {
         }
     }, [isExpanded])
 
+
     return (
         <View style={styles.con}>
             <TouchableOpacity
@@ -80,7 +82,15 @@ export const WalletNFTs : FC<Props> = (props: Props) : ReactElement => {
                 </View>
             </TouchableOpacity>
             <View style={styles.nftsCon}>
-                { isExpanded && props.items.map((nft, i: number) => <GalleryNFT key={i} index={i} nft={nft} dimension={Math.round(viewportWidth / numOfColumns)}/>) }
+                {isExpanded && props.items.map((nft, i: number) => 
+                    <GalleryNFT 
+                        key={i} 
+                        index={i} 
+                        nft={nft} 
+                        dimension={Math.round(viewportWidth / numOfColumns)}
+                        func={(nft: NFT) => props.goToFocusNFT(nft, props.walletAddress)}
+                    />
+                )}
             </View>
         </View>
     );

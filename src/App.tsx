@@ -14,7 +14,7 @@ import { useFonts, Inter_900Black } from "@expo-google-fonts/dev";
 import {ProviderComponentWrapper} from "./components/provider-component-wrapper";
 
 //Styles
-import '../src/assets/fonts/BlenderPro/fonts.css';
+import './assets/fonts/BlenderPro/fonts.css';
 
 function App() {
   let [fontsLoaded] = useFonts({

@@ -5,11 +5,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 //Pages
 import Gallery from '../screens/gallery';
-import NFTData from '../screens/nft-data';
+import NFTData from '../screens/NFTData';
+import { NFT } from '../types/NFT';
 
 export type RootStackParamList = { 
-    Gallery: undefined,
-    NFTData: { initialNFTIndex: number, walletAddress: string }
+    GalleryLanding: undefined,
+    NFTData: { nft: NFT, walletAddress: string }
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -20,12 +21,12 @@ export default () => {
 
     return (
         <Stack.Navigator
-            initialRouteName='Gallery'
+            initialRouteName='GalleryLanding'
             screenOptions={{
                 headerShown: false
             }}
         >
-          <Stack.Screen name="Gallery" component={Gallery} />
+          <Stack.Screen name="GalleryLanding" component={Gallery} />
           <Stack.Screen name="NFTData" component={NFTData} />
         </Stack.Navigator>
     );

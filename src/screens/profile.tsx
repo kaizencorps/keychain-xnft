@@ -56,11 +56,11 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
               <WalletHeader index={0} address={keychain.keychainAccount.toBase58()}/>
             </TouchableOpacity>
             {keychain.keys.map((wallet, i) => 
-              <TouchableOpacity onPress={() => goToRemoveWallet(wallet.wallet.toBase58(), (i + 1))}>
+              <TouchableOpacity key={i + 1} onPress={() => goToRemoveWallet(wallet.wallet.toBase58(), (i + 1))}>
                 <WalletHeader index={i + 1} address={wallet.wallet.toBase58()} />
               </TouchableOpacity>
             )}
-            {Array.apply(null, Array(4 - keychain.keys.length)).map(() => <NewWallet func={goToWalletCreation}/>)}
+            {Array.apply(null, Array(4 - keychain.keys.length)).map((_, i) => <NewWallet key={i} func={goToWalletCreation}/>)}
           </View>
         </View>
       </View>

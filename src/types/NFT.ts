@@ -10,6 +10,19 @@ export interface KeyState {
   verified: boolean
 }
 
+export interface CollectionsState {
+  collections: Collection[]
+}
+
+enum RANK { BLUECHIP = "BLUECHIP" }
+enum VERIFICATION { COLLECTION = "COLLECTION", CREATOR = "CREATOR" }
+export interface Collection {
+  name: string,
+  rank: RANK,
+  verification: VERIFICATION,
+  verificationAddress: PublicKey
+}
+
 export interface KeychainState {
   keychainAccount: PublicKey | null,
   exists: boolean,
@@ -21,13 +34,7 @@ export interface NFT {
   name: string,
   mint: PublicKey,
   imageUrl: string,
-  mdUrl: string,
-  collection: string
-}
-
-export interface NFT {
-  name: string,
-  imageUrl: string,
-  isCurrent: boolean,
-  isFavorited: boolean,
+  // mdUrl: string,
+  collection: string | null,
+  isFavorited: boolean
 }

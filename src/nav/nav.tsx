@@ -22,6 +22,7 @@ import Landing from '../screens/landing';
 
 //Styles
 import * as Theme from '../constants/theme';
+import DataRetrieval from '../components/dataRetrieval/dataRetrieval';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,49 +35,53 @@ export const TabNavigator = () => {
 
 
   return !!anchorWallet ? 
-    <Tab.Navigator
-      initialRouteName="Gallery"
-      screenOptions={{
-        headerShown: false,
-        tabBarLabelPosition: 'below-icon',
-        tabBarActiveBackgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-        tabBarInactiveBackgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-        tabBarActiveTintColor: Theme.COLORS.ACTIVE_PINK,
-        tabBarInactiveTintColor: Theme.COLORS.INACTIVE_GRAY,
-        tabBarLabelStyle: { fontFamily: 'BlenderPro-Medium', fontSize: 16 },
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={HomeStack}
-        options={{
-          tabBarLabel: "HOME",
-          tabBarIcon: ({ color }) => (
-            <House color={color} width={ICON_SIZE} height={ICON_SIZE} />
-          ),
+    // Wrapper for getting data from server 
+    <DataRetrieval>
+      {/* Actual navigator */}
+      <Tab.Navigator
+        initialRouteName="Gallery"
+        screenOptions={{
+          headerShown: false,
+          tabBarLabelPosition: 'below-icon',
+          tabBarActiveBackgroundColor: Theme.COLORS.BACKGROUND_BLACK,
+          tabBarInactiveBackgroundColor: Theme.COLORS.BACKGROUND_BLACK,
+          tabBarActiveTintColor: Theme.COLORS.ACTIVE_PINK,
+          tabBarInactiveTintColor: Theme.COLORS.INACTIVE_GRAY,
+          tabBarLabelStyle: { fontFamily: 'BlenderPro-Medium', fontSize: 16 },
         }}
-      />
-      <Tab.Screen
-        name="Gallery"
-        component={GalleryStack}
-        options={{
-          tabBarLabel: "GALLERY",
-          tabBarIcon: ({ color }) => (
-            <Images color={color} width={ICON_SIZE} height={ICON_SIZE} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="About"
-        component={AboutStack}
-        options={{
-          tabBarLabel: "ABOUT",
-          tabBarIcon: ({ color }) => (
-            <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeStack}
+          options={{
+            tabBarLabel: "HOME",
+            tabBarIcon: ({ color }) => (
+              <House color={color} width={ICON_SIZE} height={ICON_SIZE} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Gallery"
+          component={GalleryStack}
+          options={{
+            tabBarLabel: "GALLERY",
+            tabBarIcon: ({ color }) => (
+              <Images color={color} width={ICON_SIZE} height={ICON_SIZE} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="About"
+          component={AboutStack}
+          options={{
+            tabBarLabel: "ABOUT",
+            tabBarIcon: ({ color }) => (
+              <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </DataRetrieval>
   :
     <Tab.Navigator
       initialRouteName="Home"

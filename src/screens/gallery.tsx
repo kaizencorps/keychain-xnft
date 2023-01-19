@@ -7,6 +7,7 @@ import WalletNFTs from '../components/wallet-NFTs/wallet-NFTs';
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../nav/galleryStack';
+import { NFT } from '../types/NFT';
 
 //Data
 import {useRecoilValue} from "recoil";
@@ -14,13 +15,17 @@ import { keychainAtom, walletNftsSelector } from '../_state/keychain';
 
 //Styles
 import * as Theme from '../constants/theme';
+import { PublicKey } from '@solana/web3.js';
 
-interface Props extends BottomTabScreenProps<RootStackParamList, 'Gallery'> {}
+interface Props extends BottomTabScreenProps<RootStackParamList, 'GalleryLanding'> {}
 
 const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
 
+  const goToFocusNFT = (nft: NFT, walletAddress: string) => {
+    props.navigation.navigate('NFTData', { walletAddress, nft }) 
+  }
 
   return (
     <View style={styles.con}>
@@ -30,11 +35,13 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
           key={0} index={0} 
           walletAddress={'MY FAVORITES'} 
           items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
+          goToFocusNFT={goToFocusNFT}
         />
         <WalletNFTs 
           key={1} index={1} 
           walletAddress={keychain.keychainAccount.toBase58()} 
           items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
+          goToFocusNFT={goToFocusNFT}
         />
         {keychain.keys.map((key, i) => {
           return (
@@ -43,6 +50,7 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
               index={i + 2} 
               items={useRecoilValue(walletNftsSelector(key.wallet))} 
               walletAddress={key.wallet.toBase58()}  
+              goToFocusNFT={goToFocusNFT}
             />
           )
         })}

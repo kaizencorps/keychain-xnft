@@ -13,7 +13,7 @@ import {
 
 import { LOCAL_STORAGE_KEYS } from '../_state/_constants';
 import { consoleLog } from '../_helpers/debug';
-import {getNFTsForOwner} from "../types/utils/chain-utils";
+import {getNFTsForOwner} from "../utils/web3/chain-utils";
 
 function useWalletActions() {
     const baseUrl = `${process.env.REACT_APP_BASE_API_URL}/wallet`;
