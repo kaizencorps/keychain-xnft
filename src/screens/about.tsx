@@ -2,6 +2,7 @@ import React from 'react';
 
 //Components
 import WalletNFTs from '../components/wallet-NFTs/wallet-NFTs';
+import ScreenWrapper from '../components/screenWrapper/screenWrapper';
 import { View, StyleSheet } from 'react-native';
 
 //Types
@@ -23,9 +24,9 @@ const About : React.FC<any> = (props: Props) : React.ReactElement => {
   const keychain = useRecoilValue(keychainAtom);
 
   return (
-      <View style={styles.con}>
+      <ScreenWrapper>
 
-      </View>
+      </ScreenWrapper>
   )
 }
 

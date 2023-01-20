@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { FatPinkButton } from "../components/ui/buttons/buttons";
 import { HeaderText, NormalText, SubHeaderText } from "../components/ui/text/text";
 import { Wallet as WalletHeader } from "../components/wallet-header/wallet-header";
@@ -28,6 +28,7 @@ import * as Theme from '../constants/theme';
 
 //Utils
 import { formatAddress } from "../utils/stringFormatting";
+import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'NewWalletConnect'> {}
 
@@ -52,7 +53,7 @@ const NewWalletConnect : FC<any> = (props: Props) : ReactElement => {
   }
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           {keychain ?
@@ -101,16 +102,11 @@ const NewWalletConnect : FC<any> = (props: Props) : ReactElement => {
           </View>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  con: {
-    flex: 1,
-    paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-  },
   maxCon: {
     width: '100%',
     height: '100%',

@@ -1,7 +1,7 @@
 import React, {FC, ReactElement, useState} from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Input from "../components/ui/inputs/inputs";
 
 //Types
@@ -19,6 +19,7 @@ import { FatPinkButton } from "../components/ui/buttons/buttons";
 
 //Utils
 import { formatAddress } from "../utils/stringFormatting";
+import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'VerifyWalletDetails'> {}
 
@@ -34,7 +35,7 @@ const VerifyWalletDetails : FC<any> = (props: Props) : ReactElement => {
   const goBack = () => props.navigation.goBack();
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
@@ -63,7 +64,7 @@ const VerifyWalletDetails : FC<any> = (props: Props) : ReactElement => {
           </View>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 

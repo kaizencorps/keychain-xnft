@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { BannerText, HeaderText, NormalText } from "../components/ui/text/text";
 
 //Types
@@ -26,6 +26,7 @@ import Close from "../assets/svgs/Icons/close";
 //Utils
 import { formatAddress } from "../utils/stringFormatting";
 import { FatButton } from "../components/ui/buttons/buttons";
+import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'RemoveWallet'> {}
 
@@ -54,7 +55,7 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
 
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           {getIcon}
@@ -82,18 +83,11 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
           </View>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  con: {
-    flex: 1,
-    paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-    justifyContent: 'center', 
-    alignItems: 'center'
-  },
   maxCon: {
     width: '100%',
     maxWidth: Theme.MAX_WIDTH_CON,

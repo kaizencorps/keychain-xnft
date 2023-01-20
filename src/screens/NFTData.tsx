@@ -2,7 +2,7 @@ import React from 'react';
 
 //Components
 import { NFT } from '../types/NFT';
-import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import NFTFocused from '../components/galleryNFT/focused/focused-nft';
 import { FatButton } from '../components/ui/buttons/buttons';
 
@@ -25,6 +25,7 @@ import Close from '../assets/svgs/Icons/close';
 //Styles
 import * as Theme from '../constants/theme';
 import { PublicKey } from '@solana/web3.js';
+import ScreenWrapper from '../components/screenWrapper/screenWrapper';
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'NFTData'> {}
 
@@ -65,7 +66,7 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
   }
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={{ flex: 1 }}>
           <FlatList 
@@ -126,18 +127,11 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
           </View>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   )
 }
 
 const styles = StyleSheet.create({
-  con: {
-    flex: 1,
-    paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-    justifyContent: 'center', 
-    alignItems: 'center',
-  },
   maxCon: {
     width: '100%',
     maxWidth: Theme.MAX_WIDTH_CON,

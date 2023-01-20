@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 
 //Components
 import WalletNFTs from '../components/wallet-NFTs/wallet-NFTs';
@@ -28,34 +28,36 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
   }
 
   return (
-    <View style={styles.con}>
-      <View style={styles.maxCon}>
-        {/* TODO Favorites */}
-        <WalletNFTs 
-          key={0} index={0} 
-          walletAddress={'MY FAVORITES'} 
-          items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
-          goToFocusNFT={goToFocusNFT}
-        />
-        <WalletNFTs 
-          key={1} index={1} 
-          walletAddress={keychain.keychainAccount.toBase58()} 
-          items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
-          goToFocusNFT={goToFocusNFT}
-        />
-        {keychain.keys.map((key, i) => {
-          return (
-            <WalletNFTs 
-              key={i + 2} 
-              index={i + 2} 
-              items={useRecoilValue(walletNftsSelector(key.wallet))} 
-              walletAddress={key.wallet.toBase58()}  
-              goToFocusNFT={goToFocusNFT}
-            />
-          )
-        })}
+    <ScrollView contentContainerStyle={{ flex: 1 }}>
+      <View style={styles.con}>
+        <View style={styles.maxCon}>
+          {/* TODO Favorites */}
+          <WalletNFTs 
+            key={0} index={0} 
+            walletAddress={'MY FAVORITES'} 
+            items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
+            goToFocusNFT={goToFocusNFT}
+          />
+          <WalletNFTs 
+            key={1} index={1} 
+            walletAddress={keychain.keychainAccount.toBase58()} 
+            items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
+            goToFocusNFT={goToFocusNFT}
+          />
+          {keychain.keys.map((key, i) => {
+            return (
+              <WalletNFTs 
+                key={i + 2} 
+                index={i + 2} 
+                items={useRecoilValue(walletNftsSelector(key.wallet))} 
+                walletAddress={key.wallet.toBase58()}  
+                goToFocusNFT={goToFocusNFT}
+              />
+            )
+          })}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

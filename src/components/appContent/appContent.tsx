@@ -3,12 +3,16 @@ import React, { FC, ReactElement } from 'react';
 //Components
 import TabNavigator from '../../nav/nav';
 import Loader from '../loader/loader';
+import { View } from 'react-native';
 
 //Data
 import { useWalletActions } from '../../_actions/wallet.actions';
 
 //Web3
 import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+
+//Styles
+import * as Theme from '../../constants/theme';
 
 
 export const AppContent : FC<any> = () : ReactElement => {
@@ -39,8 +43,9 @@ export const AppContent : FC<any> = () : ReactElement => {
   if(initialLoad) return <Loader />
 
   return(
-      <TabNavigator />
+    <TabNavigator />
   )
 };
 
 export default AppContent
+

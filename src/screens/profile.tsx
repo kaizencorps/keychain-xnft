@@ -1,7 +1,7 @@
 import React, { FC, ReactElement} from "react";
 
 //Components
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { NormalText, BannerText } from "../components/ui/text/text";
 import { NewWallet, Wallet as WalletHeader } from "../components/wallet-header/wallet-header";
 
@@ -19,6 +19,7 @@ import { RootStackParamList } from "../nav/homeStack";
 
 //Styles
 import * as Theme from '../constants/theme';
+import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Profile'> {}
 
@@ -35,7 +36,7 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
 
   
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           <TouchableOpacity onPress={goToLogout}>
@@ -60,24 +61,18 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
                 <WalletHeader index={i + 1} address={wallet.wallet.toBase58()} />
               </TouchableOpacity>
             )}
-            {Array.apply(null, Array(4 - keychain.keys.length)).map((_, i) => <NewWallet key={i} func={goToWalletCreation}/>)}
+            {Array.apply(null, Array(4 - keychain.keys.length)).map((_: never, i: number) => <NewWallet key={i} func={goToWalletCreation}/>)}
           </View>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  con: {
-    flex: 1,
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   maxCon: {
     width: '100%',
-    height: '100%',
+    minHeight: Theme.MIN_HEIGHT_CON,
     maxWidth: Theme.MAX_WIDTH_CON,
   },
   topCon: {
