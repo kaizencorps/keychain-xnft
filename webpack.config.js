@@ -1,3 +1,4 @@
+const CopyPlugin = require("copy-webpack-plugin");
 const createExpoWebpackConfigAsync = require('@expo/webpack-config');
 const fs = require("fs");
 
@@ -49,6 +50,14 @@ module.exports = async function (env, argv) {
     })
   );
 
+  // this is to copy the assets folder to the dist folder - not sure why this doesn't work
+   config.plugins.push(
+      new CopyPlugin({
+         patterns: [{
+            from: "assets"
+         }]
+      })
+   );
 
   // this is brittle but works for now.
   const loaders = config.module.rules.find(rule => typeof rule.oneOf !== "undefined");

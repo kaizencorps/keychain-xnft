@@ -1611,10 +1611,10 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@expo-google-fonts/dev@*":
+"@expo-google-fonts/inter@^0.2.2":
   version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@expo-google-fonts/dev/-/dev-0.2.2.tgz#aa7dfc9b0222b4a067944ee3b43b260ed160b28e"
-  integrity sha512-tgn5zhmgUs/d6+YsxJZ3JeGYOiaSXSFpH3COxTF8JLkg6aD/ERVIUf8hhVD9hv0CVAaTuNt+8m7MvIxFWXcq2g==
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/inter/-/inter-0.2.2.tgz#bd5624be6c92e7621aa9ddb5bd72757604729121"
+  integrity sha512-dU6mSczI2xkRZbUhQQ5VB+D4AqLOF8ufCIfA1iBjrPZ/Qnka88E5Ez2Mvm41exdKR76norVvYD5GJIQYEEoO/Q==
 
 "@expo/bunyan@4.0.0", "@expo/bunyan@^4.0.0":
   version "4.0.0"
@@ -3532,10 +3532,24 @@
     bs58 "^5.0.0"
     js-base64 "^3.7.2"
 
+"@solana-mobile/mobile-wallet-adapter-protocol-web3js@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@solana-mobile/mobile-wallet-adapter-protocol-web3js/-/mobile-wallet-adapter-protocol-web3js-1.0.0.tgz#0969913909bf2d3d6c893d1b425daff64a5c1c44"
+  integrity sha512-dqFMDH+bqP4IL32cVh5TKXBO1pM6jloPEfCdvWJigtwTfBMYKL9G9itDSFs3PdUKgpVP3x6UQ2sm1FCZ7kWDgw==
+  dependencies:
+    "@solana-mobile/mobile-wallet-adapter-protocol" "^1.0.0"
+    bs58 "^5.0.0"
+    js-base64 "^3.7.2"
+
 "@solana-mobile/mobile-wallet-adapter-protocol@^0.9.9":
   version "0.9.9"
   resolved "https://registry.yarnpkg.com/@solana-mobile/mobile-wallet-adapter-protocol/-/mobile-wallet-adapter-protocol-0.9.9.tgz#8b8e3f94f609e0e8c1149c0dbf1548adf18bfd4b"
   integrity sha512-Jxd3O3txeUiAXLIo6YfWhTs7UTVMlnIgz/xgdYmf99TSE4IaUhWGEVC2/OcOA7eAA85y0/XItU5OhHhXSPva8g==
+
+"@solana-mobile/mobile-wallet-adapter-protocol@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@solana-mobile/mobile-wallet-adapter-protocol/-/mobile-wallet-adapter-protocol-1.0.0.tgz#94a6be98a8cd6683469dc7071447ef12535fbd58"
+  integrity sha512-IU80gOfGHeHoCs5sqDYZx4xmXzDxtJorWFEitjvK3MOl44p6r+ZEWeIhFhGQwXxsDeIOSEhaqlGdwWEbaDjK7g==
 
 "@solana-mobile/wallet-adapter-mobile@^0.9.9":
   version "0.9.9"
@@ -3544,6 +3558,16 @@
   dependencies:
     "@react-native-async-storage/async-storage" "^1.17.7"
     "@solana-mobile/mobile-wallet-adapter-protocol-web3js" "^0.9.9"
+    "@solana/wallet-adapter-base" "^0.9.17"
+    js-base64 "^3.7.2"
+
+"@solana-mobile/wallet-adapter-mobile@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@solana-mobile/wallet-adapter-mobile/-/wallet-adapter-mobile-1.0.0.tgz#c2a2adad6696801043043c0307623f89a40f0746"
+  integrity sha512-JRjQc3gB6DJWH/Tq0XoOJfUk8VONkDXmBnpCzbrBrrn3pi7jluqiXipiXpJiMCwRgoCCGN5n1OaTm4fyAas5Xg==
+  dependencies:
+    "@react-native-async-storage/async-storage" "^1.17.7"
+    "@solana-mobile/mobile-wallet-adapter-protocol-web3js" "^1.0.0"
     "@solana/wallet-adapter-base" "^0.9.17"
     js-base64 "^3.7.2"
 
@@ -6906,6 +6930,23 @@ copy-to-clipboard@^3.3.1:
   integrity sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==
   dependencies:
     toggle-selection "^1.0.6"
+
+copy-webpack-plugin@6:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-6.4.1.tgz#138cd9b436dbca0a6d071720d5414848992ec47e"
+  integrity sha512-MXyPCjdPVx5iiWyl40Va3JGh27bKzOTNY3NjUTrosD2q7dR/cLD0013uqJ3BpFbUjyONINjb6qI7nDIJujrMbA==
+  dependencies:
+    cacache "^15.0.5"
+    fast-glob "^3.2.4"
+    find-cache-dir "^3.3.1"
+    glob-parent "^5.1.1"
+    globby "^11.0.1"
+    loader-utils "^2.0.0"
+    normalize-path "^3.0.0"
+    p-limit "^3.0.2"
+    schema-utils "^3.0.0"
+    serialize-javascript "^5.0.1"
+    webpack-sources "^1.4.3"
 
 copy-webpack-plugin@~6.0.3:
   version "6.0.4"
@@ -14625,6 +14666,13 @@ serialize-javascript@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-4.0.0.tgz#b525e1238489a5ecfc42afacc3fe99e666f4b1aa"
   integrity sha512-GaNA54380uFefWghODBWEGisLZFj00nS5ACs6yHa9nLqlLpVLO8ChDGeKRjZnV4Nh4n0Qi7nhYZD/9fCPzEqkw==
+  dependencies:
+    randombytes "^2.1.0"
+
+serialize-javascript@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-5.0.1.tgz#7886ec848049a462467a97d3d918ebb2aaf934f4"
+  integrity sha512-SaaNal9imEO737H2c05Og0/8LUXG7EnsZyMa8MzkmuHoELfT6txuj0cMqRj6zfPKnmQ1yasR4PCJc8x+M4JSPA==
   dependencies:
     randombytes "^2.1.0"
 

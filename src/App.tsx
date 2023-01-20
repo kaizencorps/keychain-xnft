@@ -1,6 +1,5 @@
 //Components
 import {Suspense} from "react";
-import { ActivityIndicator, View } from "react-native";
 import AppContent from "./components/appContent/appContent";
 import Loader from "./components/loader/loader";
 

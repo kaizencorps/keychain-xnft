@@ -44,7 +44,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
           <Box letras='Add another wallet to your profile.' />
           <Chevron color={Theme.COLORS.ACTIVE_PINK} rotation={90}/>
           <Box letras='View all your NFTs in the gallery.' />
-          
+
         </View>
         <WalletMultiButton style={styles.fatPinkButton}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -52,7 +52,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
             <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginLeft: 5 }}>CONNECT WALLET</HeaderText>
           </View>
         </WalletMultiButton>
-      </View>      
+      </View>
     </View>
   )
 }
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
-  }, 
+  },
   subCon:{
     display:"flex",
     flexDirection: "column",
@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     margin: 10,
-    
+
   },
   logo:{
     width: 150,
-    height: 150, 
+    height: 150,
   },
   text: {
     color: Theme.COLORS.LABEL_TEXT_WHITE,
@@ -110,13 +110,13 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: Theme.BRADIUS.XL,
     margin: 16,
-    backgroundColor: Theme.COLORS.ACTIVE_PINK, 
+    backgroundColor: Theme.COLORS.ACTIVE_PINK,
     color: Theme.COLORS.LABEL_TEXT_WHITE,
     fontSize: Theme.SPACING.MD,
     fontFamily: 'BlenderPro-Bold',
     display: "flex",
     justifyContent: "center",
-    padding: Theme.SPACING.XL, 
+    padding: Theme.SPACING.XL,
     marginHorizontal: Theme.SPACING.SM
   },
   fatPinkButton: {
