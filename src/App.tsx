@@ -1,5 +1,6 @@
 //Components
 import {Suspense} from "react";
+import { View } from "react-native";
 import AppContent from "./components/appContent/appContent";
 import Loader from "./components/loader/loader";
 

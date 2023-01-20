@@ -20,6 +20,14 @@ module.exports = async function (env, argv) {
 
   /// -- end of section
 
+  // tried to do this for the css stuff but doesn't work well
+  /*
+  config.module.rules.push({
+    test: /\.css$/,
+    use: [ 'style-loader', 'css-loader']
+  })
+   */
+
   // keep everything the same for expo start
   if(env.mode === "development") {
     return config;
@@ -50,11 +58,12 @@ module.exports = async function (env, argv) {
     })
   );
 
-  // this is to copy the assets folder to the dist folder - not sure why this doesn't work
+  // this is to copy the assets folder to the dist folder
    config.plugins.push(
       new CopyPlugin({
          patterns: [{
-            from: "assets"
+            from: "assets",
+             to: "../"
          }]
       })
    );
