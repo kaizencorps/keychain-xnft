@@ -1,7 +1,7 @@
 import React, {FC, ReactElement, useState} from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { FatButton, FatPinkButton } from "../components/ui/buttons/buttons";
 import { BannerText, HeaderText, SubHeaderText } from "../components/ui/text/text";
 
@@ -22,6 +22,7 @@ import * as Theme from '../constants/theme';
 
 //Utils
 import { formatAddress } from "../utils/stringFormatting";
+import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'WalletDetails'> {
@@ -50,7 +51,7 @@ const WalletDetails : FC<any> = (props: Props) : ReactElement => {
   const goBack = () => props.navigation.goBack();
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.topCon}>
         {getIcon}
         <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>{`Wallet ${index}`}</BannerText>
@@ -75,16 +76,11 @@ const WalletDetails : FC<any> = (props: Props) : ReactElement => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  con: {
-    flex: 1,
-    paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.USER_BACKGROUND_GRAY,
-  },
   addressCon: {
     justifyContent: 'center', 
     alignItems: 'center', 

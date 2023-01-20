@@ -1,7 +1,7 @@
 import React, {FC, ReactElement, useState} from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { FatPinkButton } from "../components/ui/buttons/buttons";
 import { BannerText, HeaderText, NormalText, SubHeaderText } from "../components/ui/text/text";
 import Input from "../components/ui/inputs/inputs";
@@ -23,6 +23,7 @@ import { formatAddress } from "../utils/stringFormatting";
 
 //Styles
 import * as Theme from '../constants/theme';
+import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'WalletDetected'> {}
@@ -48,7 +49,7 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
   }
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           <Wallet height={75} width={75} color={Theme.COLORS.LABEL_TEXT_WHITE} />
@@ -75,18 +76,12 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
           </View>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  con: {
-    flex: 1,
-    paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-    justifyContent: 'center', 
-    alignItems: 'center'
-  },
+
   maxCon: {
     width: '100%',
     maxWidth: Theme.MAX_WIDTH_CON,
