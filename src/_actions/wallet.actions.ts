@@ -17,6 +17,7 @@ import {Wallet} from "@project-serum/anchor";
 import {providerAtom} from "../_state/provider";
 import {programsAtom} from "../_state/programs";
 import {useKeychainActions} from "./keychain.actions";
+import {getNFTsForOwner} from "../utils/web3/chain-utils";
 
 function useWalletActions() {
     const baseUrl = `${process.env.REACT_APP_BASE_API_URL}/wallet`;

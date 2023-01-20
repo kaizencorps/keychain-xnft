@@ -1,3 +1,4 @@
+const CopyPlugin = require("copy-webpack-plugin");
 const createExpoWebpackConfigAsync = require('@expo/webpack-config');
 const fs = require("fs");
 
@@ -18,6 +19,14 @@ module.exports = async function (env, argv) {
   config.module.rules[1].oneOf.push(r);
 
   /// -- end of section
+
+  // tried to do this for the css stuff but doesn't work well
+  /*
+  config.module.rules.push({
+    test: /\.css$/,
+    use: [ 'style-loader', 'css-loader']
+  })
+   */
 
   // keep everything the same for expo start
   if(env.mode === "development") {
@@ -49,6 +58,15 @@ module.exports = async function (env, argv) {
     })
   );
 
+  // this is to copy the assets folder to the dist folder
+   config.plugins.push(
+      new CopyPlugin({
+         patterns: [{
+            from: "assets",
+             to: "../"
+         }]
+      })
+   );
 
   // this is brittle but works for now.
   const loaders = config.module.rules.find(rule => typeof rule.oneOf !== "undefined");

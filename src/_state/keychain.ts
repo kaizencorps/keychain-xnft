@@ -1,8 +1,12 @@
 import {atom, selector, selectorFamily} from 'recoil';
 import {PublicKey} from "@solana/web3.js";
-import { getNFTsForOwner } from "../types/utils/chain-utils";
+import {userAtom, UserState} from "./user";
+import { getNFTsForOwner } from "../utils/web3/chain-utils";
 import {consoleLog} from "../_helpers/debug";
-import { KeychainState, NFT, WalletState } from '../types/NFT';
+import { CollectionsState, KeychainState, NFT, WalletState } from '../types/NFT';
+import {walletAtom} from "./wallet";
+import { collectionsAtom } from './_collections';
+
 
 
 export const keychainAtom = atom<KeychainState | null>({
@@ -13,12 +17,15 @@ export const keychainAtom = atom<KeychainState | null>({
 export const nftsAtom = selector<NFT[]>({
     key: 'nfts',
     get: async ({get}) => {
-        const nfts: NFT[] = [];
+        let nfts: NFT[] = [];
         const keychainState: KeychainState = get(keychainAtom);
+        const collectionsState: CollectionsState = get(collectionsAtom);
         if (keychainState && keychainState.exists) {
             for (let key of keychainState.keys) {
                 consoleLog('fetching nfts from wallet: ', key.wallet?.toBase58());
-                nfts.push(...await getNFTsForOwner(key.wallet));
+                const walletSetOfNFTS = await getNFTsForOwner(key.wallet, collectionsState);
+                console.log("Some nfts returnenenene? ", walletSetOfNFTS);
+                nfts = nfts.concat(walletSetOfNFTS);
             }
         }
         consoleLog('setting derived nfts: ', nfts);

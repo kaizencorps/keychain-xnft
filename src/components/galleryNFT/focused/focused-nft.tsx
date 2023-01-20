@@ -12,54 +12,65 @@ import Numeric2Box from '../../../assets/svgs/Icons/numeric-2-box';
 import Numeric4Box from '../../../assets/svgs/Icons/numeric-4-box';
 import Numeric5Box from '../../../assets/svgs/Icons/numeric-5-box';
 
+//Styles
 import * as Theme from '../../../constants/theme';
 
 interface props {
   nft: NFT,
-  wallet: { name: string, index: number }
+  wallet: { name: string, index: number },
+  widthOfCon: number
 }
 
-const KaizenFocused : React.FC<any> = (props: props) : React.ReactElement => {
+const NFTFocused : React.FC<any> = (props: props) : React.ReactElement => {
 
   const getIcon = React.useCallback(() => {
     switch(props.wallet.index){
-      case 0: return <Star color={"#D5DDF9"} />
-      case 1: return <Numeric1Box color={"#D5DDF9"} />
+      case 0: return <Numeric1Box color={"#D5DDF9"} />
+      case 1: return <Numeric2Box color={"#D5DDF9"} />
       case 2: return <Numeric2Box color={"#D5DDF9"} />
-      case 3: return <Numeric2Box color={"#D5DDF9"} />
-      case 4: return <Numeric4Box color={"#D5DDF9"} />
-      case 5: return <Numeric5Box color={"#D5DDF9"} />
+      case 3: return <Numeric4Box color={"#D5DDF9"} />
+      case 4: return <Numeric5Box color={"#D5DDF9"} />
+      default: return <Star color={"#D5DDF9"} />
     }
-}, [])
+  }, [])
 
   return (
-    <View>
-      {/*<HeaderText style={styles.name}>{props.nft?.name}</HeaderText>*/}
-      {/*/!* TODO get proper source *!/*/}
-      {/*<Image source={require(props.nft?.imageUrl)} style={styles.img} /> */}
-      {/*<View style={styles.walletInfo}>*/}
-      {/*  <NormalText>{props.wallet.name}</NormalText>*/}
-      {/*  {getIcon()}*/}
-      {/*</View>*/}
+    <View style={[styles.con, { width: props.widthOfCon, height: props.widthOfCon }]}>
+      <HeaderText style={styles.name}>{props.nft.name}</HeaderText>
+      <Image source={{ uri: props.nft.imageUrl }} style={styles.img} />
+      <View style={[styles.walletInfo, { justifyContent: !!props.nft.collection ? 'space-between' : 'flex-end' }]}>
+        {!!props.nft.collection &&
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <NormalText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{props.nft.collection}</NormalText>
+          </View>
+        }
+        {getIcon()}
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  con: {
+    flex: 1,
+    alignItems: 'center'
+  },
   name: {
     color: Theme.COLORS.LABEL_TEXT_WHITE,
     textAlign: 'center',
   },
   img: {
-    aspectRatio: 1/1,
-    width: '100%',
-    height: undefined,
+    height: 200,
+    width: 200,
+    resizeMode: 'contain'
   },
   walletInfo: {
-    flex: 1,
+    width: '100%',
+    padding: Theme.SPACING.SM,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 })
 
-export default KaizenFocused;
+export default NFTFocused;

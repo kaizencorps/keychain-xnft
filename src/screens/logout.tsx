@@ -1,10 +1,11 @@
 import React, { FC, ReactElement } from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { FatButton } from "../components/ui/buttons/buttons";
 import { SubHeaderText } from "../components/ui/text/text";
 import { Wallet as WalletHeader } from "../components/wallet-header/wallet-header";
+import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -44,7 +45,7 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
   const goBack = () => props.navigation.goBack();
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           {keychain ?
@@ -73,18 +74,11 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
           </View>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  con: {
-    flex: 1,
-    paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   maxCon: {
     width: '100%',
     maxWidth: Theme.MAX_WIDTH_CON,

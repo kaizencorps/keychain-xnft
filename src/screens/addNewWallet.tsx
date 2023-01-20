@@ -1,7 +1,8 @@
 import React, {FC, ReactElement, useState} from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 import Input from "../components/ui/inputs/inputs";
 
 //Types
@@ -32,7 +33,7 @@ const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
   const goBack = () => props.navigation.goBack();
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
@@ -54,18 +55,11 @@ const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
           </View>
         </View>
       </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  con: {
-    flex: 1,
-    paddingTop: Theme.SPACING.XXL,
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-    justifyContent: 'center', 
-    alignItems: 'center',
-  },
   maxCon: {
     width: '100%',
     maxWidth: Theme.MAX_WIDTH_CON,

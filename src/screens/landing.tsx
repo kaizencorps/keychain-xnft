@@ -1,9 +1,10 @@
 import React from 'react';
 
 //Components
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { Box } from '../components/ui/text-box/text-box';
 import { HeaderText, NormalText } from '../components/ui/text/text';
+import ScreenWrapper from '../components/screenWrapper/screenWrapper';
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -77,7 +78,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   }, [walletState]);
 
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.subCon}>
         <View style={styles.card1}>
           <Image source={require("../assets/pngs/Keychain-Logo.png")} style={styles.logo} />
@@ -99,19 +100,11 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
           </View>
         </WalletMultiButton>
       </View>
-    </View>
+    </ScreenWrapper>
   )
 }
 
 const styles = StyleSheet.create({
-  con: {
-    display:"flex",
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK
-  },
   subCon:{
     display:"flex",
     flexDirection: "column",

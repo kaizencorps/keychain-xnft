@@ -13,7 +13,7 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import {WalletModalProvider} from '@solana/wallet-adapter-react-ui';
 
-// Default styles that can be overridden by your app
+// todo: can't figure out how to include this in webpack/build, so for now this is just stuck in index.html
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 import {RPC_URL, SOLANA_NETWORK} from '../../types/utils/config';

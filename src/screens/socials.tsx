@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components
-import { View, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { SocialMedia } from '../components/ui/socialMedia/socialMedia';
 import { NormalText } from '../components/ui/text/text';
 import { FatPinkButton } from '../components/ui/buttons/buttons';
@@ -18,9 +18,7 @@ import * as Theme from "../constants/theme";
 import Discord from '../assets/svgs/logos/discord';
 import Twitter from '../assets/svgs/logos/twitter';
 import Email from '../assets/svgs/Icons/email';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-
-//React
+import ScreenWrapper from '../components/screenWrapper/screenWrapper';
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
@@ -32,55 +30,43 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
   const handleSubscribe = () => {}
    
   return (
-    <View style={styles.con}>
+    <ScreenWrapper>
       <View style={styles.subCon}>
-            <View style={styles.card1}>
-                <Image source={require("../assets/pngs/Keychain-Logo.png")} style={styles.logo}/>
-                <View style={styles.ImageBox}>
-                  <Image source={require("../assets/pngs/KaizenCorpslogo3.png")} style={styles.logo2} />
-                </View>
+        <View style={styles.card1}>
+            <Image source={require("../assets/pngs/Keychain-Logo.png")} style={styles.logo}/>
+            <View style={styles.ImageBox}>
+              <Image source={require("../assets/pngs/KaizenCorpslogo3.png")} style={styles.logo2} />
             </View>
-            <View style={styles.card2}>
-                <NormalText style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Donec sit amet porta ipsum. Praesent vitae sem sit amet arcu hendrerit imperdiet at at tellus. 
-                    Curabitur turpis neque, hendrerit a nulla quis, mattis dapibus diam. Vivamus auctor accumsan orci, 
-                    vitae scelerisque quam dapibus eget. Quisque magna tellus, congue ut rhoncus posuere, condimentum at tortor.
-                </NormalText>
-                <View style={styles.card2_1}>
-                    {/* https://discord.gg/shyrW3CmTB */}
-                    <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord  width={25} height={25}/>}/>
-                    {/* https://twitter.com/KaizenCorps_ */}
-                    <SocialMedia bgColor={Theme.COLORS.TWITTER} icon={<Twitter width={25} height={25}/>}/>
-                    {/* hoorah@kaizencorps.com */}
-                    <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={20} height={20}/>}/>
-                </View>
-                <View style={styles.card2_2}>
-                    <NormalText style={styles.text2}>Don't miss our updates!</NormalText>
-                    <Input
-                      style={styles.input}
-                      placeholder="Enter your email"
-                      val={inputValue}
-                      onChangeText= {setInputValue}
-                    />
-                    <FatPinkButton text='SUBSCRIBE' func={handleSubscribe} />
-                </View>
+        </View>
+        <View style={styles.card2}>
+            <NormalText style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Donec sit amet porta ipsum. Praesent vitae sem sit amet arcu hendrerit imperdiet at at tellus. 
+                Curabitur turpis neque, hendrerit a nulla quis, mattis dapibus diam. Vivamus auctor accumsan orci, 
+                vitae scelerisque quam dapibus eget. Quisque magna tellus, congue ut rhoncus posuere, condimentum at tortor.
+            </NormalText>
+            <View style={styles.card2_1}>
+                <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord width={25} height={25}/>} link="https://discord.gg/shyrW3CmTB"/>
+                <SocialMedia bgColor={Theme.COLORS.TWITTER} icon={<Twitter width={25} height={25}/>} link="https://twitter.com/KaizenCorps_" />
+                <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={25} height={25} />} link="hoorah@kaizencorps.com" />
             </View>
+            <View style={styles.card2_2}>
+                <NormalText style={styles.text2}>Don't miss our updates!</NormalText>
+                <Input
+                  style={styles.input}
+                  placeholder="Enter your email"
+                  val={inputValue}
+                  onChangeText= {setInputValue}
+                />
+                <FatPinkButton text='SUBSCRIBE' func={handleSubscribe} />
+            </View>
+        </View>
       </View>      
-    </View>
+    </ScreenWrapper>
   )
 }
 
 const styles = StyleSheet.create({
-  con: {
-    display:"flex",
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: Theme.COLORS.BACKGROUND_BLACK
-  }, 
   subCon:{
-    display:"flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",

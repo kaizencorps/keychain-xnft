@@ -1,5 +1,7 @@
 import React, { FC, ReactElement } from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+
+//Components
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ThinText } from '../ui/text/text';
 
 //Types
@@ -11,21 +13,24 @@ import * as Theme from '../../constants/theme';
 interface Props {
   nft: NFT,
   index: number,
-  dimension: number
+  dimension: number,
+  func: (nft: NFT) => void
 }
 
 
 export const GalleryNFT: FC<Props> = (props: Props) : ReactElement => {
 
+  const goToFocusNFT = () => props.func(props.nft)
 
-    return (
-      <View style={styles.con}>
-        <Image style={styles.img} source={require(`${props.nft.imageUrl}`)}/>
-        <View style={styles.label}>
-          <ThinText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, fontSize: 10 }}>{props.nft.name}</ThinText>
-        </View>
+  
+  return (
+    <TouchableOpacity onPress={goToFocusNFT} style={styles.con}>
+      <Image style={styles.img} source={{ uri: props.nft.imageUrl }}/>
+      <View style={styles.label}>
+        <ThinText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, fontSize: 10 }}>{props.nft.name}</ThinText>
       </View>
-    );
+    </TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -36,8 +41,9 @@ const styles = StyleSheet.create({
     maxWidth: 120,
   },
   img: {
-    width: '100%',
-    height: '100%',
+    width: 150,
+    height: 150,
+    resizeMode: 'contain'
   },
   label: {
     position: 'absolute',
