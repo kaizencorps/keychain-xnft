@@ -9,8 +9,8 @@ import { RecoilRoot } from "recoil";
 
 //Libs
 import { registerRootComponent } from "expo";
-import { NavigationContainer } from "@react-navigation/native"; 
-import { useFonts, Inter_900Black } from "@expo-google-fonts/dev";
+import { NavigationContainer } from "@react-navigation/native";
+import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 import {ProviderComponentWrapper} from "./components/provider-component-wrapper";
 
 //Styles
