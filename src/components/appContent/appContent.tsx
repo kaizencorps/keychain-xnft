@@ -3,6 +3,7 @@ import React, { FC, ReactElement } from 'react';
 //Components
 import TabNavigator from '../../nav/nav';
 import Loader from '../loader/loader';
+import { ScrollView } from 'react-native';
 
 //Data
 import { useWalletActions } from '../../_actions/wallet.actions';
@@ -39,7 +40,9 @@ export const AppContent : FC<any> = () : ReactElement => {
   if(initialLoad) return <Loader />
 
   return(
-    <TabNavigator />
+    <ScrollView>
+      <TabNavigator />
+    </ScrollView>
   ) 
 };
 
