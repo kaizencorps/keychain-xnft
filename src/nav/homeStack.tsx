@@ -19,12 +19,13 @@ import Logout from '../screens/loggedIn/logout';
 
 //Types
 import { Wallet } from '../types/wallet';
+import {KeyState} from "../types/NFT";
 
 export type RootStackParamList = {
     Profile: undefined,
     Landing: undefined,
     AddNewWallet: undefined,
-    RemoveWallet: { address: string, index: number },
+    RemoveWallet: { keyState: KeyState, address: string, index: number },
     VerifyWallet: undefined,
     PendingWallet: undefined,
     WalletDetails: { wallet: Wallet },

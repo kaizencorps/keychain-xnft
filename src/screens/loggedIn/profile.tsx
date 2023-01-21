@@ -19,6 +19,8 @@ import { RootStackParamList } from "../../nav/homeStack";
 //Styles
 import * as Theme from '../../constants/theme';
 import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
+import {useKeychainActions} from "../../_actions/keychain.actions";
+import { KeyState } from "../../types/NFT";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Profile'> {}
 
@@ -29,20 +31,21 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
   const nfts = useRecoilValue(nftsAtom);
   const user = useRecoilValue(userAtom);
 
+  const keychainActions = useKeychainActions();
+
   const goToWalletCreation = () => props.navigation.navigate('AddNewWallet');
-  const goToLogout = () => props.navigation.navigate("Logout");
-  const goToRemoveWallet = (address: string, index: number) => props.navigation.navigate('RemoveWallet', { address, index })
+  const goToLogout = async () => {
+    await keychainActions.resetKeychain(true);
+    // props.navigation.navigate("Logout");
+  }
+  const goToRemoveWallet = (keyState: KeyState, address: string, index: number) => props.navigation.navigate('RemoveWallet', { keyState, address, index })
 
   return (
     <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           <TouchableOpacity onPress={goToLogout}>
-            {keychain ?
-              <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
-            :
-              <Image />
-            }
+            <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
           </TouchableOpacity>
           <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</BannerText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>{`${nfts.length} NFTs`}</NormalText>
@@ -52,7 +55,7 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
           <View style={styles.profileCon}>
             <NormalText style={{ color: Theme.COLORS.INACTIVE_GRAY }}>PROFILE WALLETS</NormalText>
             {keychain.keys.map((keyState, i) =>
-              <TouchableOpacity key={i + 1} onPress={() => goToRemoveWallet(keyState.wallet.toBase58(), (i + 1))}>
+              <TouchableOpacity key={i} onPress={() => goToRemoveWallet(keyState, keyState.wallet.toBase58(), (i))}>
                 <WalletRow keyState={keyState}/>
               </TouchableOpacity>
             )}

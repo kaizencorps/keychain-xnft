@@ -37,17 +37,11 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
             items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
             goToFocusNFT={goToFocusNFT}
           />
-          <WalletNFTs
-            key={1} index={1}
-            walletAddress={keychain.keychainAccount.toBase58()}
-            items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
-            goToFocusNFT={goToFocusNFT}
-          />
           {keychain.keys.map((key, i) => {
             return (
               <WalletNFTs
-                key={i + 2}
-                index={i + 2}
+                key={i + 1}
+                index={i + 1}
                 items={useRecoilValue(walletNftsSelector(key.wallet))}
                 walletAddress={key.wallet.toBase58()}
                 goToFocusNFT={goToFocusNFT}

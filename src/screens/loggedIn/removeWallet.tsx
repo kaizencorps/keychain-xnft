@@ -33,7 +33,7 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'RemoveWallet'>
 
 const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
 
-  const { address, index } = props.route.params;
+  const { keyState, address, index } = props.route.params;
 
   const nfts = useRecoilValue(nftsAtom);
 
@@ -59,7 +59,7 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           {getIcon}
-          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>{`Wallet ${index + 1}`}</BannerText>
+          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>{`Wallet ${index}`}</BannerText>
           <View style={styles.addressCon}>
             <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{formatAddress(address)}</HeaderText>
           </View>

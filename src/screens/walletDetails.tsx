@@ -23,6 +23,10 @@ import * as Theme from '../constants/theme';
 //Utils
 import { formatAddress } from "../utils/stringFormatting";
 import ScreenWrapper from "../components/screenWrapper/screenWrapper";
+import { useKeychainActions } from "../_actions/keychain.actions";
+import {useRecoilValue} from "recoil";
+import {keychainAtom} from "../_state";
+import {consoleLog} from "../_helpers/debug";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'WalletDetails'> {
@@ -34,6 +38,9 @@ const WalletDetails : FC<any> = (props: Props) : ReactElement => {
 
   const { address, index, numNFTS, numCollections } = props.route.params.wallet;
 
+  const keychain = useRecoilValue(keychainAtom);
+  const keychainActions = useKeychainActions();
+
   const getIcon = React.useMemo(() => {
     switch(index){
         case 1: return <Numeric1Box color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
@@ -44,8 +51,14 @@ const WalletDetails : FC<any> = (props: Props) : ReactElement => {
     }
   }, [index])
 
-  const removeWallet = () => {
+  const removeWallet = async () => {
 
+    // todo count verified keys. if only 1 then can't remove the wallet
+    try {
+      await keychainActions.removeKeyByIndex(index);
+    } catch (err) {
+      consoleLog('error removing wallet', err);
+    }
   }
 
   const goBack = () => props.navigation.goBack();
@@ -63,7 +76,7 @@ const WalletDetails : FC<any> = (props: Props) : ReactElement => {
         <View>
           <SubHeaderText style={styles.pinkText}>{`${numNFTS} NFTS`}</SubHeaderText>
           <SubHeaderText style={styles.pinkText}>{`${numCollections} Collections`}</SubHeaderText>
-          <FatButton 
+          <FatButton
             text="REMOVE WALLET"
             color={Theme.COLORS.SCARY_RED}
             backgroundColor={Theme.COLORS.INACTIVE_GRAY}
@@ -82,8 +95,8 @@ const WalletDetails : FC<any> = (props: Props) : ReactElement => {
 
 const styles = StyleSheet.create({
   addressCon: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.BRADIUS.XL,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
@@ -91,7 +104,7 @@ const styles = StyleSheet.create({
   topCon: {
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   botCon: {
@@ -107,7 +120,7 @@ const styles = StyleSheet.create({
   },
   closeCon: {
     width: '100%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   }
 });
