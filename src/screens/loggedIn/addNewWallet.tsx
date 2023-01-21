@@ -2,21 +2,21 @@ import React, {FC, ReactElement, useState} from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import ScreenWrapper from "../components/screenWrapper/screenWrapper";
-import Input from "../components/ui/inputs/inputs";
+import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
+import Input from "../../components/ui/inputs/inputs";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from "../nav/homeStack";
+import { RootStackParamList } from "../../nav/homeStack";
 
 //SVGs
-import Wallet from '../assets/svgs/Icons/wallet';
+import Wallet from '../../assets/svgs/Icons/wallet';
 
 //Styles
-import * as Theme from '../constants/theme';
-import { BannerText, SubHeaderText } from "../components/ui/text/text";
-import Close from "../assets/svgs/Icons/close";
-import { FatPinkButton } from "../components/ui/buttons/buttons";
+import * as Theme from '../../constants/theme';
+import { BannerText, SubHeaderText } from "../../components/ui/text/text";
+import Close from "../../assets/svgs/Icons/close";
+import { FatPinkButton } from "../../components/ui/buttons/buttons";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'AddNewWallet'> {}
 
@@ -27,7 +27,7 @@ const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
 
   const submitNewWallet = () => {
     // TODO
-    props.navigation.navigate('VerifyWalletDetails', { address: input })
+    // props.navigation.navigate('VerifyWalletDetails');
   }
 
   const goBack = () => props.navigation.goBack();
@@ -42,7 +42,7 @@ const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
             <SubHeaderText style={styles.pinkText}>Enter a wallet address you want to add to your keychain account</SubHeaderText>
-            <Input 
+            <Input
               val={input}
               onChangeText={setInput}
             />
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   topCon: {
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   botCon: {
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   closeCon: {
     width: '100%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   }
 });

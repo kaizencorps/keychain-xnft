@@ -3,11 +3,9 @@ import {PublicKey} from "@solana/web3.js";
 import { WalletState } from '../types/NFT';
 
 // set to wallet's PublicKey
-export const walletAtom = atom<WalletState>({
+export const walletAtom = atom<WalletState | null>({
     key: 'wallet',
-    default: {
-        address: null,
-    }
+    default: null
 });
 
 /*

@@ -11,6 +11,7 @@ import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter
 import AboutStack from "./aboutStack";
 import HomeStack from "./homeStack";
 import GalleryStack from "./galleryStack";
+import LandingStack from "./landingStack";
 
 //SVGS
 import House from '../assets/svgs/Icons/house';
@@ -24,6 +25,10 @@ import Landing from '../screens/landing';
 //Styles
 import * as Theme from '../constants/theme';
 import DataRetrieval from '../components/dataRetrieval/dataRetrieval';
+import TestStack from "./testStack";
+import Test from "../screens/test";
+import { useRecoilValue } from 'recoil';
+import { keychainAtom } from '../_state';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,11 +37,10 @@ const ICON_SIZE = 30;
 
 export const TabNavigator = () => {
 
-  const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
+  const keychain = useRecoilValue(keychainAtom);
 
-
-  return !!anchorWallet ? 
-    // Wrapper for getting data from server 
+  return !!keychain.walletVerified ?
+    // Wrapper for getting data from server
     <DataRetrieval>
       {/* Actual navigator */}
       <Tab.Navigator
@@ -88,14 +92,24 @@ export const TabNavigator = () => {
                 <View style={[styles.pinkLine, { backgroundColor: color }]}/>
                 <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
               </View>
-            ),
-          }}
-        />
-      </Tab.Navigator>
+          ),
+        }}
+      />
+      {/*<Tab.Screen*/}
+      {/*    name="Test"*/}
+      {/*    component={TestStack}*/}
+      {/*    options={{*/}
+      {/*      tabBarLabel: "Test",*/}
+      {/*      tabBarIcon: ({ color }) => (*/}
+      {/*          <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />*/}
+      {/*      ),*/}
+      {/*    }}*/}
+      {/*/>*/}
+    </Tab.Navigator>
     </DataRetrieval>
   :
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Landing"
         screenOptions={{
           headerShown: false,
           tabBarLabelPosition: 'below-icon',
@@ -109,7 +123,7 @@ export const TabNavigator = () => {
       >
         <Tab.Screen
           name="Landing"
-          component={Landing}
+          component={LandingStack}
           options={{
             tabBarLabel: "HOME",
             tabBarIcon: ({ color }) => (
@@ -130,20 +144,30 @@ export const TabNavigator = () => {
                 <View style={[styles.pinkLine, { backgroundColor: color }]}/>
                 <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
               </View>
-            ),
-          }}
-        />
-      </Tab.Navigator>
+          ),
+        }}
+      />
+      {/*<Tab.Screen*/}
+      {/*    name="Test"*/}
+      {/*    component={Test}*/}
+      {/*    options={{*/}
+      {/*      tabBarLabel: "Test",*/}
+      {/*      tabBarIcon: ({ color }) => (*/}
+      {/*          <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />*/}
+      {/*      ),*/}
+      {/*    }}*/}
+      {/*/>*/}
+    </Tab.Navigator>
 }
 
 const styles = StyleSheet.create({
-  pinkLine: { 
-    position: 'absolute', 
-    height: 2, 
-    width: '100%', 
-    top: -7 , 
-    left: 0, 
-    right: 0, 
+  pinkLine: {
+    position: 'absolute',
+    height: 2,
+    width: '100%',
+    top: -7 ,
+    left: 0,
+    right: 0,
   }
 })
 

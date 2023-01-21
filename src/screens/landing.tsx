@@ -23,6 +23,13 @@ import Wallet from '../assets/svgs/Icons/wallet'
 
 //Styles
 import * as Theme from "../constants/theme";
+import {useRecoilValue} from "recoil";
+import {keychainAtom} from "../_state/keychain";
+import {consoleLog} from "../_helpers/debug";
+import {walletAtom} from "../_state";
+import {useKeychainActions} from "../_actions/keychain.actions";
+
+import useAsyncEffect from 'use-async-effect';
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> { }
@@ -30,6 +37,57 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> { }
 
 const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
+  const walletActions = useWalletActions();
+  const keychainActions = useKeychainActions();
+
+  const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
+  const { signMessage } = useWallet();
+
+  const keychainState = useRecoilValue(keychainAtom);
+  const wallet = useRecoilValue(walletAtom);
+  const keychain = useRecoilValue(keychainAtom);
+
+  React.useEffect(() => {
+    autoConnect();
+  }, [anchorWallet])
+
+  const autoConnect = async () => {
+    if (anchorWallet) {
+      await walletActions.connectWallet(anchorWallet, signMessage);
+      consoleLog('wallet has been set up');
+    } else {
+      await walletActions.disconnectWallet();
+    }
+  }
+
+  useAsyncEffect(async () => {
+    consoleLog('got new wallet state: ', wallet);
+    if (wallet && !keychainState.checked) {
+      consoleLog('checking keychain by key: ', wallet.address);
+      await keychainActions.checkKeychainByKey();
+    }
+  }, [wallet]);
+
+  useAsyncEffect(async () => {
+    consoleLog('got new keychain state: ', keychain);
+    if (keychain.checked) {
+      // 2 options:
+      // 1. if keychain exists and wallet is verified, go to home
+      // 2. otherwise, navigate to the new wallet detected page
+      if (keychain.walletVerified) {
+        // todo: navigate to profile page (logged in)
+      } else {
+        // todo: navigate to the verification screen
+        consoleLog('navigating to WalletDetected screen');
+        props.navigation.navigate('WalletDetected');
+      }
+    }
+    if (keychain.checked && keychain.walletVerified) {
+      // todo: then we need to navigate to the "logged in" profile stack
+      consoleLog('todo: navigate to profile / logged in screen');
+        // then we need to navigate to new wallet detected screen
+    }
+  }, [keychain]);
 
   return (
     <ScreenWrapper>
@@ -118,4 +176,3 @@ const styles = StyleSheet.create({
 });
 
 export default Landing;
-

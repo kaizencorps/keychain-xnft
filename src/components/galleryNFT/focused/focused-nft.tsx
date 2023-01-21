@@ -37,9 +37,9 @@ const NFTFocused : React.FC<any> = (props: props) : React.ReactElement => {
   return (
     <View style={[styles.con, { width: props.widthOfCon, height: props.widthOfCon }]}>
       <HeaderText style={styles.name}>{props.nft.name}</HeaderText>
-      <Image source={{ uri: props.nft.imageUrl }} style={styles.img} /> 
+      <Image source={{ uri: props.nft.imageUrl }} style={styles.img} />
       <View style={[styles.walletInfo, { justifyContent: !!props.nft.collection ? 'space-between' : 'flex-end' }]}>
-        {!!props.nft.collection && 
+        {!!props.nft.collection &&
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <NormalText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{props.nft.collection}</NormalText>
           </View>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   walletInfo: {
     width: '100%',
     padding: Theme.SPACING.SM,
-    flexDirection: 'row', 
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   }

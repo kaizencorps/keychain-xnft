@@ -1,13 +1,19 @@
 import {PublicKey} from "@solana/web3.js";
+import {Program} from "@project-serum/anchor";
+
+export interface ProgramState {
+  program: Program
+}
 
 export interface WalletState {
-  address: PublicKey | null,
+  address: PublicKey,
 }
 
 export interface KeyState {
-  keyAccount: PublicKey,
   wallet: PublicKey,
-  verified: boolean
+  verified: boolean,
+
+  index: number
 }
 
 export interface CollectionsState {
@@ -25,7 +31,12 @@ export interface Collection {
 
 export interface KeychainState {
   keychainAccount: PublicKey | null,
+  name: string,
   exists: boolean,
+  // connected: boolean,
+  walletAdded: boolean,    // true if the connected wallet is on the keychain
+  walletVerified: boolean,    // true if the connected wallet is a verified key
+  checked: boolean,           // signal that we've checked the status
   keys: KeyState[]
 }
 

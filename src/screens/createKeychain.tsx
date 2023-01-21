@@ -21,6 +21,11 @@ import { formatAddress } from "../utils/stringFormatting";
 //Styles
 import * as Theme from '../constants/theme';
 import Input from "../components/ui/inputs/inputs";
+import {keychainAtom, walletAtom } from "../_state";
+import { useRecoilValue } from "recoil";
+import { useKeychainActions } from "../_actions/keychain.actions";
+import { consoleLog } from "../_helpers/debug";
+import useAsyncEffect from "use-async-effect";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'CreateKeychain'> {}
@@ -33,13 +38,31 @@ const CreateKeychain : FC<any> = (props: Props) : ReactElement => {
   const [username, setUsername] = React.useState('')
   const [errorText, setErrorText] = React.useState('')
 
+  const wallet = useRecoilValue(walletAtom);
+  const keychain = useRecoilValue(keychainAtom);
+  const keychainActions = useKeychainActions();
+
   const goBack = () => props.navigation.goBack();
   const goHome = () => props.navigation.navigate('Profile')
 
-  const createKeychain = () => {
-    // TODO 
-    goHome();
+  const createKeychain = async () => {
+    consoleLog('creating keychain w/username: ', username);
+    // todo: some sort of loading ..?
+    try {
+      await keychainActions.createKeychain(username);
+    } catch (err) {
+      // todo: handle
+    }
+    // goHome();
   }
+
+  useAsyncEffect(async () => {
+    consoleLog('got new keychain state: ', keychain);
+    if (keychain.walletVerified) {
+      consoleLog('todo: navigate to profile / logged in screen');
+      // todo: navigate to logged in profile screen
+    }
+  }, [keychain]);
 
   return (
     <ScreenWrapper>
@@ -48,13 +71,13 @@ const CreateKeychain : FC<any> = (props: Props) : ReactElement => {
           <Shimmer height={75} width={75} />
           <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>Welcome!</BannerText>
           <NormalText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, textAlign: 'center' }}>Create a new keychain account with this wallet</NormalText>
-          {/* <View style={styles.addressCon}>
-            <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{formatAddress(address)}</HeaderText>
-          </View> */}
+           <View style={styles.addressCon}>
+            <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{formatAddress(wallet.address)}</HeaderText>
+          </View>
         </View>
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
-            <NormalText style={styles.pickText}>Pick a keychain username</NormalText>
+            <NormalText style={styles.pickText}>Choose a keychain username</NormalText>
             <Input val={username} onChangeText={setUsername} isError={errorText.length} />
             {!!errorText.length && <NormalText style={styles.errorText}>{errorText}</NormalText>}
             <FatPinkButton text="CREATE KEYCHAIN" func={createKeychain} />
@@ -78,8 +101,8 @@ const styles = StyleSheet.create({
     minHeight: Theme.MIN_HEIGHT_CON,
   },
   addressCon: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.BRADIUS.XL,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
@@ -87,7 +110,7 @@ const styles = StyleSheet.create({
   topCon: {
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   botCon: {
@@ -103,7 +126,7 @@ const styles = StyleSheet.create({
   },
   closeCon: {
     width: '100%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   swipeCon: {

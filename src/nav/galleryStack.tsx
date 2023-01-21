@@ -4,11 +4,11 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 //Pages
-import Gallery from '../screens/gallery';
+import Gallery from '../screens/loggedIn/gallery';
 import NFTData from '../screens/NFTData';
 import { NFT } from '../types/NFT';
 
-export type RootStackParamList = { 
+export type RootStackParamList = {
     GalleryLanding: undefined,
     NFTData: { nft: NFT, walletAddress: string }
 }
@@ -17,7 +17,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 
 export default () => {
-    
+
 
     return (
         <Stack.Navigator

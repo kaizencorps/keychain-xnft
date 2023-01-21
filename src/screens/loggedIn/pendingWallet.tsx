@@ -2,31 +2,41 @@ import React, {FC, ReactElement, useState} from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import Input from "../components/ui/inputs/inputs";
+import Input from "../../components/ui/inputs/inputs";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from "../nav/homeStack";
+import { RootStackParamList } from "../../nav/homeStack";
 
 //SVGs
-import Wallet from '../assets/svgs/Icons/wallet';
+import Wallet from '../../assets/svgs/Icons/wallet';
 
 //Styles
-import * as Theme from '../constants/theme';
-import { BannerText, HeaderText, SubHeaderText } from "../components/ui/text/text";
-import Close from "../assets/svgs/Icons/close";
-import { FatPinkButton } from "../components/ui/buttons/buttons";
+import * as Theme from '../../constants/theme';
+import { BannerText, HeaderText, SubHeaderText } from "../../components/ui/text/text";
+import Close from "../../assets/svgs/Icons/close";
+import { FatPinkButton } from "../../components/ui/buttons/buttons";
 
 //Utils
-import { formatAddress } from "../utils/stringFormatting";
-import ScreenWrapper from "../components/screenWrapper/screenWrapper";
+import { formatAddress } from "../../utils/stringFormatting";
+import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
+import {useRecoilValue} from "recoil";
+import {keychainAtom, walletAtom} from "../../_state";
+import {useUserActions} from "../../_actions/user.actions";
+import {useKeychainActions} from "../../_actions/keychain.actions";
 
-interface Props extends BottomTabScreenProps<RootStackParamList, 'VerifyWalletDetails'> {}
+interface Props extends BottomTabScreenProps<RootStackParamList, 'PendingWallet'> {}
 
-
-const VerifyWalletDetails : FC<any> = (props: Props) : ReactElement => {
+// this screen is part of the logged in / profile stack
+const PendingWallet : FC<any> = (props: Props) : ReactElement => {
 
   const [input, setInput] = React.useState('')
+
+  const wallet = useRecoilValue(walletAtom);
+  const keychain = useRecoilValue(keychainAtom);
+
+  const userActions = useUserActions();
+  const keychainActions = useKeychainActions();
 
   const connectWallet = () => {
 
@@ -41,19 +51,19 @@ const VerifyWalletDetails : FC<any> = (props: Props) : ReactElement => {
           <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
           <BannerText style={{ color: Theme.COLORS.ALERT_YELLOW, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>Wallet pending</BannerText>
           <View style={styles.addressCon}>
-            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(props.route.params.address)}</HeaderText>
+            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(wallet.address)}</HeaderText>
           </View>
         </View>
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
             <SubHeaderText style={styles.pinkText}>To link this wallet to this keychain account, please sign in to verify the wallet</SubHeaderText>
-            <Input 
+            <Input
               val={input}
               onChangeText={setInput}
             />
-            <FatPinkButton 
-              text="CONNECT WALLET" 
-              func={connectWallet} 
+            <FatPinkButton
+              text="CONNECT WALLET"
+              func={connectWallet}
               icon={<Wallet color={Theme.COLORS.LABEL_TEXT_WHITE }/>}
             />
           </View>
@@ -73,7 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Theme.SPACING.XXL,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
   },
   maxCon: {
@@ -82,8 +92,8 @@ const styles = StyleSheet.create({
     minHeight: Theme.MIN_HEIGHT_CON,
   },
   addressCon: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.BRADIUS.XL,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
@@ -91,7 +101,7 @@ const styles = StyleSheet.create({
   topCon: {
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   botCon: {
@@ -107,9 +117,9 @@ const styles = StyleSheet.create({
   },
   closeCon: {
     width: '100%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   }
 });
 
-export default VerifyWalletDetails;
+export default PendingWallet;

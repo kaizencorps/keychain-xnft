@@ -11,6 +11,11 @@
           "isSigner": false
         },
         {
+          "name": "domainState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "authority",
           "isMut": true,
           "isSigner": true
@@ -72,6 +77,11 @@
           "isSigner": false
         },
         {
+          "name": "keychainState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "key",
           "isMut": true,
           "isSigner": false
@@ -99,10 +109,82 @@
       ],
       "args": [
         {
-          "name": "playername",
+          "name": "keychainName",
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "createKeychainV1",
+      "accounts": [
+        {
+          "name": "keychain",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "keychainState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "key",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "domain",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "wallet",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "keychainName",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "upgradeKeychain",
+      "accounts": [
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "keychain",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "keychainState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
     },
     {
       "name": "addKey",
@@ -144,6 +226,11 @@
           "isSigner": false
         },
         {
+          "name": "userKey",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "authority",
           "isMut": true,
           "isSigner": true
@@ -180,6 +267,11 @@
           "isSigner": false
         },
         {
+          "name": "keychainState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "domain",
           "isMut": false,
           "isSigner": false
@@ -205,7 +297,39 @@
   ],
   "accounts": [
     {
-      "name": "KeyChain",
+      "name": "CurrentKeyChain",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "numKeys",
+            "type": "u16"
+          },
+          {
+            "name": "domain",
+            "type": "publicKey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "keys",
+            "type": {
+              "vec": {
+                "defined": "UserKey"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "KeyChainV1",
       "type": {
         "kind": "struct",
         "fields": [
@@ -221,7 +345,7 @@
             "name": "keys",
             "type": {
               "vec": {
-                "defined": "PlayerKey"
+                "defined": "UserKey"
               }
             }
           }
@@ -245,7 +369,7 @@
       }
     },
     {
-      "name": "Domain",
+      "name": "CurrentDomain",
       "type": {
         "kind": "struct",
         "fields": [
@@ -271,11 +395,47 @@
           }
         ]
       }
+    },
+    {
+      "name": "KeyChainState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "keychainVersion",
+            "type": "u8"
+          },
+          {
+            "name": "keyVersion",
+            "type": "u8"
+          },
+          {
+            "name": "keychain",
+            "type": "publicKey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DomainState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "domain",
+            "type": "publicKey"
+          }
+        ]
+      }
     }
   ],
   "types": [
     {
-      "name": "PlayerKey",
+      "name": "UserKey",
       "type": {
         "kind": "struct",
         "fields": [
@@ -319,21 +479,41 @@
     },
     {
       "code": 6005,
+      "name": "SignerNotKey",
+      "msg": "Verifier must be the same as the key being verified"
+    },
+    {
+      "code": 6006,
       "name": "KeyNotFound",
       "msg": "That key doesn't exist on this keychain"
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "NotDomainAdmin",
       "msg": "Signer is not a domain admin"
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "NotSigner",
       "msg": "Can only add wallet of signer"
+    },
+    {
+      "code": 6009,
+      "name": "NameTooLong",
+      "msg": "Name too long. Max 32 characters"
+    },
+    {
+      "code": 6010,
+      "name": "WrongTreasury",
+      "msg": "Wrong treasury account"
+    },
+    {
+      "code": 6011,
+      "name": "InvalidKeychainVersion",
+      "msg": "Wrong keychain version"
     }
   ],
   "metadata": {
-    "address": "KeyNfJK4cXSjBof8Tg1aEDChUMea4A7wCzLweYFRAoN"
+    "address": "Key3oJGUxKaddvMRAKbyYVbE8Pf3ycrH8hyZxa7tVCo"
   }
 }

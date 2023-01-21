@@ -48,4 +48,3 @@ export const AppContent : FC<any> = () : ReactElement => {
 };
 
 export default AppContent
-
