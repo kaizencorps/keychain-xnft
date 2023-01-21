@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   name: {
     color: Theme.COLORS.LABEL_TEXT_WHITE,
     textAlign: 'center',
+    marginBottom: Theme.SPACING.SM
   },
   img: {
     height: 200,

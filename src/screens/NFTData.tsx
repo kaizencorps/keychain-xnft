@@ -2,9 +2,9 @@ import React from 'react';
 
 //Components
 import { NFT } from '../types/NFT';
-import { View, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, useWindowDimensions } from 'react-native';
 import NFTFocused from '../components/galleryNFT/focused/focused-nft';
-import { FatButton } from '../components/ui/buttons/buttons';
+import { FatButton, FatDownloadButton } from '../components/ui/buttons/buttons';
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -34,13 +34,23 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const { nft, walletAddress } = props.route.params;
 
+  const dims = useWindowDimensions();
+
   const scrollRef: any = React.useRef();
 
   const data: NFT[] = useRecoilValue(walletNftsSelector(new PublicKey(walletAddress)))
 
-  const [focusedNFT, setFocusedNFT] = React.useState<NFT>(nft);
   const [scrollIndex, setScrollIndex] = React.useState<number>(data.findIndex((element: NFT) => element.mint === nft.mint))
-  const [widthOfCon, setWidthOfCon] = React.useState(1);
+
+  const scrollCallback = React.useCallback(({ viewableItems }) => {
+    if(viewableItems?.length){
+      setScrollIndex(viewableItems[0].index)
+    }
+  }, [setScrollIndex]);
+
+  const getItemWidth = React.useMemo(() => {
+    return Math.round(dims.width >= Theme.MAX_WIDTH_CON ? Theme.MAX_WIDTH_CON : dims.width)
+  }, [dims.width])
 
   const toggleFavorite = () => {
     // TODO
@@ -50,13 +60,9 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
     // TODO
   }
 
-  const downloadPicture = () => {
-    // TODO
-  }
-
   const goBack = () => props.navigation.goBack();
 
-  const renderItem = ({ item }) => <NFTFocused nft={item} wallet={walletAddress} widthOfCon={widthOfCon} /> 
+  const renderItem = ({ item }) => <NFTFocused nft={item} wallet={walletAddress} widthOfCon={getItemWidth} /> 
 
   const scroll = (direction: number) => {
     if(scrollRef?.current){
@@ -65,24 +71,32 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
     }
   }
 
+
   return (
     <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={{ flex: 1 }}>
           <FlatList 
             ref={scrollRef}
+            showsHorizontalScrollIndicator={false}
             horizontal
             data={data}
             renderItem={renderItem}
+            getItemLayout={(_, index) => (
+              {
+                length: getItemWidth,
+                offset: getItemWidth * index,
+                index
+              }
+            )}
             initialScrollIndex={scrollIndex}
-            pagingEnabled
             contentContainerStyle={{ flex: 1 }}
-            onLayout={e => setWidthOfCon(e.nativeEvent.layout.width)}
+            onViewableItemsChanged={scrollCallback}
           /> 
         </View>
         <View style={styles.botCon}>
           <View style={styles.botCon}>
-            {focusedNFT?.isFavorited ?
+            {data[scrollIndex].isFavorited ?
               <FatButton 
                 text="Unpin from favorites" 
                 borderColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
@@ -106,23 +120,23 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
               icon={<AccountCircle color={Theme.COLORS.USER_GREEN} height={30} width={30} />}
               color={Theme.COLORS.USER_GREEN}
             />
-            <FatButton 
+            <FatDownloadButton 
               text="Download picture"
               backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
-              func={downloadPicture}
+              downloadUrl={data[scrollIndex].imageUrl}
               icon={<Download color={Theme.COLORS.ACTIVE_PINK} height={30} width={30} />}
               color={Theme.COLORS.ACTIVE_PINK}
             />
           </View>
           <View style={styles.swipeCon}>
-            <TouchableOpacity disabled={data.length + (scrollIndex + -1) <= 0} onPress={() => scroll(-1)}>
-              <Chevron height={40} width={40} color={data.length + (scrollIndex + -1) <= 0 ? Theme.COLORS.INACTIVE_GRAY : "#D5DDF9"} rotation={180} />
+            <TouchableOpacity disabled={scrollIndex === 0} onPress={() => scroll(-1)}>
+              <Chevron height={40} width={40} color={(scrollIndex === 0) ? Theme.COLORS.INACTIVE_GRAY : "#D5DDF9"} rotation={180} />
             </TouchableOpacity>
               <TouchableOpacity onPress={goBack}>
                 <Close color={Theme.COLORS.INACTIVE_GRAY }/>
               </TouchableOpacity>
-              <TouchableOpacity disabled={data.length <= (scrollIndex + 1)} onPress={() => scroll(1)}>
-                <Chevron height={40} width={40} color={data.length <= (scrollIndex + 1) ? Theme.COLORS.INACTIVE_GRAY : "#D5DDF9"} rotation={0} />
+              <TouchableOpacity disabled={scrollIndex === data.length - 1} onPress={() => scroll(1)}>
+                <Chevron height={40} width={40} color={(scrollIndex === data.length - 1) ? Theme.COLORS.INACTIVE_GRAY : "#D5DDF9"} rotation={0} />
               </TouchableOpacity>
           </View>
         </View>

@@ -53,7 +53,6 @@ const Test : React.FC<any> = (props: Props) : React.ReactElement => {
   }, [wallet]);
 
   useAsyncEffect(async () => {
-    consoleLog('got new keychain state: ', keychain);
     if (keychain) {
       // consoleLog('checking keychain by key: ', wallet.address);
       // await keychainActions.checkKeychainByKey();

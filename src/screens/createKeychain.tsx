@@ -57,7 +57,6 @@ const CreateKeychain : FC<any> = (props: Props) : ReactElement => {
   }
 
   useAsyncEffect(async () => {
-    consoleLog('got new keychain state: ', keychain);
     if (keychain.walletVerified) {
       consoleLog('todo: navigate to profile / logged in screen');
       // todo: navigate to logged in profile screen

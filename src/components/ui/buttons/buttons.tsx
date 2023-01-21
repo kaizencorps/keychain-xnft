@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components
-import { StyleSheet, TouchableOpacity, GestureResponderEvent, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, GestureResponderEvent, View, Platform } from 'react-native';
 import { NormalText, HeaderText } from '../text/text';
 
 //Styles
@@ -13,7 +13,11 @@ interface FatButtonProps {
   backgroundColor?: string,
   borderColor?: string,
   icon?: React.ReactElement,
-  func: (event: GestureResponderEvent) => void
+  func?: (event: GestureResponderEvent) => void
+}
+
+interface FatDownloadButtonProps extends FatButtonProps {
+  downloadUrl: string
 }
 
 interface FatPinkButtonProps {
@@ -58,6 +62,18 @@ export const FatPinkButton = (props: FatPinkButtonProps) => {
       </View>
   </TouchableOpacity>
   )
+}
+
+export const FatDownloadButton = (props: FatDownloadButtonProps) => {
+
+  // TODO cross-domain hosting won't allow me to download this normally. Could do with with fetch probably
+  return Platform.OS === 'web' ?
+    <a href={props.downloadUrl} download={props.downloadUrl} target="_blank">
+      <FatButton {...props} />
+    </a>
+  :
+  // TODO RN
+    <FatButton {...props} />
 }
 
 const styles = StyleSheet.create({

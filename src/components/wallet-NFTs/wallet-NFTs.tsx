@@ -41,7 +41,7 @@ export const WalletNFTs : FC<Props> = (props: Props) : ReactElement => {
 
     const [isExpanded, toggleExpanded] = React.useState(false);
     const [viewportWidth, setViewportWidth] = React.useState(dims.width >= MAX_VIEWPORT_WIDTH ? MAX_VIEWPORT_WIDTH : dims.width)
-    const [numOfColumns, setNumOfColumns] = React.useState(calcNumOfColumns(viewportWidth))
+    const [numOfColumns, setNumOfColumns] = React.useState(calcNumOfColumns(viewportWidth)) // TODO utilize this properly
 
     const formatWalletAddress = React.useMemo(() => {
         const { walletAddress } = props;
@@ -54,12 +54,12 @@ export const WalletNFTs : FC<Props> = (props: Props) : ReactElement => {
 
     const getIcon = React.useCallback(() => {
         switch(props.index){
-            case 0: return <Star color={isExpanded ? "#F8B600" : "#D5DDF9"} />
-            case 1: return <Numeric1Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
-            case 2: return <Numeric2Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
-            case 3: return <Numeric3Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
-            case 4: return <Numeric4Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
-            case 5: return <Numeric5Box color={isExpanded ? "#F8B600" : "#D5DDF9"} />
+            case 0: return <Star color={isExpanded ? Theme.COLORS.FAV_GOLD : "#D5DDF9"} />
+            case 1: return <Numeric1Box color={isExpanded ? Theme.COLORS.FAV_GOLD : "#D5DDF9"} />
+            case 2: return <Numeric2Box color={isExpanded ? Theme.COLORS.FAV_GOLD : "#D5DDF9"} />
+            case 3: return <Numeric3Box color={isExpanded ? Theme.COLORS.FAV_GOLD : "#D5DDF9"} />
+            case 4: return <Numeric4Box color={isExpanded ? Theme.COLORS.FAV_GOLD : "#D5DDF9"} />
+            case 5: return <Numeric5Box color={isExpanded ? Theme.COLORS.FAV_GOLD : "#D5DDF9"} />
         }
     }, [isExpanded])
 
@@ -78,7 +78,7 @@ export const WalletNFTs : FC<Props> = (props: Props) : ReactElement => {
                     <ThinText style={{ color: getTextColor }}>
                         {props.items.length.toString()}
                     </ThinText>
-                    <ChevronRight color={isExpanded ? "#F8B600" : "#D5DDF9"} rotation={90} />
+                    <ChevronRight color={isExpanded ? Theme.COLORS.FAV_GOLD : "#D5DDF9"} rotation={90} />
                 </View>
             </TouchableOpacity>
             <View style={styles.nftsCon}>
@@ -112,9 +112,11 @@ const styles = StyleSheet.create({
     },
     nftsCon: {
         flexWrap: 'wrap',
+        flexDirection: 'row',
         alignContent: 'flex-start',
         justifyContent: 'flex-start',
-        width: '100%'
+        width: '100%',
+        gap: Theme.SPACING.SM // TODO only works on Web. Needs RN solution
     }
 })
 

@@ -72,7 +72,6 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
   }
 
   useAsyncEffect(async () => {
-    consoleLog('got new keychain state: ', keychain);
     if (checked && keychain.checked) {
       if (keychain.keychainAccount) {
         // then the keychain exists

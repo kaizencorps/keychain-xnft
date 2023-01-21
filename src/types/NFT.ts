@@ -12,7 +12,6 @@ export interface WalletState {
 export interface KeyState {
   wallet: PublicKey,
   verified: boolean,
-
   index: number
 }
 

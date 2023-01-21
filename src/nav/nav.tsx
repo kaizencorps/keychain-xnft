@@ -92,20 +92,20 @@ export const TabNavigator = () => {
                 <View style={[styles.pinkLine, { backgroundColor: color }]}/>
                 <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
               </View>
-          ),
-        }}
-      />
-      {/*<Tab.Screen*/}
-      {/*    name="Test"*/}
-      {/*    component={TestStack}*/}
-      {/*    options={{*/}
-      {/*      tabBarLabel: "Test",*/}
-      {/*      tabBarIcon: ({ color }) => (*/}
-      {/*          <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />*/}
-      {/*      ),*/}
-      {/*    }}*/}
-      {/*/>*/}
-    </Tab.Navigator>
+            ),
+          }}
+        />
+        {/*<Tab.Screen*/}
+        {/*    name="Test"*/}
+        {/*    component={TestStack}*/}
+        {/*    options={{*/}
+        {/*      tabBarLabel: "Test",*/}
+        {/*      tabBarIcon: ({ color }) => (*/}
+        {/*          <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />*/}
+        {/*      ),*/}
+        {/*    }}*/}
+        {/*/>*/}
+      </Tab.Navigator>
     </DataRetrieval>
   :
       <Tab.Navigator

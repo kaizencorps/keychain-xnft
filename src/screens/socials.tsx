@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components
-import { View, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, Linking } from 'react-native';
 import { SocialMedia } from '../components/ui/socialMedia/socialMedia';
 import { NormalText } from '../components/ui/text/text';
 import { FatPinkButton } from '../components/ui/buttons/buttons';
@@ -19,6 +19,8 @@ import Discord from '../assets/svgs/logos/discord';
 import Twitter from '../assets/svgs/logos/twitter';
 import Email from '../assets/svgs/Icons/email';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
+import { useRecoilState } from 'recoil';
+import { toastsAtom, ToastsState, NOTI_STATUS } from '../_state';
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
@@ -26,8 +28,26 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
 const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
 
   const [inputValue, setInputValue] = React.useState("");
+  const [toasts, setToasts] = useRecoilState<ToastsState>(toastsAtom);
   
   const handleSubscribe = () => {}
+
+  const createToast = () => {
+    console.log("tuh tuh")
+    navigator.clipboard.writeText("hoorah@kaizencorps.com");
+    console.log("Creating toast??????")
+    const newArray = [...toasts.toasts];
+    newArray.push({
+      id: (newArray.length + 1).toString(),
+      text: 'Copied hoorah@kaizencorps.com to clipboard',
+      type: NOTI_STATUS.DEFAULT 
+    })
+    setToasts({ toasts: newArray });
+  }
+
+  const openTabTo = (url: string) => {
+    Linking.openURL(url);
+  } 
    
   return (
     <ScreenWrapper>
@@ -45,9 +65,9 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
                 vitae scelerisque quam dapibus eget. Quisque magna tellus, congue ut rhoncus posuere, condimentum at tortor.
             </NormalText>
             <View style={styles.card2_1}>
-                <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord width={25} height={25}/>} link="https://discord.gg/shyrW3CmTB"/>
-                <SocialMedia bgColor={Theme.COLORS.TWITTER} icon={<Twitter width={25} height={25}/>} link="https://twitter.com/KaizenCorps_" />
-                <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={25} height={25} />} link="hoorah@kaizencorps.com" />
+                <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord width={25} height={25}/>} link={() => openTabTo("https://discord.gg/shyrW3CmTB")}/>
+                <SocialMedia bgColor={Theme.COLORS.TWITTER} icon={<Twitter width={25} height={25}/>} link={() => openTabTo("https://twitter.com/KaizenCorps_")} />
+                <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={25} height={25} />} link={() => createToast()} />
             </View>
             <View style={styles.card2_2}>
                 <NormalText style={styles.text2}>Don't miss our updates!</NormalText>
@@ -86,20 +106,16 @@ const styles = StyleSheet.create({
     display:"flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
     padding: 20,
     margin: 10
   },
   card2_1:{
     display: 'flex', 
     flexDirection: 'row',
-    gap: Theme.SPACING.XXL,
-    justifyContent : 'space-around',
-    padding: Theme.SPACING.XXL
-    
+    justifyContent : 'space-around',   
+    marginVertical: Theme.SPACING.LG 
   },
   card2_2:{
-    width: '60%',
     display: "flex", 
     flexDirection: 'column',
     justifyContent: 'space-around',
@@ -130,7 +146,6 @@ const styles = StyleSheet.create({
     textAlign: "justify",
     fontFamily: 'BlenderPro-Bold',
     paddingBottom: 16,
-    paddingHorizontal: 50
   },
   text2: {
     fontFamily: 'BlenderPro-Bold',

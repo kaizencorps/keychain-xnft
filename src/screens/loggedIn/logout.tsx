@@ -25,6 +25,7 @@ import * as Theme from '../../constants/theme';
 
 //Utils
 import { useWalletActions } from "../../_actions/wallet.actions";
+import { KeyState } from "../../types/NFT";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Logout'> {}
 
@@ -49,8 +50,8 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
         <View style={styles.topCon}>
           <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
           <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</SubHeaderText>
-          {keychain.keys.map((keyState, i) =>
-            <WalletRow key={keyState} conStyle={{ width: '50%' }} />
+          {keychain.keys.map((keyState: KeyState) =>
+            <WalletRow keyState={keyState} conStyle={{ width: '50%' }} />
           )}
         </View>
         <View style={styles.botCon}>

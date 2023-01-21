@@ -47,34 +47,27 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   const keychain = useRecoilValue(keychainAtom);
 
   React.useEffect(() => {
-    autoConnect();
-  }, [anchorWallet])
-
-  const autoConnect = async () => {
-    if (anchorWallet) {
-      await walletActions.connectWallet(anchorWallet, signMessage);
-      consoleLog('wallet has been set up');
-    } else {
-      await walletActions.disconnectWallet();
-    }
-  }
-
-  useAsyncEffect(async () => {
-    consoleLog('landing: new wallet state: ', wallet);
-    consoleLog('landing: new anchorWallet state: ', anchorWallet);
-    consoleLog('landing: new keychain state: ', keychain);
     if (wallet && !keychain.checked) {
-      consoleLog('checking keychain by key: ', wallet.address);
-      await keychainActions.checkKeychainByKey();
+      (async () => {
+        consoleLog('checking keychain by key: ', wallet.address);
+        await keychainActions.checkKeychainByKey(); 
+      })();
+    } else if(!anchorWallet && wallet) {
+      (async () => {
+        consoleLog('landing: disconnecting wallet');
+        await keychainActions.resetKeychain(true);
+      })();
+    } 
+  }, [wallet])
+
+  React.useEffect(() => {
+    if (anchorWallet && !wallet) {
+      (async () => {
+        consoleLog('landing: connecting wallet');
+        await walletActions.connectWallet(anchorWallet, signMessage);
+      })();
     }
-    else if (!anchorWallet && wallet) {
-      consoleLog('landing: disconnecting wallet');
-      await keychainActions.resetKeychain(true);
-    } else if (anchorWallet && !wallet) {
-      consoleLog('landing: connecting wallet');
-      await walletActions.connectWallet(anchorWallet, signMessage);
-    }
-  }, [wallet, anchorWallet, keychain]);
+  }, [anchorWallet])
 
   useAsyncEffect(async () => {
     consoleLog('got new keychain state: ', keychain);

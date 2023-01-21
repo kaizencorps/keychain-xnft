@@ -13,7 +13,7 @@ import * as Theme from '../../constants/theme';
 interface Props {
   nft: NFT,
   index: number,
-  dimension: number,
+  dimension: number, // TODO utilize this properly
   func: (nft: NFT) => void
 }
 
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     maxWidth: 120,
   },
   img: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     resizeMode: 'contain'
   },
   label: {
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
     bottom: Theme.SPACING.SM,
     left: Theme.SPACING.SM,
     backgroundColor: Theme.COLORS.LABEL_BLACK,
-    borderRadius: Theme.BRADIUS.SM
+    borderRadius: Theme.BRADIUS.SM,
+    paddingHorizontal: Theme.SPACING.SM
   }
 });
 
