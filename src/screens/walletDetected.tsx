@@ -29,6 +29,7 @@ import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 import { useRecoilValue } from "recoil";
 import {keychainAtom, walletAtom } from "../_state";
 import useAsyncEffect from "use-async-effect";
+import {useWalletActions} from "../_actions/wallet.actions";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'WalletDetected'> {}
@@ -41,13 +42,17 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
   const keychain = useRecoilValue(keychainAtom);
 
   const userActions = useUserActions();
+  const walletActions = useWalletActions();
   const keychainActions = useKeychainActions();
 
   const [username, setUsername] = React.useState('')
   const [errorText, setErrorText] = React.useState('');
   const [checked, setChecked] = React.useState(false);
 
-  const goHome = () => props.navigation.navigate('Profile');
+  const goHome = async () => {
+    await keychainActions.resetKeychain(true);
+  }
+
   const goToCreateNew = () => {
     consoleLog('navigating to CreateKeychain ');
     props.navigation.navigate('CreateKeychain');
@@ -56,7 +61,7 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
   const submitUsername = async () => {
     // check for the keychain
     try {
-      // todo: loading
+      // todo: loading..?
       await keychainActions.checkKeychainByName(username);
       setChecked(true);
     } catch (err) {
@@ -68,7 +73,7 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
 
   useAsyncEffect(async () => {
     consoleLog('got new keychain state: ', keychain);
-    if (checked) {
+    if (checked && keychain.checked) {
       if (keychain.keychainAccount) {
         // then the keychain exists
         // if the wallet is added but not verified, then we need to navigate to the verify screen
@@ -96,6 +101,13 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
      */
 }, [keychain, checked]);
 
+  useAsyncEffect(async () => {
+    if (!wallet) {
+      consoleLog('no wallet, navigating to Landing');
+      props.navigation.navigate('Landing');
+    }
+  }, [wallet]);
+
 return (
   <ScreenWrapper>
     <View style={styles.maxCon}>
@@ -103,7 +115,7 @@ return (
         <Wallet height={75} width={75} color={Theme.COLORS.LABEL_TEXT_WHITE} />
         <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>New wallet detected!</BannerText>
           <View style={styles.addressCon}>
-            <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{formatAddress(wallet.address.toBase58())}</HeaderText>
+            <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{wallet && formatAddress(wallet.address)}</HeaderText>
           </View>
       </View>
       <View style={styles.botCon}>

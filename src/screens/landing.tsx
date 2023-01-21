@@ -24,7 +24,7 @@ import Wallet from '../assets/svgs/Icons/wallet'
 //Styles
 import * as Theme from "../constants/theme";
 import {useRecoilValue} from "recoil";
-import {keychainAtom} from "../_state/keychain";
+import {keychainAtom} from "../_state";
 import {consoleLog} from "../_helpers/debug";
 import {walletAtom} from "../_state";
 import {useKeychainActions} from "../_actions/keychain.actions";

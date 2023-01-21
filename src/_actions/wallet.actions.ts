@@ -14,9 +14,8 @@ import { LOCAL_STORAGE_KEYS } from '../_state/_constants';
 import { consoleLog } from '../_helpers/debug';
 import {createProvider, getKeychainProgram} from "../programs/keychain-utils";
 import {Wallet} from "@project-serum/anchor";
-import {providerAtom} from "../_state/provider";
-import {programsAtom} from "../_state/programs";
-import {useKeychainActions} from "./keychain.actions";
+import {providerAtom} from "../_state";
+import {programsAtom} from "../_state";
 import {getNFTsForOwner} from "../utils/web3/chain-utils";
 
 function useWalletActions() {
@@ -25,8 +24,6 @@ function useWalletActions() {
     const [wallet, setWallet] = useRecoilState(walletAtom);
     const setProvider = useSetRecoilState(providerAtom);
     const setPrograms = useSetRecoilState(programsAtom);
-
-    const keychainActions = useKeychainActions();
 
     // const setAuth = useSetRecoilState(authAtom);
     // const [provider, setProvider] = useRecoilState(providerAtom);

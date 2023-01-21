@@ -18,14 +18,24 @@ const anchor = require('@project-serum/anchor');
 // export const RPC_URL: string = REACT_APP_RPC_ENDPOINT;
 
 // for now these are just hard-coded cause env variables are tricky
-export const RPC_URL: string = 'https://white-late-diagram.solana-mainnet.discover.quiknode.pro/841f2637070526fd43f742034e9070f1a69702a2';
-export const SOLANA_NETWORK = 'mainnet-beta';
 
-const CONFIRM_TIMEOUT_MILLIS = 1000 * 30; // 30 sec
+
+//----------->>>>>>>>>>>> devnet settings
+// export const SOLANA_NETWORK = 'devnet';
+// export const RPC_URL: string = 'https://api.devnet.solana.com';
+// export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('kcTmTZrP4gGmk3s4Q6Hu6UMmyN4mAuSUfGNvwNuXk6p');
+
+//----------->>>>>>>>>>>> mainnet/prod settings
+//
+export const SOLANA_NETWORK = 'mainnet-beta';
+export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('EQmj1DE52peMbjvuHGaALG75cxuXtLPjKbufaKrhDpD6');
+export const RPC_URL: string = 'https://white-late-diagram.solana-mainnet.discover.quiknode.pro/841f2637070526fd43f742034e9070f1a69702a2';
 
 consoleLog("RPC_URL: ", RPC_URL);
 consoleLog("SOLANA_NETWORK: ", SOLANA_NETWORK);
 
+
+const CONFIRM_TIMEOUT_MILLIS = 1000 * 30; // 30 sec
 export const connection = new anchor.web3.Connection(RPC_URL, {
     commitment: 'confirmed',
     confirmTransactionInitialTimeout: CONFIRM_TIMEOUT_MILLIS,
@@ -35,10 +45,10 @@ export const connection = new anchor.web3.Connection(RPC_URL, {
 // keychain stuff
 export const KeychainIdl = keychainIdl as Idl;
 export const KeychainProgramId = new anchor.web3.PublicKey(keychainIdl.metadata.address);
-export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('EQmj1DE52peMbjvuHGaALG75cxuXtLPjKbufaKrhDpD6');
 
 
 export const metaplex = new Metaplex(connection);
+
 
 /*
 export const getApiUrl = (path: string) => {

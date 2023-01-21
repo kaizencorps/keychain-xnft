@@ -9,6 +9,7 @@ import {PublicKey, SystemProgram} from "@solana/web3.js";
 import {keychainAtom, Programs, programsAtom} from "../_state";
 import {KeychainState} from "../types/NFT";
 import {KEYCHAIN_TREASURY} from "../types/utils/config";
+import {useWalletActions} from "./wallet.actions";
 
 
 function useKeychainActions() {
@@ -16,7 +17,9 @@ function useKeychainActions() {
     const [user, setUser] = useRecoilState(userAtom);
     const wallet = useRecoilValue(walletAtom);
     const [keychain, setKeychain] = useRecoilState(keychainAtom);
+    const resetKeychainState = useResetRecoilState(keychainAtom);
     const progs = useRecoilValue(programsAtom) as Programs;
+    const walletActions = useWalletActions();
 
     function setUsername(username: string) {
         setUser({username})
@@ -136,6 +139,14 @@ function useKeychainActions() {
                 [{wallet: wallet.address, verified: true}]));
     }
 
+    async function resetKeychain(disconnectWallet = false) {
+        resetKeychainState();
+        if (disconnectWallet) {
+            await walletActions.disconnectWallet();
+            consoleLog('disconnected wallet after resetting keychain');
+        }
+    }
+
     // refresh the keychain state and return it. if an account is passed in, use it otherwise, use what's already in state
     async function refreshKeychain(keychainAccount: PublicKey = null) {
 
@@ -242,7 +253,8 @@ function useKeychainActions() {
         createKeychain,
         checkKeychainByWallet,
         addKey,
-        verifyKey
+        verifyKey,
+        resetKeychain
     };
 }
 

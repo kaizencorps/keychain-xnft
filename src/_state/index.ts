@@ -4,3 +4,4 @@ export * from './user';
 export * from './_collections';
 export * from './keychain'
 export * from './programs'
+export * from './provider'
