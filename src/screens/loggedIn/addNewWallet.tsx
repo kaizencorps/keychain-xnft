@@ -17,6 +17,8 @@ import * as Theme from '../../constants/theme';
 import { BannerText, SubHeaderText } from "../../components/ui/text/text";
 import Close from "../../assets/svgs/Icons/close";
 import { FatPinkButton } from "../../components/ui/buttons/buttons";
+import {consoleLog} from "../../_helpers/debug";
+import { useKeychainActions } from "../../_actions/keychain.actions";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'AddNewWallet'> {}
 
@@ -24,10 +26,17 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'AddNewWallet'>
 const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
 
   const [input, setInput] = React.useState('')
+  const keychainActions = useKeychainActions();
 
-  const submitNewWallet = () => {
+  const submitNewWallet = async () => {
     // TODO
     // props.navigation.navigate('VerifyWalletDetails');
+    consoleLog(`adding wallet: ${input}`);
+    try {
+      await keychainActions.addKey(input);
+    } catch (e) {
+
+    }
   }
 
   const goBack = () => props.navigation.goBack();
@@ -37,11 +46,11 @@ const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
-          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG }}>Add new wallet</BannerText>
+          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG }}>Add New Wallet</BannerText>
         </View>
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
-            <SubHeaderText style={styles.pinkText}>Enter a wallet address you want to add to your keychain account</SubHeaderText>
+            <SubHeaderText style={styles.pinkText}>Enter a wallet you want to add to your Keychain account</SubHeaderText>
             <Input
               val={input}
               onChangeText={setInput}

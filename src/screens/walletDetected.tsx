@@ -87,7 +87,7 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
         }
       } else {
         // keychain doesn't exist
-        setErrorText('A Keychain for that username was not found.');
+        setErrorText('A Keychain for that username was not found. Did you mean to create a new Keychain?');
       }
     }
 

@@ -43,7 +43,6 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
   const { signMessage } = useWallet();
 
-  const keychainState = useRecoilValue(keychainAtom);
   const wallet = useRecoilValue(walletAtom);
   const keychain = useRecoilValue(keychainAtom);
 
@@ -61,12 +60,21 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   }
 
   useAsyncEffect(async () => {
-    consoleLog('got new wallet state: ', wallet);
-    if (wallet && !keychainState.checked) {
+    consoleLog('landing: new wallet state: ', wallet);
+    consoleLog('landing: new anchorWallet state: ', anchorWallet);
+    consoleLog('landing: new keychain state: ', keychain);
+    if (wallet && !keychain.checked) {
       consoleLog('checking keychain by key: ', wallet.address);
       await keychainActions.checkKeychainByKey();
     }
-  }, [wallet]);
+    else if (!anchorWallet && wallet) {
+      consoleLog('landing: disconnecting wallet');
+      await keychainActions.resetKeychain(true);
+    } else if (anchorWallet && !wallet) {
+      consoleLog('landing: connecting wallet');
+      await walletActions.connectWallet(anchorWallet, signMessage);
+    }
+  }, [wallet, anchorWallet, keychain]);
 
   useAsyncEffect(async () => {
     consoleLog('got new keychain state: ', keychain);

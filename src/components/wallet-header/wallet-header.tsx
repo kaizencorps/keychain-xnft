@@ -78,7 +78,7 @@ export const WalletRow : FC<any> = (props: WalletRowProps) : ReactElement => {
     /* TODO PENDING WALLET icon */
     if (!props.keyState.verified) {
       //then this wallet is pending
-      consoleLog('todo: return the pending icon here for the WalletRow');
+      consoleLog('--->>> todo: return the pending icon here for the WalletRow');
       // return the pending icon
     } else {
       switch(props.keyState.index){

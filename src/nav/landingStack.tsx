@@ -7,7 +7,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Landing from '../screens/landing';
 import WalletDetected from '../screens/walletDetected';
 import CreateKeychain from '../screens/createKeychain';
-import Logout from '../screens/logout';
 import VerifyWallet from '../screens/verifyWallet';
 
 export type RootStackParamList = {
@@ -36,7 +35,6 @@ export default () => {
         <Stack.Screen name="CreateKeychain" component={CreateKeychain} />
         <Stack.Screen name="WalletDetected" component={WalletDetected} />
         <Stack.Screen name="VerifyWallet" component={VerifyWallet} />
-        <Stack.Screen name="Logout" component={Logout} />
 
         {/*<Stack.Screen name="Profile" component={Profile} />*/}
         {/*<Stack.Screen name="AddNewWallet" component={AddNewWallet} />*/}

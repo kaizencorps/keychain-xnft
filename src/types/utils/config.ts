@@ -23,12 +23,18 @@ const anchor = require('@project-serum/anchor');
 //----------->>>>>>>>>>>> devnet settings
 // export const SOLANA_NETWORK = 'devnet';
 // export const RPC_URL: string = 'https://api.devnet.solana.com';
-// export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('kcTmTZrP4gGmk3s4Q6Hu6UMmyN4mAuSUfGNvwNuXk6p');
+// export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('EQmj1DE52peMbjvuHGaALG75cxuXtLPjKbufaKrhDpD6');
+
+
+//----------->>>>>>>>>>>> testnet settings
+// export const SOLANA_NETWORK = 'testnet';
+// export const RPC_URL: string = 'https://api.testnet.solana.com';
+// export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('EQmj1DE52peMbjvuHGaALG75cxuXtLPjKbufaKrhDpD6');
+
 
 //----------->>>>>>>>>>>> mainnet/prod settings
-//
 export const SOLANA_NETWORK = 'mainnet-beta';
-export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('EQmj1DE52peMbjvuHGaALG75cxuXtLPjKbufaKrhDpD6');
+export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('kcTmTZrP4gGmk3s4Q6Hu6UMmyN4mAuSUfGNvwNuXk6p');
 export const RPC_URL: string = 'https://white-late-diagram.solana-mainnet.discover.quiknode.pro/841f2637070526fd43f742034e9070f1a69702a2';
 
 consoleLog("RPC_URL: ", RPC_URL);

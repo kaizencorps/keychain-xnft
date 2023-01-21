@@ -2,7 +2,6 @@ import { consoleLog } from "../_helpers/debug"
 
 export const formatAddress = (address: any) => {
   if (!address) return '';
-  consoleLog('typeof address: ', typeof address);
   if (typeof address == 'object') {
     // assume this is a PublicKey
     address = address.toBase58();

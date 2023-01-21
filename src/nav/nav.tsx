@@ -109,7 +109,7 @@ export const TabNavigator = () => {
     </DataRetrieval>
   :
       <Tab.Navigator
-        initialRouteName="Landing"
+        initialRouteName="LandingStack"
         screenOptions={{
           headerShown: false,
           tabBarLabelPosition: 'below-icon',
@@ -122,7 +122,7 @@ export const TabNavigator = () => {
         }}
       >
         <Tab.Screen
-          name="Landing"
+          name="LandingStack"
           component={LandingStack}
           options={{
             tabBarLabel: "HOME",

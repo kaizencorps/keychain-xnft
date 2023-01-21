@@ -100,7 +100,7 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
               <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, padding:Theme.SPACING.MD}}>{formatAddress(wallet.address)}</HeaderText>
             </View>
             <NormalText style={{ color: Theme.COLORS.ALERT_YELLOW, width: '100%', textAlign: 'center'}}>
-              To verify and link this wallet to your Keychain account, connect an existing verified wallet, add this wallet, then reconnect with this wallet
+              Found your Keychain! You can now verify this wallet.
             </NormalText>
             <FatPinkButton text="VERIFY" func={verifyWallet} />
           </View>

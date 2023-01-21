@@ -52,8 +52,9 @@ function useKeychainActions() {
 
         let keychainKeyAcct = null;
         try {
-            keychainKeyAcct = await keychainProg.account.keychainKey.fetch(keychainKeyPda);
+            keychainKeyAcct = await keychainProg.account.keyChainKey.fetch(keychainKeyPda);
         } catch (e) {
+            consoleLog('error fetching keychain key (exists?): ', e);
             // then this key doesn't exist
         }
 
@@ -76,13 +77,16 @@ function useKeychainActions() {
         consoleLog(`progs: ${progs}`);
         const keychainProg = progs.keychain;
 
-
-        // first: see if wallet is connected to a keychain
+        const walletToCheck = walletAddress || wallet.address;
         const [keychainKeyPda ] = findKeychainKeyPda(walletAddress || wallet.address);
+
+        consoleLog(`checking keychain by key ${keychainKeyPda.toBase58()} for wallet: ${walletToCheck.toBase58()}`);
+        // first: see if wallet is connected to a keychain
         let keychainKeyAcct = null;
         try {
-            keychainKeyAcct = await keychainProg.account.keychainKey.fetch(keychainKeyPda);
+            keychainKeyAcct = await keychainProg.account.keyChainKey.fetch(keychainKeyPda);
         } catch (e) {
+            consoleLog(`error fetching keychain key (exists?): ${e}`);
             // then this key doesn't exist
         }
 
@@ -90,6 +94,7 @@ function useKeychainActions() {
             consoleLog(`found keychain key account: ${keychainKeyPda.toBase58()}`);
             await refreshKeychain(keychainKeyAcct.keychain);
         } else {
+            consoleLog(`couldn't find keychain key account: ${keychainKeyPda.toBase58()}`);
             setKeychain(createKeychainState(null, '', false, false, false, []));
         }
     }
@@ -155,8 +160,9 @@ function useKeychainActions() {
 
         let keychainAcct = null;
         try {
-            keychainAcct = await keychainProg.account.currentKeychain.fetch(keychainPda);
+            keychainAcct = await keychainProg.account.currentKeyChain.fetch(keychainPda);
         } catch (err) {
+            consoleLog(`error fetching keychain: ${err}`);
             // then this keychain doesn't exist
         }
 
@@ -170,12 +176,12 @@ function useKeychainActions() {
                 checked: true,
                 keys: []
             }
-            let walletAttached = false;
+            let walletAdded = false;
             let walletVerified = false;
             for (let x = 0; x < keychainAcct.numKeys; x++) {
                 const key = keychainAcct.keys[x];
-                if (key.key == wallet.address) {
-                    walletAttached = true;
+                if (key.key.equals(wallet.address)) {
+                    walletAdded = true;
                     if (key.verified) {
                         consoleLog('found verified wallet on keychain');
                         walletVerified = true;
@@ -188,7 +194,7 @@ function useKeychainActions() {
                 });
             }
             state.walletVerified = walletVerified;
-            state.walletAdded = walletAttached;
+            state.walletAdded = walletAdded;
             setKeychain(state);
             return state;
         } else {
@@ -199,17 +205,23 @@ function useKeychainActions() {
 
     // adds an unverified key to the keychain. return true if successful, false if not
     async function addKey(walletAddress: string) {
-        const addingWalletAddress = new PublicKey(walletAddress);
+        let addingWalletAddress = null;
+        try {
+            addingWalletAddress = new PublicKey(walletAddress);
+        } catch (e) {
+            // invalid address
+           throw new Error('Invalid address');
+        }
 
         const keychainProg = progs.keychain;
 
         try {
-            let txid = await keychainProg.methods.addKey(addingWalletAddress, {
+            let txid = await keychainProg.methods.addKey(addingWalletAddress).accounts({
                 keychain: keychain.keychainAccount,
                 domain: KeychainDomainPda,
                 authority: wallet.address,
-            });
-            console.log(`added key ${addingWalletAddress} to keychain ${keychain.keychainAccount}: ${txid}`);
+            }).rpc();
+            console.log(`added key ${walletAddress} to keychain ${keychain.keychainAccount}: ${txid}`);
             // now refresh the keychain state
             await refreshKeychain();
             return true;
@@ -227,7 +239,7 @@ function useKeychainActions() {
         const [keyPda] = findKeychainKeyPda(wallet.address);
 
         try {
-            let txid = await keychainProg.methods.verifyKey({
+            let txid = await keychainProg.methods.verifyKey().accounts({
                 keychain: keychain.keychainAccount,
                 domain: KeychainDomainPda,
                 treasury: KEYCHAIN_TREASURY,
@@ -235,7 +247,7 @@ function useKeychainActions() {
                 key: keyPda,
                 userKey: wallet.address,
                 systemProgram: SystemProgram.programId,
-            });
+            }).rpc();
             console.log(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
             // now refresh the keychain state
             await refreshKeychain();

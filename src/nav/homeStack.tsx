@@ -8,7 +8,6 @@ import Landing from '../screens/landing';
 import WalletDetails from '../screens/walletDetails';
 import WalletDetected from '../screens/walletDetected';
 import CreateKeychain from '../screens/createKeychain';
-import Logout from '../screens/logout';
 import VerifyWallet from '../screens/verifyWallet';
 
 // logged in screens
@@ -16,6 +15,7 @@ import AddNewWallet from '../screens/loggedIn/addNewWallet';
 import Profile from '../screens/loggedIn/profile';
 import RemoveWallet from '../screens/loggedIn/removeWallet';
 import PendingWallet from '../screens/loggedIn/pendingWallet';
+import Logout from '../screens/loggedIn/logout';
 
 //Types
 import { Wallet } from '../types/wallet';

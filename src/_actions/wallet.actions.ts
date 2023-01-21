@@ -182,6 +182,8 @@ function useWalletActions() {
 
     async function disconnectWallet() {
         await disconnect();
+        setPrograms({keychain: null, profile: null});
+        setProvider(null);
         setWallet(null);
         // setAuth({});
         localStorage.removeItem(LOCAL_STORAGE_KEYS.authData);

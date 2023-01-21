@@ -2,30 +2,29 @@ import React, { FC, ReactElement } from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { FatButton } from "../components/ui/buttons/buttons";
-import { SubHeaderText } from "../components/ui/text/text";
-import { Wallet as WalletHeader } from "../components/wallet-header/wallet-header";
-import ScreenWrapper from "../components/screenWrapper/screenWrapper";
+import { FatButton } from "../../components/ui/buttons/buttons";
+import { SubHeaderText } from "../../components/ui/text/text";
+import {WalletRow} from "../../components/wallet-header/wallet-header";
+import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from "../nav/homeStack";
+import { RootStackParamList } from "../../nav/homeStack";
 
 //Data
-import { keychainAtom } from "../_state/keychain";
-import { userAtom } from "../_state/user";
+import { keychainAtom, userAtom } from "../../_state";
 import { useRecoilValue } from "recoil";
 
 //SVGs
-import Close from "../assets/svgs/Icons/close";
-import LogoutIcon from "../assets/svgs/Icons/logout";
-import AccountCircle from "../assets/svgs/Icons/account-circle";
+import Close from "../../assets/svgs/Icons/close";
+import LogoutIcon from "../../assets/svgs/Icons/logout";
+import AccountCircle from "../../assets/svgs/Icons/account-circle";
 
 //Styles
-import * as Theme from '../constants/theme';
+import * as Theme from '../../constants/theme';
 
 //Utils
-import { useWalletActions } from "../_actions/wallet.actions";
+import { useWalletActions } from "../../_actions/wallet.actions";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Logout'> {}
 
@@ -48,15 +47,10 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
     <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
-          {keychain ?
-            <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
-          :
-            <Image />
-          }
+          <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
           <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</SubHeaderText>
-          <WalletHeader index={0} address={keychain.keychainAccount.toBase58()} conStyle={{ width: '50%' }} />
-          {keychain.keys.map((wallet, i) => 
-            <WalletHeader index={i + 1} address={wallet.wallet.toBase58()} conStyle={{ width: '50%' }} />
+          {keychain.keys.map((keyState, i) =>
+            <WalletRow key={keyState} conStyle={{ width: '50%' }} />
           )}
         </View>
         <View style={styles.botCon}>
@@ -85,8 +79,8 @@ const styles = StyleSheet.create({
     minHeight: Theme.MIN_HEIGHT_CON,
   },
   addressCon: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.BRADIUS.XL,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
@@ -94,7 +88,7 @@ const styles = StyleSheet.create({
   topCon: {
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   botCon: {
@@ -111,7 +105,7 @@ const styles = StyleSheet.create({
   },
   closeCon: {
     width: '100%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   }
 });
