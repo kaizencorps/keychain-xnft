@@ -95,16 +95,16 @@ export const TabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
-          name="Test"
-          component={TestStack}
-          options={{
-            tabBarLabel: "Test",
-            tabBarIcon: ({ color }) => (
-                <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
-            ),
-          }}
-      />
+      {/*<Tab.Screen*/}
+      {/*    name="Test"*/}
+      {/*    component={TestStack}*/}
+      {/*    options={{*/}
+      {/*      tabBarLabel: "Test",*/}
+      {/*      tabBarIcon: ({ color }) => (*/}
+      {/*          <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />*/}
+      {/*      ),*/}
+      {/*    }}*/}
+      {/*/>*/}
     </Tab.Navigator>
     </DataRetrieval>
   :
@@ -147,16 +147,16 @@ export const TabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
-          name="Test"
-          component={Test}
-          options={{
-            tabBarLabel: "Test",
-            tabBarIcon: ({ color }) => (
-                <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />
-            ),
-          }}
-      />
+      {/*<Tab.Screen*/}
+      {/*    name="Test"*/}
+      {/*    component={Test}*/}
+      {/*    options={{*/}
+      {/*      tabBarLabel: "Test",*/}
+      {/*      tabBarIcon: ({ color }) => (*/}
+      {/*          <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />*/}
+      {/*      ),*/}
+      {/*    }}*/}
+      {/*/>*/}
     </Tab.Navigator>
 }
 
