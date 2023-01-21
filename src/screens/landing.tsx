@@ -44,38 +44,50 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   const { signMessage } = useWallet();
 
   const keychainState = useRecoilValue(keychainAtom);
-  const walletState = useRecoilValue(walletAtom);
+  const wallet = useRecoilValue(walletAtom);
+  const keychain = useRecoilValue(keychainAtom);
 
   React.useEffect(() => {
     autoConnect();
   }, [anchorWallet])
 
   const autoConnect = async () => {
-    // if (anchorWallet && !loggedIn) {
     if (anchorWallet) {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
       await walletActions.connectWallet(anchorWallet, signMessage);
       consoleLog('wallet has been set up');
-      // props.navigation.navigate('Profile')
     } else {
       await walletActions.disconnectWallet();
     }
   }
 
   useAsyncEffect(async () => {
-    consoleLog('wallet state changed: ', walletState);
-    if (walletState.address) {
-      consoleLog('checking keychain by connected wallet');
+    consoleLog('got new wallet state: ', wallet);
+    if (wallet && !keychainState.checked) {
+      consoleLog('checking keychain by key: ', wallet.address);
       await keychainActions.checkKeychainByKey();
     }
-    /*
-    consoleLog(`connected: ${keychainState.connected}, exists: ${keychainState.exists}`);
-    if (keychainState.connected && !keychainState.exists) {
-      consoleLog('navigating to WalletDetected');
-      props.navigation.navigate('WalletDetected');
+  }, [wallet]);
+
+  useAsyncEffect(async () => {
+    consoleLog('got new keychain state: ', keychain);
+    if (keychain.checked) {
+      // 2 options:
+      // 1. if keychain exists and wallet is verified, go to home
+      // 2. otherwise, navigate to the new wallet detected page
+      if (keychain.walletVerified) {
+        // todo: navigate to profile page (logged in)
+      } else {
+        // todo: navigate to the verification screen
+        consoleLog('navigating to WalletDetected screen');
+        props.navigation.navigate('WalletDetected');
+      }
     }
-     */
-  }, [walletState]);
+    if (keychain.checked && keychain.walletVerified) {
+      // todo: then we need to navigate to the "logged in" profile stack
+      consoleLog('todo: navigate to profile / logged in screen');
+        // then we need to navigate to new wallet detected screen
+    }
+  }, [keychain]);
 
   return (
     <ScreenWrapper>

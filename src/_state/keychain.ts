@@ -9,9 +9,17 @@ import { collectionsAtom } from './_collections';
 
 
 
-export const keychainAtom = atom<KeychainState | null>({
+export const keychainAtom = atom<KeychainState>({
     key: 'keychain',
-    default: null
+    default: {
+        keychainAccount: null,
+        name: '',
+        exists: false,
+        walletAdded: false,
+        walletVerified: false,
+        checked: false,
+        keys: []
+    }
 });
 
 export const nftsAtom = selector<NFT[]>({

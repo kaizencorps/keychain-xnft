@@ -2,23 +2,23 @@ import React, { FC, ReactElement} from "react";
 
 //Components
 import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { NormalText, BannerText } from "../components/ui/text/text";
-import { NewWallet, Wallet as WalletHeader } from "../components/wallet-header/wallet-header";
+import { NormalText, BannerText } from "../../components/ui/text/text";
+import { NewWallet, Wallet as WalletHeader } from "../../components/wallet-header/wallet-header";
 
 //Data
-import { keychainAtom, nftsAtom, userAtom } from "../_state";
+import { keychainAtom, nftsAtom, userAtom } from "../../_state";
 import { useRecoilValue } from "recoil";
 
 //SVGs
-import AccountCircle from "../assets/svgs/Icons/account-circle";
+import AccountCircle from "../../assets/svgs/Icons/account-circle";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from "../nav/homeStack";
+import { RootStackParamList } from "../../nav/homeStack";
 
 //Styles
-import * as Theme from '../constants/theme';
-import ScreenWrapper from "../components/screenWrapper/screenWrapper";
+import * as Theme from '../../constants/theme';
+import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Profile'> {}
 

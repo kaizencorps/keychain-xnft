@@ -3,17 +3,19 @@ import React, {useEffect} from 'react';
 //Libs
 import { createStackNavigator } from '@react-navigation/stack';
 
-//Pages
-import Profile from '../screens/profile';
+// not necessarily logged in screens
 import Landing from '../screens/landing';
-import AddNewWallet from '../screens/addNewWallet';
-import VerifyWalletDetails from '../screens/verifyWalletDetails';
 import WalletDetails from '../screens/walletDetails';
 import WalletDetected from '../screens/walletDetected';
 import CreateKeychain from '../screens/createKeychain';
 import Logout from '../screens/logout';
-import RemoveWallet from '../screens/removeWallet';
-import NewWalletConnect from '../screens/newWalletConnect';
+import VerifyWallet from '../screens/verifyWallet';
+
+// logged in screens
+import AddNewWallet from '../screens/loggedIn/addNewWallet';
+import Profile from '../screens/loggedIn/profile';
+import RemoveWallet from '../screens/loggedIn/removeWallet';
+import PendingWallet from '../screens/loggedIn/pendingWallet';
 
 //Types
 import { Wallet } from '../types/wallet';
@@ -23,8 +25,8 @@ export type RootStackParamList = {
     Landing: undefined,
     AddNewWallet: undefined,
     RemoveWallet: { address: string, index: number },
-    NewWalletConnect: { address: string },
-    VerifyWalletDetails: { address: string },
+    VerifyWallet: undefined,
+    PendingWallet: undefined,
     WalletDetails: { wallet: Wallet },
     WalletDetected: undefined,
     CreateKeychain: { address: string },
@@ -45,13 +47,13 @@ export default () => {
         >
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="AddNewWallet" component={AddNewWallet} />
-          <Stack.Screen name="VerifyWalletDetails" component={VerifyWalletDetails} />
+          <Stack.Screen name="PendingWallet" component={PendingWallet} />
           <Stack.Screen name="WalletDetails" component={WalletDetails} />
           <Stack.Screen name="WalletDetected" component={WalletDetected} />
           <Stack.Screen name="CreateKeychain" component={CreateKeychain} />
           <Stack.Screen name="Logout" component={Logout} />
           <Stack.Screen name="RemoveWallet" component={RemoveWallet} />
-          <Stack.Screen name="NewWalletConnect" component={NewWalletConnect} />
+          <Stack.Screen name="VerifyWallet" component={VerifyWallet} />
         </Stack.Navigator>
     );
 };

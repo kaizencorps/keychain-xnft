@@ -11,7 +11,9 @@ export interface WalletState {
 
 export interface KeyState {
   wallet: PublicKey,
-  verified: boolean
+  verified: boolean,
+
+  index: number
 }
 
 export interface CollectionsState {
@@ -32,8 +34,9 @@ export interface KeychainState {
   name: string,
   exists: boolean,
   // connected: boolean,
-  walletAttached: boolean,    // true if the connected wallet is on the keychain
+  walletAdded: boolean,    // true if the connected wallet is on the keychain
   walletVerified: boolean,    // true if the connected wallet is a verified key
+  checked: boolean,           // signal that we've checked the status
   keys: KeyState[]
 }
 

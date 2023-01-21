@@ -18,10 +18,18 @@ import * as Theme from '../../constants/theme';
 
 //Utils
 import { formatAddress } from "../../utils/stringFormatting";
+import { KeyState } from "../../types/NFT";
+import {consoleLog} from "../../_helpers/debug";
 
 interface WalletProps {
   index: number,
   address: string
+  func?: (event: GestureResponderEvent) => void,
+  conStyle?: ViewStyle
+}
+
+interface WalletRowProps {
+  keyState: KeyState,
   func?: (event: GestureResponderEvent) => void,
   conStyle?: ViewStyle
 }
@@ -48,7 +56,7 @@ export const Wallet : FC<any> = (props: WalletProps) : ReactElement => {
   }, [])
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={() => props.func}
       disabled={props.func === undefined}
       style={[
@@ -62,6 +70,43 @@ export const Wallet : FC<any> = (props: WalletProps) : ReactElement => {
     </TouchableOpacity>
   )
 }
+
+// todo: probably rename and replace the Wallet class above
+export const WalletRow : FC<any> = (props: WalletRowProps) : ReactElement => {
+
+  const getIcon = React.useCallback(() => {
+    /* TODO PENDING WALLET icon */
+    if (!props.keyState.verified) {
+      //then this wallet is pending
+      consoleLog('todo: return the pending icon here for the WalletRow');
+      // return the pending icon
+    } else {
+      switch(props.keyState.index){
+        case 0: return <Numeric1Box color={"#D5DDF9"} />
+        case 1: return <Numeric2Box color={"#D5DDF9"} />
+        case 2: return <Numeric3Box color={"#D5DDF9"} />
+        case 3: return <Numeric4Box color={"#D5DDF9"} />
+        case 4: return <Numeric5Box color={"#D5DDF9"} />
+      }
+    }
+  }, [])
+
+  return (
+      <TouchableOpacity
+          onPress={() => props.func}
+          disabled={props.func === undefined}
+          style={[
+            styles.con,
+            { backgroundColor: Theme.COLORS.HEADER_BACKGROUND_GRAY },
+            props.conStyle
+          ]}
+      >
+        {getIcon()}
+        <SubHeaderText style={{ marginLeft: Theme.SPACING.MD, color: Theme.COLORS.HEADER_GRAY }}>{formatAddress(props.keyState.wallet)}</SubHeaderText>
+      </TouchableOpacity>
+  )
+}
+
 
 export const NewWallet : FC<any> = (props: NewWalletProps) : ReactElement => {
 

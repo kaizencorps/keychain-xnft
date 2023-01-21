@@ -2,31 +2,31 @@ import React, { FC, ReactElement } from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { BannerText, HeaderText, NormalText } from "../components/ui/text/text";
+import { BannerText, HeaderText, NormalText } from "../../components/ui/text/text";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from "../nav/homeStack";
+import { RootStackParamList } from "../../nav/homeStack";
 
 //Data
 import { useRecoilValue } from "recoil";
-import { nftsAtom } from "../_state/keychain";
+import { nftsAtom } from "../../_state/keychain";
 
 //SVGs
-import Numeric1Box from '../assets/svgs/Icons/numeric-1-box';
-import Numeric2Box from '../assets/svgs/Icons/numeric-2-box';
-import Numeric3Box from '../assets/svgs/Icons/numeric-3-box';
-import Numeric4Box from '../assets/svgs/Icons/numeric-4-box';
-import Numeric5Box from '../assets/svgs/Icons/numeric-5-box';
+import Numeric1Box from '../../assets/svgs/Icons/numeric-1-box';
+import Numeric2Box from '../../assets/svgs/Icons/numeric-2-box';
+import Numeric3Box from '../../assets/svgs/Icons/numeric-3-box';
+import Numeric4Box from '../../assets/svgs/Icons/numeric-4-box';
+import Numeric5Box from '../../assets/svgs/Icons/numeric-5-box';
 
 //Styles
-import * as Theme from '../constants/theme';
-import Close from "../assets/svgs/Icons/close";
+import * as Theme from '../../constants/theme';
+import Close from "../../assets/svgs/Icons/close";
 
 //Utils
-import { formatAddress } from "../utils/stringFormatting";
-import { FatButton } from "../components/ui/buttons/buttons";
-import ScreenWrapper from "../components/screenWrapper/screenWrapper";
+import { formatAddress } from "../../utils/stringFormatting";
+import { FatButton } from "../../components/ui/buttons/buttons";
+import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'RemoveWallet'> {}
 
@@ -73,7 +73,7 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
               color={Theme.COLORS.SCARY_RED}
               backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
               func={removeWallet}
-              
+
             />
           </View>
           <View style={styles.closeCon}>
@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     minHeight: Theme.MIN_HEIGHT_CON,
   },
   addressCon: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: Theme.SPACING.MD,
     borderRadius: Theme.BRADIUS.XL,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   topCon: {
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
     padding: Theme.SPACING.LG,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   botCon: {
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
   closeCon: {
     width: '100%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   }
 });

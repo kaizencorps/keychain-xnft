@@ -1,4 +1,4 @@
-import {SetterOrUpdater, useRecoilState, useRecoilValue, useSetRecoilState} from 'recoil';
+import {SetterOrUpdater, useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} from 'recoil';
 
 import {
     userAtom, walletAtom,
@@ -85,17 +85,27 @@ function useKeychainActions() {
 
         if (keychainKeyAcct) {
             consoleLog(`found keychain key account: ${keychainKeyPda.toBase58()}`);
-            return await refreshKeychain(keychainKeyAcct.keychain);
+            await refreshKeychain(keychainKeyAcct.keychain);
         } else {
-            setKeychain(null);
-            return null;
+            setKeychain(createKeychainState(null, '', false, false, false, []));
         }
+    }
 
+    function createKeychainState(keychainAccount, name, exists, walletAdded, walletVerified, keys=[], checked=true): KeychainState {
+        const state = {
+            keychainAccount,
+            name,
+            exists,
+            walletAdded,
+            walletVerified,
+            checked,
+            keys
+        };
+        return state;
     }
 
     // create a new keychain
     async function createKeychain(name: string) {
-        const progs = useRecoilValue(programsAtom) as Programs;
         const [keychainPda] = findKeychainPda(name);
         const [keychainStatePda] = findKeychainStatePda(keychainPda);
         const [keychainKeyPda] = findKeychainKeyPda(wallet.address);
@@ -116,13 +126,19 @@ function useKeychainActions() {
 
         console.log(`created keychain txid: ${txid}`);
 
-        // todo: set the keychain state
+        setKeychain(
+            createKeychainState(
+                keychainPda,
+                name,
+                true,
+                true,
+                true,
+                [{wallet: wallet.address, verified: true}]));
     }
 
     // refresh the keychain state and return it. if an account is passed in, use it otherwise, use what's already in state
     async function refreshKeychain(keychainAccount: PublicKey = null) {
 
-        const progs = useRecoilValue(programsAtom) as Programs;
         const keychainProg = progs.keychain;
         let keychainPda = keychainAccount ? keychainAccount : keychain.keychainAccount;
 
@@ -138,8 +154,9 @@ function useKeychainActions() {
                 keychainAccount: keychainPda as PublicKey,
                 name: keychainAcct.name as string,
                 exists: true,
-                walletAttached: true,
+                walletAdded: true,
                 walletVerified: true,
+                checked: true,
                 keys: []
             }
             let walletAttached = false;
@@ -149,30 +166,30 @@ function useKeychainActions() {
                 if (key.key == wallet.address) {
                     walletAttached = true;
                     if (key.verified) {
+                        consoleLog('found verified wallet on keychain');
                         walletVerified = true;
                     }
                 }
                 state.keys.push({
                     wallet: key.key,
                     verified: key.verified,
+                    index: x
                 });
             }
             state.walletVerified = walletVerified;
-            state.walletAttached = walletAttached;
+            state.walletAdded = walletAttached;
             setKeychain(state);
             return state;
         } else {
-            setKeychain(null)
-            return null;
+            // resetKeychain();
+            setKeychain(createKeychainState(null, '', false, false, false, []));
         }
-
     }
 
     // adds an unverified key to the keychain. return true if successful, false if not
     async function addKey(walletAddress: string) {
         const addingWalletAddress = new PublicKey(walletAddress);
 
-        const progs = useRecoilValue(programsAtom) as Programs;
         const keychainProg = progs.keychain;
 
         try {
@@ -194,7 +211,6 @@ function useKeychainActions() {
 
     // verifies the connected wallet on the keychain. returns true if successful, false if not
     async function verifyKey() {
-        const progs = useRecoilValue(programsAtom) as Programs;
         const keychainProg = progs.keychain;
 
         const [keyPda] = findKeychainKeyPda(wallet.address);
