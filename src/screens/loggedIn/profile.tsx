@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil";
 
 //SVGs
 import AccountCircle from "../../assets/svgs/Icons/account-circle";
+import DotsVertical from "../../assets/svgs/Icons/dots-vertical";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -52,6 +53,9 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
           <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{keychain.name}</BannerText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>{`${nfts.length} NFTs`}</NormalText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>
+          <TouchableOpacity hitSlop={{ left: 20, bottom: 20 }} onPress={goToLogout} style={styles.dots}>
+            <DotsVertical rotation={90} color={Theme.COLORS.INACTIVE_GRAY} />
+          </TouchableOpacity>
         </View>
         <View style={styles.botCon}>
           <View style={styles.profileCon}>
@@ -89,6 +93,12 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     paddingHorizontal: Theme.SPACING.MD
+  },
+  dots: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 999
   }
 });
 

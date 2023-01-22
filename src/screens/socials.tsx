@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components
-import { View, StyleSheet, Image, Linking } from 'react-native';
+import { View, StyleSheet, Image, Linking, Text, TouchableOpacity } from 'react-native';
 import { SocialMedia } from '../components/ui/socialMedia/socialMedia';
 import { NormalText } from '../components/ui/text/text';
 import { FatPinkButton } from '../components/ui/buttons/buttons';
@@ -13,16 +13,16 @@ import useToasts from '../hooks/useToasts';
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../nav/aboutStack';
+import { NOTI_STATUS } from '../_state';
 
 //Styles
 import * as Theme from "../constants/theme";
 
-//SVGs
+//Media
 import Discord from '../assets/svgs/logos/discord';
 import Twitter from '../assets/svgs/logos/twitter';
 import Email from '../assets/svgs/Icons/email';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
-import { NOTI_STATUS } from '../_state';
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
@@ -35,9 +35,9 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
   
   const handleSubscribe = () => {}
 
-  const createAToast = () => {
-    navigator.clipboard.writeText("hoorah@kaizencorps.com");
-    createToast('Copied hoorah@kaizencorps.com to clipboard', NOTI_STATUS.DEFAULT)
+  const copyEmailAndToast = (email: string) => {
+    navigator.clipboard.writeText(email);
+    createToast(`Copied ${email} to clipboard`, NOTI_STATUS.DEFAULT)
   }
 
   // TODO maybe need a different linking system for web vs mobile
@@ -55,15 +55,22 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
             </View>
         </View>
         <View style={styles.card2}>
-            <NormalText style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Donec sit amet porta ipsum. Praesent vitae sem sit amet arcu hendrerit imperdiet at at tellus. 
-                Curabitur turpis neque, hendrerit a nulla quis, mattis dapibus diam. Vivamus auctor accumsan orci, 
-                vitae scelerisque quam dapibus eget. Quisque magna tellus, congue ut rhoncus posuere, condimentum at tortor.
-            </NormalText>
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <Image source={require('../assets/pngs/alpha-tag.png')} style={{ width: 200, height: 75 }} />
+          </View>
+            <Text style={{ fontFamily: 'BlenderPro-Medium', textAlign: 'center', color: Theme.COLORS.LABEL_TEXT_WHITE, marginVertical: Theme.SPACING.MD }}>
+              {`This project is currently in ALPHA development. If you experience any bugs, please let us know at `}
+              <TouchableOpacity onPress={() => copyEmailAndToast('team@kaizencorps.com')}>
+                <Text style={{ fontFamily: 'BlenderPro-Medium', color: Theme.COLORS.ACTIVE_PINK }}>
+                  team@kaizencorps.com 
+                </Text>
+              </TouchableOpacity>
+              {` and we'll address it promptly.`}
+            </Text>
             <View style={styles.card2_1}>
                 <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord width={25} height={25}/>} link={() => openTabTo("https://discord.gg/shyrW3CmTB")}/>
                 <SocialMedia bgColor={Theme.COLORS.TWITTER} icon={<Twitter width={25} height={25}/>} link={() => openTabTo("https://twitter.com/KaizenCorps_")} />
-                <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={25} height={25} />} link={() => createAToast()} />
+                <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={25} height={25} />} link={() => copyEmailAndToast("hoorah@kaizencorps.com")} />
             </View>
             <View style={styles.card2_2}>
                 <NormalText style={styles.text2}>Don't miss our updates!</NormalText>
@@ -102,14 +109,12 @@ const styles = StyleSheet.create({
     display:"flex",
     flexDirection: "column",
     justifyContent: "center",
-    padding: 20,
-    margin: 10
   },
   card2_1:{
     display: 'flex', 
     flexDirection: 'row',
     justifyContent : 'space-around',   
-    marginVertical: Theme.SPACING.LG 
+    marginVertical: Theme.SPACING.MD
   },
   card2_2:{
     display: "flex", 

@@ -26,6 +26,8 @@ import Close from '../assets/svgs/Icons/close';
 import * as Theme from '../constants/theme';
 import { PublicKey } from '@solana/web3.js';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
+import useToasts from '../hooks/useToasts';
+import { NOTI_STATUS } from '../_state';
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'NFTData'> {}
 
@@ -35,6 +37,7 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
   const { nft, walletAddress } = props.route.params;
 
   const dims = useWindowDimensions();
+  const { createToast } = useToasts();
 
   const scrollRef: any = React.useRef();
 
@@ -53,11 +56,11 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
   }, [dims.width])
 
   const toggleFavorite = () => {
-    // TODO
+    createToast('Not available in alpha. Coming soon', NOTI_STATUS.DEFAULT);
   }
 
   const setProfilePic = () => {
-    // TODO
+    createToast('Not available in alpha. Coming soon', NOTI_STATUS.DEFAULT);
   }
 
   const goBack = () => props.navigation.goBack();

@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
   closeCon: {
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: Theme.SPACING.XL
   }
 });
 
