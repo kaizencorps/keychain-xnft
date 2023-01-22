@@ -56,7 +56,7 @@ export const findKeychainStatePda = (keychainPda: PublicKey, domain: string = DO
         keychainPda.toBuffer(),
         Buffer.from(anchor.utils.bytes.utf8.encode(KEYCHAIN_STATE_SPACE)),
         Buffer.from(anchor.utils.bytes.utf8.encode(domain)),
-            Buffer.from(anchor.utils.bytes.utf8.encode(KEYCHAIN)),
+        Buffer.from(anchor.utils.bytes.utf8.encode(KEYCHAIN)),
         ],
         KeychainProgramId,
     );

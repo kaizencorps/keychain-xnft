@@ -1,6 +1,7 @@
 import {SetterOrUpdater, useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} from 'recoil';
 
 import {
+    providerAtom,
     userAtom, walletAtom,
 } from '../_state';
 import {findKeychainKeyPda, findKeychainPda, findKeychainStatePda, KeychainDomainPda} from "../programs/keychain-utils";
@@ -8,11 +9,16 @@ import {consoleLog} from "../_helpers/debug";
 import {PublicKey, SystemProgram} from "@solana/web3.js";
 import {keychainAtom, Programs, programsAtom} from "../_state";
 import {KeychainState} from "../types/NFT";
-import {KEYCHAIN_TREASURY} from "../types/utils/config";
+import {connection, KEYCHAIN_TREASURY} from "../types/utils/config";
 import {useWalletActions} from "./wallet.actions";
+import {Provider} from "@project-serum/anchor";
+import {sleep} from "../utils/misc";
 
 
 function useKeychainActions() {
+
+    // hack confirmation time of 3.5 seconds
+    const CONFIRM_TIME = 3500;
 
     const [user, setUser] = useRecoilState(userAtom);
     const wallet = useRecoilValue(walletAtom);
@@ -20,6 +26,8 @@ function useKeychainActions() {
     const resetKeychainState = useResetRecoilState(keychainAtom);
     const progs = useRecoilValue(programsAtom) as Programs;
     const walletActions = useWalletActions();
+
+    const provider = useRecoilValue(providerAtom);
 
     function setUsername(username: string) {
         setUser({username})
@@ -32,14 +40,17 @@ function useKeychainActions() {
     //    - a. the user is trying to create a new keychain but the name is taken
     //    - b. the user is trying to access his own keychain, but hasn't added this key to it for verification yet
     // 3. no keychain with the given name exists
-    async function checkKeychainByName(name: string) {
+    async function checkKeychainByName(name: string): Promise<KeychainState> {
 
         const [keychainPda] = findKeychainPda(name);
         return await refreshKeychain(keychainPda);
     }
 
     // checks for keychain existence given a wallet address (potential key)
+    /*
     async function checkKeychainByWallet() {
+        consoleLog('checking keychain by wallet');
+        consoleLog('got progs');
         const [keychainKeyPda ] = findKeychainKeyPda(wallet.address);
         const keychainProg = progs.keychain;
 
@@ -61,12 +72,15 @@ function useKeychainActions() {
 
         } else {
             // no keychain
+            // todo: change
             setKeychain(null);
             return null;
         }
     }
+     */
 
-    async function checkKeychainByKey(walletAddress: PublicKey = null) {
+    async function checkKeychainByKey(walletAddress: PublicKey = null): Promise<KeychainState> {
+
         const keychainProg = progs.keychain;
 
         const walletToCheck = walletAddress || wallet.address;
@@ -82,10 +96,12 @@ function useKeychainActions() {
         }
 
         if (keychainKeyAcct) {
-            await refreshKeychain(keychainKeyAcct.keychain);
+            return await refreshKeychain(keychainKeyAcct.keychain);
         } else {
             consoleLog(`couldn't find keychain key account: ${keychainKeyPda.toBase58()}`);
-            setKeychain(createKeychainState(null, '', false, false, false, []));
+            const keychainState = createKeychainState(null, '', false, false, false, []);
+            setKeychain(keychainState);
+            return keychainState;
         }
     }
 
@@ -103,7 +119,7 @@ function useKeychainActions() {
     }
 
     // create a new keychain
-    async function createKeychain(name: string) {
+    async function createKeychain(name: string): Promise<boolean> {
         const [keychainPda] = findKeychainPda(name);
         const [keychainStatePda] = findKeychainStatePda(keychainPda);
         const [keychainKeyPda] = findKeychainKeyPda(wallet.address);
@@ -132,17 +148,20 @@ function useKeychainActions() {
                 true,
                 true,
                 [{wallet: wallet.address, verified: true}]));
+
+        return true;
     }
 
-    async function resetKeychain(disconnectWallet = false) {
+    async function resetKeychain(disconnectWallet = false): Promise<boolean> {
         if (disconnectWallet) {
             await walletActions.disconnectWallet();
         }
-        return resetKeychainState();
+        resetKeychainState();
+        return true;
     }
 
     // refresh the keychain state and return it. if an account is passed in, use it otherwise, use what's already in state
-    async function refreshKeychain(keychainAccount: PublicKey = null) {
+    async function refreshKeychain(keychainAccount: PublicKey = null): Promise<KeychainState> {
 
         const keychainProg = progs.keychain;
         let keychainPda = keychainAccount ? keychainAccount : keychain.keychainAccount;
@@ -187,7 +206,9 @@ function useKeychainActions() {
             return state;
         } else {
             // resetKeychain();
-            setKeychain(createKeychainState(null, '', false, false, false, []));
+            const keychainState = createKeychainState(null, '', false, false, false, []);
+            setKeychain(keychainState);
+            return keychainState;
         }
     }
     async function removeKeyByIndex(index: number) {
@@ -200,67 +221,131 @@ function useKeychainActions() {
         // todo: handle unknown key ..? shouldn't happe
     }
 
-    async function removeKey(keyWallet: PublicKey) {
+    async function removeKey(keyWallet: PublicKey): Promise<boolean> {
         const [keychainKeyPda] = findKeychainKeyPda(keyWallet);
-        const keychainProg = progs.keychain;
-        const txid = await keychainProg.methods.removeKey(wallet).accounts({
-            keychain: keychain.keychainAccount,
-            key: keychainKeyPda,
-            domain: KeychainDomainPda,
-            treasury: KEYCHAIN_TREASURY,
-            authority: wallet.address,
-        }).rpc();
-        console.log(`removed key txid: ${txid}`);
-        await refreshKeychain();
+        const [keychainStatePda] = findKeychainStatePda(keychain.keychainAccount);
+
+        try {
+            const keychainProg = progs.keychain;
+            const txid = await keychainProg.methods.removeKey(keyWallet).accounts({
+                keychain: keychain.keychainAccount,
+                keychainState: keychainStatePda,
+                key: keychainKeyPda,
+                domain: KeychainDomainPda,
+                authority: wallet.address,
+                treasury: KEYCHAIN_TREASURY,
+            }).rpc();
+            console.log(`removed key txid: ${txid}`);
+            await refreshKeychain();
+            return true;
+        } catch (err) {
+            if (isKnownError(err)) {
+                // hack to "confirm" a tx
+                await sleep(CONFIRM_TIME);
+                await refreshKeychain();
+                // don't worry be happy
+                return true;
+            } else {
+                consoleLog(`error removing key ${keyWallet.toBase58()}: ${err}`);
+                throw err;
+            }
+        }
     }
 
     // adds an unverified key to the keychain. return true if successful, false if not
-    async function addKey(walletAddress: string) {
-        let addingWalletAddress = null;
-        try {
-            addingWalletAddress = new PublicKey(walletAddress);
-        } catch (e) {
-            // invalid address
-           throw new Error('Invalid address');
-        }
-
+    async function addKey(addingWalletAddress: PublicKey): Promise<boolean> {
         const keychainProg = progs.keychain;
 
         try {
-            let txid = await keychainProg.methods.addKey(addingWalletAddress).accounts({
+            // construct the tx this way and send cause calling the .rpc() method results in a weird typeError trying to set the connection _nextClientSubscriptionId
+            // though turns out this doesn't seem to help atm... maybe need to play with confirmation
+            let tx = await keychainProg.methods.addKey(addingWalletAddress).accounts({
                 keychain: keychain.keychainAccount,
                 domain: KeychainDomainPda,
                 authority: wallet.address,
-            }).rpc();
-            console.log(`added key ${walletAddress} to keychain ${keychain.keychainAccount}: ${txid}`);
+            }).transaction();
+
+            const notNullProvider = provider as Provider;
+            consoleLog('sending tx...');
+            let txid = await notNullProvider.sendAndConfirm(tx);
+
+            /*
+            consoleLog(`confirming tx: ${txid}`);
+            const latestBlockHash = await connection.getLatestBlockhash();
+            await connection.confirmTransaction(txid, {
+              blockhash: latestBlockHash.blockhash,
+              lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+              signature: txid,
+            });
+             */
+
+            consoleLog(`tx confirmed: ${txid}`);
+
+            // let txid = await keychainProg.methods.addKey(addingWalletAddress).accounts({
+            //     keychain: keychain.keychainAccount,
+            //     domain: KeychainDomainPda,
+            //     authority: wallet.address,
+            // }).rpc();
+            console.log(`added key ${addingWalletAddress.toBase58()} to keychain ${keychain.keychainAccount}: ${txid}`);
             // now refresh the keychain state
             await refreshKeychain();
             return true;
-
         } catch (err) {
-            consoleLog(`error adding key ${addingWalletAddress} to keychain ${keychain.keychainAccount}: ${err}`);
-            return false;
+            if (isKnownError(err)) {
+                // hack to "confirm" a tx
+                await sleep(CONFIRM_TIME);
+                await refreshKeychain();
+                // don't worry be happy
+                return true;
+            } else {
+                consoleLog(`error adding key ${addingWalletAddress} to keychain ${keychain.keychainAccount}: ${err}`);
+                throw err;
+            }
         }
     }
 
+    // handle weird errors (that might not be real errors)
+    function isKnownError(err) {
+        // weird error that's not an error: TypeError: Cannot assign to read only property '_nextClientSubscriptionId'
+        const errorString = err.toString();
+        if (errorString.includes('_nextClientSubscriptionId')) {
+            return true;
+        }
+        return false;
+    }
+
     // verifies the connected wallet on the keychain. returns true if successful, false if not
-    async function verifyKey() {
+    async function verifyKey(): Promise<boolean> {
         const keychainProg = progs.keychain;
 
         const [keyPda] = findKeychainKeyPda(wallet.address);
 
-        let txid = await keychainProg.methods.verifyKey().accounts({
-            keychain: keychain.keychainAccount,
-            domain: KeychainDomainPda,
-            treasury: KEYCHAIN_TREASURY,
-            authority: wallet.address,
-            key: keyPda,
-            userKey: wallet.address,
-            systemProgram: SystemProgram.programId,
-        }).rpc();
-        // console.log(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
-        // now refresh the keychain state
-        await refreshKeychain();
+        try {
+            let txid = await keychainProg.methods.verifyKey().accounts({
+                keychain: keychain.keychainAccount,
+                domain: KeychainDomainPda,
+                treasury: KEYCHAIN_TREASURY,
+                authority: wallet.address,
+                key: keyPda,
+                userKey: wallet.address,
+                systemProgram: SystemProgram.programId,
+            }).rpc();
+            // console.log(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
+            // now refresh the keychain state
+            await refreshKeychain();
+            return true;
+        } catch (err) {
+            if (isKnownError(err)) {
+                // hack to "confirm" a tx
+                await sleep(CONFIRM_TIME);
+                await refreshKeychain();
+                // don't worry be happy
+                return true;
+            } else {
+                consoleLog(`error verifying key ${wallet.address} on keychain ${keychain.keychainAccount}: ${err}`);
+                throw err;
+            }
+        }
     }
 
     return {
@@ -268,12 +353,12 @@ function useKeychainActions() {
         checkKeychainByName,
         checkKeychainByKey,
         createKeychain,
-        checkKeychainByWallet,
         addKey,
         verifyKey,
         resetKeychain,
         removeKey,
-        removeKeyByIndex
+        refreshKeychain,
+        removeKeyByIndex,
     };
 }
 

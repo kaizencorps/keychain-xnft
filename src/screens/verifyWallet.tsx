@@ -32,6 +32,7 @@ import ScreenWrapper from "../components/screenWrapper/screenWrapper";
 import { NOTI_STATUS, walletAtom } from "../_state";
 import { useKeychainActions } from "../_actions/keychain.actions";
 import useToasts from "../hooks/useToasts";
+import {consoleLog} from "../_helpers/debug";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'VerifyWallet'> {}
 
@@ -61,9 +62,11 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
     toggleLoading(true);
     try {
       await keychainActions.verifyKey();
-      createToast('Located wallet, and requested verification', NOTI_STATUS.SUCCESS);
+      createToast('Verified! Logging in...', NOTI_STATUS.SUCCESS);
+      // todo: navigation complains about this but since the refresh of keychain happens, the profile screen gets pulled up anyway
       props.navigation.navigate('Profile')
     } catch (err) {
+      consoleLog('problem verifying wallet: ', err);
       createToast(`There was a problem while verifying: ${err}`, NOTI_STATUS.ERR);
     } finally {
       toggleLoading(false);

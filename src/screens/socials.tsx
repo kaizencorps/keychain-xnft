@@ -23,6 +23,11 @@ import Discord from '../assets/svgs/logos/discord';
 import Twitter from '../assets/svgs/logos/twitter';
 import Email from '../assets/svgs/Icons/email';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
+<<<<<<< HEAD
+=======
+import { NOTI_STATUS } from '../_state';
+import axios from "axios";
+>>>>>>> e21fe886eed3cb20b895da548617e79f01c0b1b0
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
@@ -32,8 +37,11 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
   const { createToast } = useToasts();
 
   const [inputValue, setInputValue] = React.useState("");
-  
-  const handleSubscribe = () => {}
+
+  const handleSubscribe = async () => {
+    const response = await axios.post("https://keychain.kaizencorps.com/api/v1/misc/email", { email: inputValue});
+    createToast('Email successfully subscribed!', NOTI_STATUS.SUCCESS);
+  }
 
   const copyEmailAndToast = (email: string) => {
     navigator.clipboard.writeText(email);
@@ -43,8 +51,8 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
   // TODO maybe need a different linking system for web vs mobile
   const openTabTo = (url: string) => {
     Linking.openURL(url);
-  } 
-   
+  }
+
   return (
     <ScreenWrapper>
       <View style={styles.subCon}>
@@ -83,7 +91,7 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
                 <FatPinkButton text='SUBSCRIBE' func={handleSubscribe} />
             </View>
         </View>
-      </View>      
+      </View>
     </ScreenWrapper>
   )
 }
@@ -111,33 +119,38 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card2_1:{
-    display: 'flex', 
+    display: 'flex',
     flexDirection: 'row',
+<<<<<<< HEAD
     justifyContent : 'space-around',   
     marginVertical: Theme.SPACING.MD
+=======
+    justifyContent : 'space-around',
+    marginVertical: Theme.SPACING.LG
+>>>>>>> e21fe886eed3cb20b895da548617e79f01c0b1b0
   },
   card2_2:{
-    display: "flex", 
+    display: "flex",
     flexDirection: 'column',
     justifyContent: 'space-around',
     backgroundColor: Theme.COLORS.MEDIA_GREY,
     padding: Theme.SPACING.XXL,
-    marginTop: Theme.SPACING.XXL, 
+    marginTop: Theme.SPACING.XXL,
     borderRadius: Theme.BRADIUS.SM,
     gap:16
   },
   logo:{
     width: 150,
-    height: 150, 
+    height: 150,
   },
   logo2:{
     width:'100%',
-    height: '100%', 
+    height: '100%',
     backgroundColor: 'transparent'
   },
   ImageBox:{
-    height: 50, 
-    width: 120, 
+    height: 50,
+    width: 120,
     padding : Theme.SPACING.LG
   },
   text: {
@@ -157,17 +170,17 @@ const styles = StyleSheet.create({
   tex3:{
     margin:32
   },
-  button: { 
+  button: {
     width: "100%",
     borderRadius: Theme.BRADIUS.XL,
     margin: 16,
-    backgroundColor: Theme.COLORS.ACTIVE_PINK, 
+    backgroundColor: Theme.COLORS.ACTIVE_PINK,
     color: Theme.COLORS.LABEL_TEXT_WHITE,
     fontSize: 32,
     fontFamily: 'BlenderPro-Bold',
     display: "flex",
     justifyContent: "center",
-    padding: 10, 
+    padding: 10,
     marginHorizontal: 5
    },
    input: {

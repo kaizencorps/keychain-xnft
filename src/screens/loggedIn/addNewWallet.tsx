@@ -20,6 +20,7 @@ import Close from "../../assets/svgs/Icons/close";
 import { FatPinkButton } from "../../components/ui/buttons/buttons";
 import {consoleLog} from "../../_helpers/debug";
 import { useKeychainActions } from "../../_actions/keychain.actions";
+import {PublicKey} from "@solana/web3.js";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'AddNewWallet'> {}
 
@@ -37,12 +38,20 @@ const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
 
   const submitNewWallet = async () => {
     if(validate()){
-      toggleLoading(true)
+      let addingWalletAddress = null;
       try {
-        await keychainActions.addKey(input);
-        props.navigation.navigate('PendingWallet');
+        addingWalletAddress = new PublicKey(input);
       } catch (e) {
-  
+        // invalid address
+        setErrorText('You must enter a valid Solana wallet address');
+      }
+      setErrorText('');
+      toggleLoading(true);
+      try {
+        await keychainActions.addKey(addingWalletAddress);
+        props.navigation.navigate('PendingWallet', {address: addingWalletAddress});
+      } catch (e) {
+        setErrorText('There was an error adding your wallet: ' + e.message);
       } finally {
         toggleLoading(false);
       }
