@@ -120,8 +120,7 @@ return (
       <View style={styles.botCon}>
         <View>
           <NormalText style={styles.topText}>Enter your keychain username to add this wallet to your account</NormalText>
-          <Input val={username} onChangeText={setUsername} isError={errorText.length} />
-          {!!errorText.length && <NormalText style={{ color: Theme.COLORS.SCARY_RED, marginBottom: Theme.SPACING.MD }}>{errorText}</NormalText>}
+          <Input val={username} onChangeText={setUsername} errorText={errorText} />
           <FatPinkButton text="SUBMIT" func={submitUsername} />
           <NormalText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG }}>Don't have a keychain account?</NormalText>
           <TouchableOpacity onPress={goToCreateNew}>

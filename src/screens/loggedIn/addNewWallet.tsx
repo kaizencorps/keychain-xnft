@@ -4,6 +4,7 @@ import React, {FC, ReactElement, useState} from "react";
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
 import Input from "../../components/ui/inputs/inputs";
+import { ErrorText } from "../../components/ui/text/text";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -26,16 +27,27 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'AddNewWallet'>
 const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
 
   const [input, setInput] = React.useState('')
+  const [loading, toggleLoading] = React.useState(false);
+  const [errorText, setErrorText] = React.useState('');
   const keychainActions = useKeychainActions();
 
-  const submitNewWallet = async () => {
-    // TODO
-    // props.navigation.navigate('VerifyWalletDetails');
-    consoleLog(`adding wallet: ${input}`);
-    try {
-      await keychainActions.addKey(input);
-    } catch (e) {
+  const validate = () => {
+    return input.length >= 32 && input.length <= 44;
+  }
 
+  const submitNewWallet = async () => {
+    if(validate()){
+      toggleLoading(true)
+      try {
+        await keychainActions.addKey(input);
+        props.navigation.navigate('VerifyWallet', { address: input });
+      } catch (e) {
+  
+      } finally {
+        toggleLoading(false);
+      }
+    } else {
+      setErrorText('You must enter a valid Solana wallet address');
     }
   }
 
@@ -54,8 +66,9 @@ const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
             <Input
               val={input}
               onChangeText={setInput}
+              errorText={errorText}
             />
-            <FatPinkButton text="SUBMIT" func={submitNewWallet} />
+            <FatPinkButton text={loading ? "LOADING..." : "SUBMIT"} func={submitNewWallet} />
           </View>
           <View style={styles.closeCon}>
             <TouchableOpacity onPress={goBack}>

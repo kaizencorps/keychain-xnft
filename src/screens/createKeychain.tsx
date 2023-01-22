@@ -3,8 +3,9 @@ import React, {FC, ReactElement, useState} from "react";
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { FatPinkButton } from "../components/ui/buttons/buttons";
-import { BannerText, HeaderText, NormalText, SubHeaderText } from "../components/ui/text/text";
+import { BannerText, HeaderText, NormalText, SubHeaderText, ErrorText } from "../components/ui/text/text";
 import ScreenWrapper from "../components/screenWrapper/screenWrapper";
+import Input from "../components/ui/inputs/inputs";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -18,14 +19,18 @@ import Shimmer from "../assets/svgs/Icons/shimmer";
 //Utils
 import { formatAddress } from "../utils/stringFormatting";
 
+//Data
+import { useKeychainActions } from "../_actions/keychain.actions";
+import {keychainAtom, NOTI_STATUS, walletAtom } from "../_state";
+import { useRecoilValue } from "recoil";
+
+//Hooks
+import useToasts from "../hooks/useToasts";
+import useAsyncEffect from "use-async-effect";
+
 //Styles
 import * as Theme from '../constants/theme';
-import Input from "../components/ui/inputs/inputs";
-import {keychainAtom, walletAtom } from "../_state";
-import { useRecoilValue } from "recoil";
-import { useKeychainActions } from "../_actions/keychain.actions";
 import { consoleLog } from "../_helpers/debug";
-import useAsyncEffect from "use-async-effect";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'CreateKeychain'> {}
@@ -35,8 +40,11 @@ const CreateKeychain : FC<any> = (props: Props) : ReactElement => {
 
   // const { address } = props.route.params;
 
-  const [username, setUsername] = React.useState('')
-  const [errorText, setErrorText] = React.useState('')
+  const { createToast } = useToasts();
+
+  const [username, setUsername] = React.useState('');
+  const [errorText, setErrorText] = React.useState('');
+  const [loading, toggleLoading] = React.useState(false);
 
   const wallet = useRecoilValue(walletAtom);
   const keychain = useRecoilValue(keychainAtom);
@@ -46,20 +54,31 @@ const CreateKeychain : FC<any> = (props: Props) : ReactElement => {
   const goHome = () => props.navigation.navigate('Profile')
 
   const createKeychain = async () => {
-    consoleLog('creating keychain w/username: ', username);
-    // todo: some sort of loading ..?
-    try {
-      await keychainActions.createKeychain(username);
-    } catch (err) {
-      // todo: handle
+    if(validate()){
+      setErrorText(''); // Reset
+      toggleLoading(true);
+      consoleLog('creating keychain w/username: ', username);
+      try {
+        await keychainActions.createKeychain(username);
+        createToast('Created keychain', NOTI_STATUS.SUCCESS);
+      } catch (err) {
+        createToast('Error creating keychain', NOTI_STATUS.ERR);
+      } finally {
+        toggleLoading(false);
+        goHome();
+      }
+    } else {
+      setErrorText('You must enter a keychain username')
     }
-    // goHome();
+  }
+
+  const validate = () => {
+    return !!username.length;
   }
 
   useAsyncEffect(async () => {
     if (keychain.walletVerified) {
-      consoleLog('todo: navigate to profile / logged in screen');
-      // todo: navigate to logged in profile screen
+      goHome();
     }
   }, [keychain]);
 
@@ -77,9 +96,8 @@ const CreateKeychain : FC<any> = (props: Props) : ReactElement => {
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
             <NormalText style={styles.pickText}>Choose a keychain username</NormalText>
-            <Input val={username} onChangeText={setUsername} isError={errorText.length} />
-            {!!errorText.length && <NormalText style={styles.errorText}>{errorText}</NormalText>}
-            <FatPinkButton text="CREATE KEYCHAIN" func={createKeychain} />
+            <Input val={username} onChangeText={setUsername} errorText={errorText} />
+            <FatPinkButton text={loading ? "CREATING..." : "CREATE KEYCHAIN"} func={createKeychain} />
           </View>
           <View style={styles.closeCon}>
             <TouchableOpacity onPress={goBack}>

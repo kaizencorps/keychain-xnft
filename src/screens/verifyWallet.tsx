@@ -4,7 +4,7 @@ import React, { FC, ReactElement } from "react";
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { FatPinkButton } from "../components/ui/buttons/buttons";
 import { HeaderText, NormalText, SubHeaderText } from "../components/ui/text/text";
-import { WalletRow, Wallet as WalletHeader } from "../components/wallet-header/wallet-header";
+import { WalletRow } from "../components/wallet-header/wallet-header";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -29,17 +29,20 @@ import * as Theme from '../constants/theme';
 //Utils
 import { formatAddress } from "../utils/stringFormatting";
 import ScreenWrapper from "../components/screenWrapper/screenWrapper";
-import { walletAtom } from "../_state";
+import { NOTI_STATUS, walletAtom } from "../_state";
 import { useKeychainActions } from "../_actions/keychain.actions";
-import useAsyncEffect from "use-async-effect";
-import {consoleLog} from "../_helpers/debug";
+import useToasts from "../hooks/useToasts";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'VerifyWallet'> {}
 
 
-// this screen is part of landing stack (user not logged in yet)
 const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
 
+  // const { address } = props.route.params;
+
+  const { createToast } = useToasts();
+
+  const [loading, toggleLoading] = React.useState(false);
   const keychain = useRecoilValue(keychainAtom);
   const wallet = useRecoilValue(walletAtom);
   const user = useRecoilValue(userAtom);
@@ -55,13 +58,15 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
   const goBack = () => props.navigation.goBack();
 
   const verifyWallet = async () => {
-    // todo: loading ..?
+    toggleLoading(true);
     try {
       await keychainActions.verifyKey();
+      createToast('Located wallet, and requested verification', NOTI_STATUS.SUCCESS);
+      props.navigation.navigate('Profile')
     } catch (err) {
-      // todo: handle w/error message or something
+      createToast('Error while locating wallet for verification request', NOTI_STATUS.ERR);
     } finally {
-      // set not loading ..
+      toggleLoading(false);
     }
   }
 
@@ -97,12 +102,12 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
         <View style={styles.botCon}>
           <View style={styles.botCont_1}>
             <View style={styles.addressCon}>
-              <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, padding:Theme.SPACING.MD}}>{formatAddress(wallet.address)}</HeaderText>
+              <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, padding: Theme.SPACING.SM }}>{formatAddress(wallet.address)}</HeaderText>
             </View>
-            <NormalText style={{ color: Theme.COLORS.ALERT_YELLOW, width: '100%', textAlign: 'center'}}>
+            <NormalText style={styles.yellowText}>
               Found your Keychain! You can now verify this wallet.
             </NormalText>
-            <FatPinkButton text="VERIFY" func={verifyWallet} />
+            <FatPinkButton text={loading ? "LOADING..." : "VERIFY"} func={verifyWallet} />
           </View>
           <View style={styles.closeCon}>
             <TouchableOpacity onPress={goBack}>
@@ -118,12 +123,8 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
 const styles = StyleSheet.create({
   maxCon: {
     width: '100%',
-    height: '100%',
     maxWidth: Theme.MAX_WIDTH_CON,
     minHeight: Theme.MIN_HEIGHT_CON,
-    display: 'flex',
-    alignSelf: 'center'
-
   },
   addressCon: {
     width: '100%',
@@ -133,7 +134,8 @@ const styles = StyleSheet.create({
     borderRadius: Theme.BRADIUS.SM,
     backgroundColor: Theme.COLORS.BACKGROUND_BLACK,
     borderColor: Theme.COLORS.ACTIVE_PINK,
-    borderWidth: 0.5
+    borderWidth: StyleSheet.hairlineWidth,
+    marginBottom: Theme.SPACING.MD
   },
   topCon: {
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK,
@@ -144,22 +146,25 @@ const styles = StyleSheet.create({
   botCon: {
     flex: 1,
     padding: Theme.SPACING.LG,
-    //gap: Theme.SPACING.XXL,
     justifyContent: 'space-between',
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_GRAY,
   },
   botCont_1:{
-    height: '30%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
-    gap: Theme.SPACING.XXL,
-
+    marginBottom: Theme.SPACING.MD
   },
   pinkText: {
     textAlign: 'center',
     marginBottom: Theme.SPACING.MD,
     color: Theme.COLORS.ACTIVE_PINK
+  },
+  yellowText: { 
+    color: Theme.COLORS.ALERT_YELLOW,
+    width: '100%', 
+    textAlign: 'center', 
+    marginBottom: Theme.SPACING.MD 
   },
   closeCon: {
     justifyContent: 'center',

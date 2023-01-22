@@ -39,11 +39,10 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
           goToFocusNFT={goToFocusNFT}
         />
         {keychain.keys.map((key, i) => {
-          console.log("3 kaizen look like here step 1 ", useRecoilValue(walletNftsSelector(key.wallet)));
           return (
             <WalletNFTs
-              key={i + 2}
-              index={i + 2}
+              key={i + 1}
+              index={i + 1}
               items={useRecoilValue(walletNftsSelector(key.wallet))}
               walletAddress={key.wallet.toBase58()}
               goToFocusNFT={goToFocusNFT}
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     minHeight: Theme.MIN_HEIGHT_CON,
     justifyContent: 'flex-start',
     flexDirection: 'column',
-},
+  },
 })
 
 

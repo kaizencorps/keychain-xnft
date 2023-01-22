@@ -24,6 +24,7 @@ interface FatPinkButtonProps {
   text: string,
   func: (event: GestureResponderEvent) => void
   icon?: React.ReactElement,
+  isLoading?: boolean
 }
 
 export const FatButton : React.FC<any> = (props: FatButtonProps) : React.ReactElement => {

@@ -13,10 +13,14 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import {WalletModalProvider} from '@solana/wallet-adapter-react-ui';
 
+//Hooks
+import useToasts from '../../hooks/useToasts';
+
 // todo: can't figure out how to include this in webpack/build, so for now this is just stuck in index.html
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 import {RPC_URL, SOLANA_NETWORK} from '../../types/utils/config';
+import { NOTI_STATUS } from '../../_state';
 
 interface Props {
   component: any
@@ -24,12 +28,16 @@ interface Props {
 
 export const ProviderComponentWrapper : FC<Props> = ({ component }) : ReactElement => {
 
+  const { createToast } = useToasts();
+
   const onWalletError = useCallback(
       (error: any) => {
-        // todo: use toastify-react-native
-        // toast(error.message ? `${error.name}: ${error.message}` : error.name, { type: 'error' })
+        createToast(
+          error.message ? `${error.name}: ${error.message}` : `Error interacting with wallet: ${error.name}`, 
+          NOTI_STATUS.ERR
+        )
       },
-      [],
+    [],
   );
 
 

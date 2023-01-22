@@ -7,6 +7,9 @@ import { NormalText } from '../components/ui/text/text';
 import { FatPinkButton } from '../components/ui/buttons/buttons';
 import { Input } from '../components/ui/inputs/inputs'
 
+//Hooks
+import useToasts from '../hooks/useToasts';
+
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../nav/aboutStack';
@@ -19,32 +22,25 @@ import Discord from '../assets/svgs/logos/discord';
 import Twitter from '../assets/svgs/logos/twitter';
 import Email from '../assets/svgs/Icons/email';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
-import { useRecoilState } from 'recoil';
-import { toastsAtom, ToastsState, NOTI_STATUS } from '../_state';
+import { NOTI_STATUS } from '../_state';
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
 
 const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
 
+  const { createToast } = useToasts();
+
   const [inputValue, setInputValue] = React.useState("");
-  const [toasts, setToasts] = useRecoilState<ToastsState>(toastsAtom);
   
   const handleSubscribe = () => {}
 
-  const createToast = () => {
-    console.log("tuh tuh")
+  const createAToast = () => {
     navigator.clipboard.writeText("hoorah@kaizencorps.com");
-    console.log("Creating toast??????")
-    const newArray = [...toasts.toasts];
-    newArray.push({
-      id: (newArray.length + 1).toString(),
-      text: 'Copied hoorah@kaizencorps.com to clipboard',
-      type: NOTI_STATUS.DEFAULT 
-    })
-    setToasts({ toasts: newArray });
+    createToast('Copied hoorah@kaizencorps.com to clipboard', NOTI_STATUS.DEFAULT)
   }
 
+  // TODO maybe need a different linking system for web vs mobile
   const openTabTo = (url: string) => {
     Linking.openURL(url);
   } 
@@ -67,7 +63,7 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
             <View style={styles.card2_1}>
                 <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord width={25} height={25}/>} link={() => openTabTo("https://discord.gg/shyrW3CmTB")}/>
                 <SocialMedia bgColor={Theme.COLORS.TWITTER} icon={<Twitter width={25} height={25}/>} link={() => openTabTo("https://twitter.com/KaizenCorps_")} />
-                <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={25} height={25} />} link={() => createToast()} />
+                <SocialMedia bgColor={Theme.COLORS.EMAIL} icon={<Email color={Theme.COLORS.LABEL_TEXT_WHITE} width={25} height={25} />} link={() => createAToast()} />
             </View>
             <View style={styles.card2_2}>
                 <NormalText style={styles.text2}>Don't miss our updates!</NormalText>

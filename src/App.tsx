@@ -30,7 +30,7 @@ function App() {
     <RecoilRoot>
       <NavigationContainer>
       <View style={{ flex: 1, backgroundColor: Theme.COLORS.MAIN_BACKGROUND_BLACK }}>
-          <Suspense fallback={<h1>Loading...</h1>}>
+          <Suspense fallback={<Loader />}>
             <ProviderComponentWrapper component={<AppContent />} />
           </Suspense>
         </View>

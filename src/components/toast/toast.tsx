@@ -27,7 +27,7 @@ export const Toasts = () => {
 
   const backgroundStyle = (type: NOTI_STATUS) => {
     switch(type){
-      case NOTI_STATUS.SUCCESS: return Theme.COLORS.USER_GREEN;
+      case NOTI_STATUS.SUCCESS: return Theme.COLORS.SUCCESS_GREEN;
       case NOTI_STATUS.ERR: return Theme.COLORS.SCARY_RED;
       default: return Theme.COLORS.INACTIVE_GRAY;
     }

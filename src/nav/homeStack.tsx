@@ -25,7 +25,7 @@ export type RootStackParamList = {
     Landing: undefined,
     AddNewWallet: undefined,
     RemoveWallet: { address: string, index: number },
-    VerifyWallet: undefined,
+    VerifyWallet: { address: string },
     PendingWallet: undefined,
     WalletDetails: { wallet: Wallet },
     WalletDetected: undefined,

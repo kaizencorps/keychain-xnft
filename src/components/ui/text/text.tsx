@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text, StyleProp, TextStyle, StyleSheet } from 'react-native';
+import * as Theme from '../../../constants/theme';
 
 interface Props {
   children: string
@@ -11,6 +12,9 @@ export const HeaderText: React.FunctionComponent<Props> = (props) : React.ReactE
 export const NormalText: React.FunctionComponent<Props> = (props) : React.ReactElement => <Text style={[styles.normal, props.style]}>{props.children}</Text>;
 export const ThinText: React.FunctionComponent<Props> = (props) : React.ReactElement => <Text style={[styles.thin, props.style]}>{props.children}</Text>;
 export const BannerText: React.FunctionComponent<Props> = (props) : React.ReactElement => <Text style={[styles.banner, props.style]}>{props.children}</Text>;
+
+export const ErrorText: React.FunctionComponent<Props> = (props) : React.ReactElement => <Text style={[styles.normal, styles.error, props.style]}>{props.children}</Text>;
+
 
 const styles = StyleSheet.create({
   normal: {
@@ -36,5 +40,10 @@ const styles = StyleSheet.create({
   banner: {
     fontSize: 30,
     fontFamily: 'BlenderPro-Bold'
+  },
+  error: {
+    color: Theme.COLORS.SCARY_RED,
+    marginBottom: Theme.SPACING.MD,
+    textAlign: 'center'
   }
 })

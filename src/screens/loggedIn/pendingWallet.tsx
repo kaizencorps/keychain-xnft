@@ -1,8 +1,8 @@
-import React, {FC, ReactElement, useState} from "react";
+import React, { FC, ReactElement } from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import Input from "../../components/ui/inputs/inputs";
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -19,18 +19,22 @@ import { FatPinkButton } from "../../components/ui/buttons/buttons";
 
 //Utils
 import { formatAddress } from "../../utils/stringFormatting";
-import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
+
+//Data
 import {useRecoilValue} from "recoil";
-import {keychainAtom, walletAtom} from "../../_state";
+import {keychainAtom, NOTI_STATUS, walletAtom} from "../../_state";
 import {useUserActions} from "../../_actions/user.actions";
 import {useKeychainActions} from "../../_actions/keychain.actions";
+import useToasts from "../../hooks/useToasts";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'PendingWallet'> {}
 
-// this screen is part of the logged in / profile stack
+
 const PendingWallet : FC<any> = (props: Props) : ReactElement => {
 
-  const [input, setInput] = React.useState('')
+  const { createToast } = useToasts();
+
+  const [loading, toggleLoading] = React.useState(false);
 
   const wallet = useRecoilValue(walletAtom);
   const keychain = useRecoilValue(keychainAtom);
@@ -39,7 +43,16 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
   const keychainActions = useKeychainActions();
 
   const connectWallet = () => {
-
+    toggleLoading(true);
+    try{
+      // TODO connect wallet to keychain
+      createToast('Wallet connected to keychain!', NOTI_STATUS.SUCCESS);
+      props.navigation.navigate('Profile');
+    } catch (e) {
+      createToast('Error connecting wallet', NOTI_STATUS.ERR);
+    } finally {
+      toggleLoading(false);
+    }
   }
 
   const goBack = () => props.navigation.goBack();
@@ -57,12 +70,8 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
             <SubHeaderText style={styles.pinkText}>To link this wallet to this keychain account, please sign in to verify the wallet</SubHeaderText>
-            <Input
-              val={input}
-              onChangeText={setInput}
-            />
             <FatPinkButton
-              text="CONNECT WALLET"
+              text={loading ? 'LOADING...' : "CONNECT WALLET"}
               func={connectWallet}
               icon={<Wallet color={Theme.COLORS.LABEL_TEXT_WHITE }/>}
             />

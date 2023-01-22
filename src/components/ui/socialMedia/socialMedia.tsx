@@ -1,17 +1,13 @@
 import React, { FC, ReactElement } from 'react';
 import { TouchableOpacity, StyleSheet, Linking } from 'react-native';
-import { GestureEvent } from 'react-native-gesture-handler';
 
 import * as Theme from "../../../constants/theme";
-
 
 interface Props {
     icon: React.ReactElement,
     bgColor: string
     link: () => void
 }
-
-// TODO maybe need a different linking system for web vs mobile
 
 
 export const SocialMedia: FC<any> = (props: Props) : ReactElement => {

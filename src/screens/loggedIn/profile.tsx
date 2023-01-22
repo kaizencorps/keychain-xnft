@@ -3,7 +3,7 @@ import React, { FC, ReactElement} from "react";
 //Components
 import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { NormalText, BannerText } from "../../components/ui/text/text";
-import { NewWallet, Wallet as WalletHeader, WalletRow } from "../../components/wallet-header/wallet-header";
+import { NewWallet, WalletRow } from "../../components/wallet-header/wallet-header";
 
 //Data
 import { keychainAtom, nftsAtom, userAtom } from "../../_state";
@@ -19,6 +19,7 @@ import { RootStackParamList } from "../../nav/homeStack";
 //Styles
 import * as Theme from '../../constants/theme';
 import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
+import { KeyState } from "../../types/NFT";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Profile'> {}
 
@@ -32,6 +33,12 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
   const goToWalletCreation = () => props.navigation.navigate('AddNewWallet');
   const goToLogout = () => props.navigation.navigate("Logout");
   const goToRemoveWallet = (address: string, index: number) => props.navigation.navigate('RemoveWallet', { address, index })
+  const goToPendingWallet = () => props.navigation.navigate('PendingWallet')
+
+  const determineNavDirection = (keyState: KeyState, i: number) => {
+    if(keyState.verified) goToRemoveWallet(keyState.wallet.toBase58(), (i + 1))
+    else goToPendingWallet(); // CONFIRM if this is okay to nav to without the address. Should it really get grabbed from recoil state? What if they're mistmatching
+  }
 
   return (
     <ScreenWrapper>
@@ -46,15 +53,13 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
           </TouchableOpacity>
           <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</BannerText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>{`${nfts.length} NFTs`}</NormalText>
-          <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>--- Collections</NormalText>
+          <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>
         </View>
         <View style={styles.botCon}>
           <View style={styles.profileCon}>
-            <NormalText style={{ color: Theme.COLORS.INACTIVE_GRAY }}>PROFILE WALLETS</NormalText>
+            <NormalText style={{ color: Theme.COLORS.INACTIVE_GRAY, marginBottom: Theme.SPACING.LG }}>PROFILE WALLETS</NormalText>
             {keychain.keys.map((keyState, i) =>
-              <TouchableOpacity key={i + 1} onPress={() => goToRemoveWallet(keyState.wallet.toBase58(), (i + 1))}>
-                <WalletRow keyState={keyState}/>
-              </TouchableOpacity>
+              <WalletRow keyState={keyState} func={() => determineNavDirection(keyState, i)}/>
             )}
             {Array.apply(null, Array(5 - keychain.keys.length)).map((_: never, i: number) => <NewWallet key={i} func={goToWalletCreation}/>)}
           </View>

@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { BannerText, HeaderText, NormalText } from "../../components/ui/text/text";
 
 //Types
@@ -11,6 +11,7 @@ import { RootStackParamList } from "../../nav/homeStack";
 //Data
 import { useRecoilValue } from "recoil";
 import { nftsAtom } from "../../_state/keychain";
+import { NOTI_STATUS } from "../../_state";
 
 //SVGs
 import Numeric1Box from '../../assets/svgs/Icons/numeric-1-box';
@@ -18,6 +19,9 @@ import Numeric2Box from '../../assets/svgs/Icons/numeric-2-box';
 import Numeric3Box from '../../assets/svgs/Icons/numeric-3-box';
 import Numeric4Box from '../../assets/svgs/Icons/numeric-4-box';
 import Numeric5Box from '../../assets/svgs/Icons/numeric-5-box';
+
+//Hooks
+import useToasts from "../../hooks/useToasts";
 
 //Styles
 import * as Theme from '../../constants/theme';
@@ -35,10 +39,21 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
 
   const { address, index } = props.route.params;
 
+  const { createToast } = useToasts();
+
+  const [loading, toggleLoading] = React.useState(false);
   const nfts = useRecoilValue(nftsAtom);
 
   const removeWallet = () => {
-    // TODO
+    try{
+      // TODO remove wallet
+      createToast('Wallet removed from keychain', NOTI_STATUS.DEFAULT);
+      props.navigation.navigate('Profile');
+    } catch (e) {
+      createToast('Error removing wallet from keychain', NOTI_STATUS.ERR);
+    } finally {
+      toggleLoading(false);
+    }
   }
 
   const goBack = () => props.navigation.goBack();
@@ -69,7 +84,7 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>{`${nfts.length} NFTs`}</NormalText>
             <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>
             <FatButton
-              text="REMOVE WALLET"
+              text={loading ? 'REMOVING...' : "REMOVE WALLET"}
               color={Theme.COLORS.SCARY_RED}
               backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
               func={removeWallet}

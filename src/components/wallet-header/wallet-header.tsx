@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image, GestureResponderEvent, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableOpacity, GestureResponderEvent, ViewStyle } from 'react-native';
 import { SubHeaderText } from "../ui/text/text";
 
 //SVGs
@@ -19,7 +19,6 @@ import * as Theme from '../../constants/theme';
 //Utils
 import { formatAddress } from "../../utils/stringFormatting";
 import { KeyState } from "../../types/NFT";
-import {consoleLog} from "../../_helpers/debug";
 
 interface WalletRowProps {
   keyState: KeyState,
@@ -31,19 +30,12 @@ interface NewWalletProps {
   func: (event: GestureResponderEvent) => void
 }
 
-interface VeryifyWalletProps {
-  address: string
-}
-
 
 export const WalletRow : FC<any> = (props: WalletRowProps) : ReactElement => {
 
   const getIcon = React.useCallback(() => {
-    /* TODO PENDING WALLET icon */
     if (!props.keyState.verified) {
-      //then this wallet is pending
-      consoleLog('--->>> todo: return the pending icon here for the WalletRow');
-      // return the pending icon
+      return <Alert color={Theme.COLORS.ALERT_YELLOW} />
     } else {
       switch(props.keyState.index){
         case 0: return <Numeric1Box color={"#D5DDF9"} />
@@ -57,7 +49,7 @@ export const WalletRow : FC<any> = (props: WalletRowProps) : ReactElement => {
 
   return (
       <TouchableOpacity
-          onPress={() => props.func}
+          onPress={props.func}
           disabled={props.func === undefined}
           style={[
             styles.con,
@@ -82,15 +74,6 @@ export const NewWallet : FC<any> = (props: NewWalletProps) : ReactElement => {
   )
 }
 
-export const VerifyWallet : FC<any> = (props: VeryifyWalletProps) : ReactElement => {
-
-  return (
-    <View style={[styles.con, { backgroundColor: Theme.COLORS.SUBTLE_YELLOW }]}>
-      <Alert color={Theme.COLORS.ALERT_YELLOW} />
-      <SubHeaderText style={{ marginLeft: Theme.SPACING.MD, color: Theme.COLORS.HEADER_GRAY }}>{formatAddress(props.address)}</SubHeaderText>
-    </View>
-  )
-}
 
 const styles = StyleSheet.create({
   con: {
