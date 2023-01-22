@@ -88,7 +88,7 @@ const CreateKeychain : FC<any> = (props: Props) : ReactElement => {
         <View style={styles.topCon}>
           <Shimmer height={75} width={75} />
           <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>Welcome!</BannerText>
-          <NormalText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, textAlign: 'center' }}>Create a new keychain account with this wallet</NormalText>
+          <NormalText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, textAlign: 'center', marginVertical: Theme.SPACING.MD }}>Create a new keychain account with this wallet</NormalText>
            <View style={styles.addressCon}>
             <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{formatAddress(wallet.address)}</HeaderText>
           </View>

@@ -62,13 +62,7 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
           <View style={styles.profileCon}>
             <NormalText style={{ color: Theme.COLORS.INACTIVE_GRAY, marginBottom: Theme.SPACING.LG }}>PROFILE WALLETS</NormalText>
             {keychain.keys.map((keyState, i) =>
-<<<<<<< HEAD
               <WalletRow keyState={keyState} func={() => determineNavDirection(keyState, i)}/>
-=======
-              <TouchableOpacity key={i} onPress={() => goToRemoveWallet(keyState, keyState.wallet.toBase58(), (i))}>
-                <WalletRow keyState={keyState}/>
-              </TouchableOpacity>
->>>>>>> 39c62e7dd76ab4c960b0ca2e70cf3c2999056c66
             )}
             {Array.apply(null, Array(5 - keychain.keys.length)).map((_: never, i: number) => <NewWallet key={i} func={goToWalletCreation}/>)}
           </View>
