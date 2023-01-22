@@ -31,6 +31,9 @@ import Close from "../../assets/svgs/Icons/close";
 import { formatAddress } from "../../utils/stringFormatting";
 import { FatButton } from "../../components/ui/buttons/buttons";
 import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
+import { useWalletActions } from "../../_actions/wallet.actions";
+import { useKeychainActions } from "../../_actions/keychain.actions";
+import {consoleLog} from "../../_helpers/debug";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'RemoveWallet'> {}
 
@@ -44,12 +47,16 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
   const [loading, toggleLoading] = React.useState(false);
   const nfts = useRecoilValue(nftsAtom);
 
-  const removeWallet = () => {
+  const keychainActions = useKeychainActions();
+
+  const removeWallet = async () => {
     try{
-      // TODO remove wallet
+      consoleLog("removing wallet >>", keyState);
+      await keychainActions.removeKey(keyState.wallet)
       createToast('Wallet removed from keychain', NOTI_STATUS.DEFAULT);
       props.navigation.navigate('Profile');
     } catch (e) {
+      consoleLog('error removing wallet', e);
       createToast('Error removing wallet from keychain', NOTI_STATUS.ERR);
     } finally {
       toggleLoading(false);
