@@ -202,6 +202,30 @@ function useKeychainActions() {
             setKeychain(createKeychainState(null, '', false, false, false, []));
         }
     }
+    async function removeKeyByIndex(index: number) {
+        consoleLog(`removing key by index: ${index}`);
+        // get the key by index
+        for (let x = 0; x < keychain.keys.length; x++) {
+            if (keychain.keys[x].index === index) {
+                return await removeKey(keychain.keys[x].wallet);
+            }
+        }
+        // todo: handle unknown key ..? shouldn't happe
+    }
+
+    async function removeKey(keyWallet: PublicKey) {
+        const [keychainKeyPda] = findKeychainKeyPda(keyWallet);
+        const keychainProg = progs.keychain;
+        const txid = await keychainProg.methods.removeKey(wallet).accounts({
+            keychain: keychain.keychainAccount,
+            key: keychainKeyPda,
+            domain: KeychainDomainPda,
+            treasury: KEYCHAIN_TREASURY,
+            authority: wallet.address,
+        }).rpc();
+        console.log(`removed key txid: ${txid}`);
+        await refreshKeychain();
+    }
 
     // adds an unverified key to the keychain. return true if successful, false if not
     async function addKey(walletAddress: string) {
@@ -266,7 +290,9 @@ function useKeychainActions() {
         checkKeychainByWallet,
         addKey,
         verifyKey,
-        resetKeychain
+        resetKeychain,
+        removeKey,
+        removeKeyByIndex
     };
 }
 
