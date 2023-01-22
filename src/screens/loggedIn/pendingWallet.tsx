@@ -37,23 +37,6 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
   const [loading, toggleLoading] = React.useState(false);
 
   const wallet = useRecoilValue(walletAtom);
-  const keychain = useRecoilValue(keychainAtom);
-
-  const userActions = useUserActions();
-  const keychainActions = useKeychainActions();
-
-  const connectWallet = () => {
-    toggleLoading(true);
-    try{
-      // TODO connect wallet to keychain
-      createToast('Wallet connected to keychain!', NOTI_STATUS.SUCCESS);
-      props.navigation.navigate('Profile');
-    } catch (e) {
-      createToast('Error connecting wallet', NOTI_STATUS.ERR);
-    } finally {
-      toggleLoading(false);
-    }
-  }
 
   const goBack = () => props.navigation.goBack();
 
@@ -62,19 +45,14 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
-          <BannerText style={{ color: Theme.COLORS.ALERT_YELLOW, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>Wallet pending</BannerText>
+          <BannerText style={{ color: Theme.COLORS.ALERT_YELLOW, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>Wallet Pending</BannerText>
           <View style={styles.addressCon}>
-            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(wallet.address)}</HeaderText>
+            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(props.route.params.address)}</HeaderText>
           </View>
         </View>
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
-            <SubHeaderText style={styles.pinkText}>To link this wallet to this keychain account, please sign in to verify the wallet</SubHeaderText>
-            <FatPinkButton
-              text={loading ? 'LOADING...' : "CONNECT WALLET"}
-              func={connectWallet}
-              icon={<Wallet color={Theme.COLORS.LABEL_TEXT_WHITE }/>}
-            />
+            <SubHeaderText style={styles.pinkText}>To verify this added wallet, connect with the wallet and use your username to look up your Keychain account.</SubHeaderText>
           </View>
           <View style={styles.closeCon}>
             <TouchableOpacity onPress={goBack}>

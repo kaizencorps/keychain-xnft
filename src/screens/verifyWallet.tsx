@@ -64,7 +64,7 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
       createToast('Located wallet, and requested verification', NOTI_STATUS.SUCCESS);
       props.navigation.navigate('Profile')
     } catch (err) {
-      createToast('Error while locating wallet for verification request', NOTI_STATUS.ERR);
+      createToast(`There was a problem while verifying: ${err}`, NOTI_STATUS.ERR);
     } finally {
       toggleLoading(false);
     }
@@ -160,11 +160,11 @@ const styles = StyleSheet.create({
     marginBottom: Theme.SPACING.MD,
     color: Theme.COLORS.ACTIVE_PINK
   },
-  yellowText: { 
+  yellowText: {
     color: Theme.COLORS.ALERT_YELLOW,
-    width: '100%', 
-    textAlign: 'center', 
-    marginBottom: Theme.SPACING.MD 
+    width: '100%',
+    textAlign: 'center',
+    marginBottom: Theme.SPACING.MD
   },
   closeCon: {
     justifyContent: 'center',

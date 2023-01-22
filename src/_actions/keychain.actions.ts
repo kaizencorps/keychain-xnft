@@ -262,24 +262,18 @@ function useKeychainActions() {
 
         const [keyPda] = findKeychainKeyPda(wallet.address);
 
-        try {
-            let txid = await keychainProg.methods.verifyKey().accounts({
-                keychain: keychain.keychainAccount,
-                domain: KeychainDomainPda,
-                treasury: KEYCHAIN_TREASURY,
-                authority: wallet.address,
-                key: keyPda,
-                userKey: wallet.address,
-                systemProgram: SystemProgram.programId,
-            }).rpc();
-            console.log(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
-            // now refresh the keychain state
-            await refreshKeychain();
-            return true;
-        } catch (err) {
-            consoleLog(`error verifying key ${wallet.address} on keychain ${keychain.keychainAccount}: ${err}`);
-            return false;
-        }
+        let txid = await keychainProg.methods.verifyKey().accounts({
+            keychain: keychain.keychainAccount,
+            domain: KeychainDomainPda,
+            treasury: KEYCHAIN_TREASURY,
+            authority: wallet.address,
+            key: keyPda,
+            userKey: wallet.address,
+            systemProgram: SystemProgram.programId,
+        }).rpc();
+        console.log(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
+        // now refresh the keychain state
+        await refreshKeychain();
     }
 
     return {

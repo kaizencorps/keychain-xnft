@@ -10,6 +10,7 @@ import { PublicKey } from '@solana/web3.js';
 import { getMetadata } from '../../apis/helius/helius';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { Connection } from "@solana/web3.js";
+import {HELIUS_RPC_URL} from "../../types/utils/config";
 
 const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) => {
     const creators = nftData.onChainData.data.creators
@@ -27,13 +28,13 @@ const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) =
     } else return null
 }
 
-export async function getNFTsForOwner(owner: PublicKey, collections: CollectionsState): Promise<NFT[]> { 
-    const conn = new Connection("https://rpc.helius.xyz/?api-key=674848c0-c368-43ca-813b-30d310940559"); // TODO use process.env
+export async function getNFTsForOwner(owner: PublicKey, collections: CollectionsState): Promise<NFT[]> {
+    const conn = new Connection(HELIUS_RPC_URL); // TODO use process.env
 
     const tokenAccounts = await conn.getParsedTokenAccountsByOwner(owner, {
         programId: TOKEN_PROGRAM_ID,
     });
-    
+
     const parsedTokens = tokenAccounts.value
         .filter((t: any) => {
             const amount = t.account.data.parsed.info.tokenAmount;
@@ -42,12 +43,12 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
         .map((t: any) => {
             return { pubkey: t.pubkey, mint: t.account.data.parsed.info.mint };
         });
-        
+
     const getTokenMetaDatas = async (tokenAddresses: string[]) => {
         return await getMetadata(tokenAddresses)
             .then(res => {
                 // TODO parse out false positives
-                
+
                 console.log("all token metadata: ", res);
                 const allNFTS: NFT [] = res.data.map((nft: any) => ({
                     owner: owner,
@@ -55,13 +56,13 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
                     mint: nft.mint,
                     imageUrl: nft.offChainData.image,
                     collection: decideIfPartOfCollection(nft, collections),
-                    isFavorited: false // TODO 
+                    isFavorited: false // TODO
                 }))
 
                 return allNFTS;
             })
             .catch(e => [] as NFT[]);
     }
-    
+
     return await getTokenMetaDatas(parsedTokens.map(tokenAccount => tokenAccount.mint));
 }

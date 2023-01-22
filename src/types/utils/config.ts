@@ -36,6 +36,7 @@ const anchor = require('@project-serum/anchor');
 export const SOLANA_NETWORK = 'mainnet-beta';
 export const KEYCHAIN_TREASURY = new anchor.web3.PublicKey('kcTmTZrP4gGmk3s4Q6Hu6UMmyN4mAuSUfGNvwNuXk6p');
 export const RPC_URL: string = 'https://white-late-diagram.solana-mainnet.discover.quiknode.pro/841f2637070526fd43f742034e9070f1a69702a2';
+export const HELIUS_RPC_URL: string = 'https://rpc.helius.xyz/?api-key=df2f8e0d-099d-4110-b63e-7b5f6a53673e';
 
 consoleLog("RPC_URL: ", RPC_URL);
 consoleLog("SOLANA_NETWORK: ", SOLANA_NETWORK);

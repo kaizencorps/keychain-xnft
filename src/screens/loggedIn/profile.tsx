@@ -21,6 +21,7 @@ import * as Theme from '../../constants/theme';
 import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
 import {useKeychainActions} from "../../_actions/keychain.actions";
 import { KeyState } from "../../types/NFT";
+import { PublicKey } from "@solana/web3.js";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Profile'> {}
 
@@ -39,11 +40,11 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
     props.navigation.navigate("Logout");
   }
   const goToRemoveWallet = (keyState: KeyState, index: number) => props.navigation.navigate('RemoveWallet', { keyState, index })
-  const goToPendingWallet = () => props.navigation.navigate('PendingWallet')
+  const goToPendingWallet = (keyStateWallet: PublicKey) => props.navigation.navigate('PendingWallet', {address: keyStateWallet});
 
   const determineNavDirection = (keyState: KeyState, i: number) => {
     if(keyState.verified) goToRemoveWallet(keyState, (i + 1))
-    else goToPendingWallet(); // CONFIRM if this is okay to nav to without the address. Should it really get grabbed from recoil state? What if they're mistmatching
+    else goToPendingWallet(keyState.wallet);
   }
 
 

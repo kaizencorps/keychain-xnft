@@ -25,8 +25,6 @@ import Landing from '../screens/landing';
 //Styles
 import * as Theme from '../constants/theme';
 import DataRetrieval from '../components/dataRetrieval/dataRetrieval';
-import TestStack from "./testStack";
-import Test from "../screens/test";
 import { useRecoilValue } from 'recoil';
 import { keychainAtom } from '../_state';
 
@@ -95,16 +93,6 @@ export const TabNavigator = () => {
             ),
           }}
         />
-        {/*<Tab.Screen*/}
-        {/*    name="Test"*/}
-        {/*    component={TestStack}*/}
-        {/*    options={{*/}
-        {/*      tabBarLabel: "Test",*/}
-        {/*      tabBarIcon: ({ color }) => (*/}
-        {/*          <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />*/}
-        {/*      ),*/}
-        {/*    }}*/}
-        {/*/>*/}
       </Tab.Navigator>
     </DataRetrieval>
   :
@@ -147,16 +135,6 @@ export const TabNavigator = () => {
           ),
         }}
       />
-      {/*<Tab.Screen*/}
-      {/*    name="Test"*/}
-      {/*    component={Test}*/}
-      {/*    options={{*/}
-      {/*      tabBarLabel: "Test",*/}
-      {/*      tabBarIcon: ({ color }) => (*/}
-      {/*          <Info color={color} width={ICON_SIZE} height={ICON_SIZE} />*/}
-      {/*      ),*/}
-      {/*    }}*/}
-      {/*/>*/}
     </Tab.Navigator>
 }
 

@@ -20,6 +20,7 @@ import Logout from '../screens/loggedIn/logout';
 //Types
 import { Wallet } from '../types/wallet';
 import {KeyState} from "../types/NFT";
+import { PublicKey } from '@solana/web3.js';
 
 export type RootStackParamList = {
     Profile: undefined,
@@ -27,7 +28,7 @@ export type RootStackParamList = {
     AddNewWallet: undefined,
     RemoveWallet: { keyState: KeyState, index: number },
     VerifyWallet: undefined,
-    PendingWallet: undefined,
+    PendingWallet: { address: PublicKey },
     WalletDetails: { wallet: Wallet },
     WalletDetected: undefined,
     CreateKeychain: { address: string },
