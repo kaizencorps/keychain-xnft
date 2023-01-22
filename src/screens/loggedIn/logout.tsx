@@ -43,6 +43,7 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
 
   const logout = async () => {
     // TODO clear localStorage and all other data
+    
     await keychainActions.resetKeychain(true);
     // Resetting keychain account will automatically force navigation back to Landing screen
   }
