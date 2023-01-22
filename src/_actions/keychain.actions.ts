@@ -225,18 +225,31 @@ function useKeychainActions() {
         const [keychainKeyPda] = findKeychainKeyPda(keyWallet);
         const [keychainStatePda] = findKeychainStatePda(keychain.keychainAccount);
 
-        const keychainProg = progs.keychain;
-        const txid = await keychainProg.methods.removeKey(keyWallet).accounts({
-            keychain: keychain.keychainAccount,
-            keychainState: keychainStatePda,
-            key: keychainKeyPda,
-            domain: KeychainDomainPda,
-            authority: wallet.address,
-            treasury: KEYCHAIN_TREASURY,
-        }).rpc();
-        console.log(`removed key txid: ${txid}`);
-        await refreshKeychain();
-        return true;
+        try {
+            const keychainProg = progs.keychain;
+            const txid = await keychainProg.methods.removeKey(keyWallet).accounts({
+                keychain: keychain.keychainAccount,
+                keychainState: keychainStatePda,
+                key: keychainKeyPda,
+                domain: KeychainDomainPda,
+                authority: wallet.address,
+                treasury: KEYCHAIN_TREASURY,
+            }).rpc();
+            console.log(`removed key txid: ${txid}`);
+            await refreshKeychain();
+            return true;
+        } catch (err) {
+            if (isKnownError(err)) {
+                // hack to "confirm" a tx
+                await sleep(CONFIRM_TIME);
+                await refreshKeychain();
+                // don't worry be happy
+                return true;
+            } else {
+                consoleLog(`error removing key ${keyWallet.toBase58()}: ${err}`);
+                throw err;
+            }
+        }
     }
 
     // adds an unverified key to the keychain. return true if successful, false if not
