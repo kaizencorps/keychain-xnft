@@ -29,16 +29,11 @@ import useToasts from "../../hooks/useToasts";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'PendingWallet'> {}
 
-
+// TODO add functionality to remove a pending wallet. It's already built on keychain program
 const PendingWallet : FC<any> = (props: Props) : ReactElement => {
 
-  const { createToast } = useToasts();
-
-  const [loading, toggleLoading] = React.useState(false);
-
-  const wallet = useRecoilValue(walletAtom);
-
   const goBack = () => props.navigation.goBack();
+
 
   return (
     <ScreenWrapper>
@@ -52,7 +47,7 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
         </View>
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
-            <SubHeaderText style={styles.pinkText}>To verify this added wallet, connect with the wallet and use your username to look up your Keychain account.</SubHeaderText>
+            <SubHeaderText style={styles.pinkText}>To verify this added wallet, you'll need to logout of this keychain account and re-connect with the wallet to be verified.</SubHeaderText>
           </View>
           <View style={styles.closeCon}>
             <TouchableOpacity onPress={goBack}>

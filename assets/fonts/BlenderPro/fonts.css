@@ -1,0 +1,37 @@
+@font-face {
+  font-family: 'BlenderPro-Bold';
+  src: local('BLENDERPRO-BOLD'), url('BLENDERPRO-BOLD.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'BlenderPro-BoldItalic';
+  src: local('BLENDERPRO-BOLDITALIC'), url('BLENDERPRO-BOLDITALIC.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'BlenderPro-Book';
+  src: local('BLENDERPRO-BOOK'), url('BLENDERPRO-BOOK.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'BlenderPro-BookItalic';
+  src: local('BLENDERPRO-BOOKITALIC'), url('BLENDERPRO-BOOKITALIC.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'BlenderPro-Heavy';
+  src: local('BLENDERPRO-HEAVY'), url('BLENDERPRO-HEAVY.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'BlenderPro-Medium';
+  src: local('BLENDERPRO-MEDIUM'), url('BLENDERPRO-MEDIUM.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'BlenderPro-MediumItalic';
+  src: local('BLENDERPRO-MEDIUMITALIC'), url('BLENDERPRO-MEDIUMITALIC.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'BlenderPro-Thin';
+  src: local('BLENDERPRO-THIN'), url('BLENDERPRO-THIN.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'BlenderPro-ThinItalic';
+  src: local('BLENDERPRO-THINITALIC'), url('BLENDERPRO-THINITALIC.TTF') format('truetype');
+}
+

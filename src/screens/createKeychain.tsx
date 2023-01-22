@@ -57,7 +57,6 @@ const CreateKeychain : FC<any> = (props: Props) : ReactElement => {
     if(validate()){
       setErrorText(''); // Reset
       toggleLoading(true);
-      consoleLog('creating keychain w/username: ', username);
       try {
         await keychainActions.createKeychain(username);
         createToast('Created keychain', NOTI_STATUS.SUCCESS);

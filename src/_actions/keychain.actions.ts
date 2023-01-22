@@ -40,12 +40,8 @@ function useKeychainActions() {
 
     // checks for keychain existence given a wallet address (potential key)
     async function checkKeychainByWallet() {
-        consoleLog('checking keychain by wallet');
-        consoleLog('got progs');
         const [keychainKeyPda ] = findKeychainKeyPda(wallet.address);
-        consoleLog('got keychain key pda');
         const keychainProg = progs.keychain;
-        consoleLog('got keychain prog');
 
         // see if this account exists
         // let keychainKeyAcct = await connection.getAccountInfo(keychainKeyPda);
@@ -60,8 +56,6 @@ function useKeychainActions() {
 
         // see if we can get the key account - if so then this wallet is on a keychain and verified
         if (keychainKeyAcct) {
-            consoleLog(`found keychain key account: ${keychainKeyPda.toBase58()}`);
-
             const keychainPda  = keychainKeyAcct.keychain;
             return await refreshKeychain(keychainPda);
 
@@ -73,14 +67,11 @@ function useKeychainActions() {
     }
 
     async function checkKeychainByKey(walletAddress: PublicKey = null) {
-
-        consoleLog(`progs: ${progs}`);
         const keychainProg = progs.keychain;
 
         const walletToCheck = walletAddress || wallet.address;
         const [keychainKeyPda ] = findKeychainKeyPda(walletAddress || wallet.address);
 
-        consoleLog(`checking keychain by key ${keychainKeyPda.toBase58()} for wallet: ${walletToCheck.toBase58()}`);
         // first: see if wallet is connected to a keychain
         let keychainKeyAcct = null;
         try {
@@ -91,7 +82,6 @@ function useKeychainActions() {
         }
 
         if (keychainKeyAcct) {
-            consoleLog(`found keychain key account: ${keychainKeyPda.toBase58()}`);
             await refreshKeychain(keychainKeyAcct.keychain);
         } else {
             consoleLog(`couldn't find keychain key account: ${keychainKeyPda.toBase58()}`);
@@ -145,11 +135,10 @@ function useKeychainActions() {
     }
 
     async function resetKeychain(disconnectWallet = false) {
-        resetKeychainState();
         if (disconnectWallet) {
             await walletActions.disconnectWallet();
-            consoleLog('disconnected wallet after resetting keychain');
         }
+        return resetKeychainState();
     }
 
     // refresh the keychain state and return it. if an account is passed in, use it otherwise, use what's already in state
@@ -183,7 +172,6 @@ function useKeychainActions() {
                 if (key.key.equals(wallet.address)) {
                     walletAdded = true;
                     if (key.verified) {
-                        consoleLog('found verified wallet on keychain');
                         walletVerified = true;
                     }
                 }
@@ -203,7 +191,6 @@ function useKeychainActions() {
         }
     }
     async function removeKeyByIndex(index: number) {
-        consoleLog(`removing key by index: ${index}`);
         // get the key by index
         for (let x = 0; x < keychain.keys.length; x++) {
             if (keychain.keys[x].index === index) {
@@ -271,7 +258,7 @@ function useKeychainActions() {
             userKey: wallet.address,
             systemProgram: SystemProgram.programId,
         }).rpc();
-        console.log(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
+        // console.log(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
         // now refresh the keychain state
         await refreshKeychain();
     }

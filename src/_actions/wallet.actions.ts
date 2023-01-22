@@ -6,7 +6,7 @@ import {AnchorWallet, useWallet} from '@solana/wallet-adapter-react';
 import { useFetchWrapper, createErrorResponse } from '../_helpers';
 
 import {
-    authAtom,
+    // authAtom,
     walletAtom,
 } from '../_state';
 
@@ -57,20 +57,16 @@ function useWalletActions() {
     function setWalletStates(anchorWallet: AnchorWallet) {
         const walletPublicKey: PublicKey = anchorWallet.publicKey;
 
-        consoleLog('setting provider, creating programs, connecting  wallet: ', walletPublicKey.toBase58());
-
         // create and set the provider
         const provider = createProvider(anchorWallet as Wallet);
         setProvider(provider);
 
         // create and set the keychain program
         const keychainProgram = getKeychainProgram(provider);
-        consoleLog(`created keychain program: ${keychainProgram.programId.toBase58()}`);
         setPrograms({ keychain: keychainProgram, profile: null})
 
         // set this last, as other atoms that depend on the wallet also depend on the provider and programs
         const walletState = { address: walletPublicKey };
-        consoleLog(`setting wallet state: ${walletState}`);
         setWallet(walletState);
 
     }

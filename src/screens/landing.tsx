@@ -25,7 +25,6 @@ import Wallet from '../assets/svgs/Icons/wallet'
 import * as Theme from "../constants/theme";
 import {useRecoilValue} from "recoil";
 import {keychainAtom} from "../_state";
-import {consoleLog} from "../_helpers/debug";
 import {walletAtom} from "../_state";
 import {useKeychainActions} from "../_actions/keychain.actions";
 
@@ -49,12 +48,10 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   React.useEffect(() => {
     if (wallet && !keychain.checked) {
       (async () => {
-        consoleLog('checking keychain by key: ', wallet.address);
         await keychainActions.checkKeychainByKey(); 
       })();
     } else if(!anchorWallet && wallet) {
       (async () => {
-        consoleLog('landing: disconnecting wallet');
         await keychainActions.resetKeychain(true);
       })();
     } 
@@ -63,14 +60,12 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   React.useEffect(() => {
     if (anchorWallet && !wallet) {
       (async () => {
-        consoleLog('landing: connecting wallet');
         await walletActions.connectWallet(anchorWallet, signMessage);
       })();
     }
   }, [anchorWallet])
 
   useAsyncEffect(async () => {
-    consoleLog('got new keychain state: ', keychain);
     if (keychain.checked) {
       // 2 options:
       // 1. if keychain exists and wallet is verified, go to home
@@ -79,13 +74,11 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
         // todo: navigate to profile page (logged in)
       } else {
         // todo: navigate to the verification screen
-        consoleLog('navigating to WalletDetected screen');
         props.navigation.navigate('WalletDetected');
       }
     }
     if (keychain.checked && keychain.walletVerified) {
       // todo: then we need to navigate to the "logged in" profile stack
-      consoleLog('todo: navigate to profile / logged in screen');
         // then we need to navigate to new wallet detected screen
     }
   }, [keychain]);

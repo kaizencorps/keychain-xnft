@@ -45,7 +45,7 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
   const [loading, toggleLoading] = React.useState(false);
   const keychain = useRecoilValue(keychainAtom);
   const wallet = useRecoilValue(walletAtom);
-  const user = useRecoilValue(userAtom);
+  // const user = useRecoilValue(userAtom);
 
   const keychainActions = useKeychainActions();
 
@@ -91,7 +91,7 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
           {/*:*/}
           {/*  <Image />*/}
           {/*}*/}
-          <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</SubHeaderText>
+          <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{keychain.name}</SubHeaderText>
           {keychain.keys.map((keyState, i) =>
             <WalletRow
               conStyle={{ width: '50%' }}

@@ -36,6 +36,7 @@ export const AppContent : FC<any> = () : ReactElement => {
   const { signMessage } = useWallet();
 
   React.useEffect(() => {
+    console.log("APP CONTENT anchorWallet changing");
     autoConnect();
   }, [anchorWallet])
 

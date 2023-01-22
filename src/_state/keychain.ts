@@ -27,16 +27,14 @@ export const nftsAtom = selector<NFT[]>({
     get: async ({get}) => {
         let nfts: NFT[] = [];
         const keychainState: KeychainState = get(keychainAtom);
+        console.log("trying to get NFTS??? but keychain doesnt exist? ", keychainState);
         const collectionsState: CollectionsState = get(collectionsAtom);
         if (keychainState && keychainState.exists) {
             for (let key of keychainState.keys) {
-                consoleLog('fetching nfts from wallet: ', key.wallet?.toBase58());
                 const walletSetOfNFTS = await getNFTsForOwner(key.wallet, collectionsState);
-                console.log("Some nfts returnenenene? ", walletSetOfNFTS);
                 nfts = nfts.concat(walletSetOfNFTS);
             }
         }
-        consoleLog('setting derived nfts: ', nfts);
         return nfts;
     }
 })

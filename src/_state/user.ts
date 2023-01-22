@@ -3,7 +3,7 @@ import { atom } from 'recoil';
 export interface UserState {
     username: string
 }
-// set to wallet's PublicKey
+
 export const userAtom = atom<UserState>({
     key: 'user',
     default: {

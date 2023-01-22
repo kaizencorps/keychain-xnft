@@ -7,7 +7,7 @@ export const SPACING = {
 }
 
 export const MAX_WIDTH_CON = 450;
-export const MIN_HEIGHT_CON = 600;
+export const MIN_HEIGHT_CON = 450;
 
 export const COLORS = {
   LABEL_BLACK: '#0C0D0E',

@@ -40,7 +40,7 @@ const AddNewWallet : FC<any> = (props: Props) : ReactElement => {
       toggleLoading(true)
       try {
         await keychainActions.addKey(input);
-        props.navigation.navigate('VerifyWallet', { address: input });
+        props.navigation.navigate('PendingWallet');
       } catch (e) {
   
       } finally {

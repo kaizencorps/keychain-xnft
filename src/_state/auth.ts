@@ -17,7 +17,6 @@ function createAndSetLocalAuthData(loginResponseAccessToken: string) {
     const decoded: any = jwt_decode(loginResponseAccessToken);
     const accessToken = loginResponseAccessToken;
     const expiration = decoded.exp * 1000; // gets returned in seconds, convert to millis for date comparisons
-    consoleLog('setting local storage authData with expiration: ', expiration);
     localStorage.setItem(LOCAL_STORAGE_KEYS.authData, JSON.stringify({ accessToken, expiration }));
     return { accessToken, expiration };
 }

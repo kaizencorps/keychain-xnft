@@ -12,8 +12,17 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from "../../nav/homeStack";
 
 //Data
-import { keychainAtom, userAtom } from "../../_state";
+import { keychainAtom, userAtom, walletAtom } from "../../_state";
 import { useRecoilValue } from "recoil";
+import { useWalletActions } from "../../_actions/wallet.actions";
+
+//Types
+import { KeyState } from "../../types/NFT";
+
+//Hooks
+import { useKeychainActions } from "../../_actions/keychain.actions";
+import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+
 
 //SVGs
 import Close from "../../assets/svgs/Icons/close";
@@ -23,9 +32,6 @@ import AccountCircle from "../../assets/svgs/Icons/account-circle";
 //Styles
 import * as Theme from '../../constants/theme';
 
-//Utils
-import { useWalletActions } from "../../_actions/wallet.actions";
-import { KeyState } from "../../types/NFT";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Logout'> {}
 
@@ -33,13 +39,12 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'Logout'> {}
 const Logout : FC<any> = (props: Props) : ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
-  const user = useRecoilValue(userAtom);
-  const walletActions = useWalletActions();
+  const keychainActions = useKeychainActions();
 
-  const logout = () => {
+  const logout = async () => {
     // TODO clear localStorage and all other data
-    walletActions.disconnectWallet();
-    props.navigation.navigate('Landing');
+    await keychainActions.resetKeychain(true);
+    // Resetting keychain account will automatically force navigation back to Landing screen
   }
 
   const goBack = () => props.navigation.goBack();
@@ -49,9 +54,9 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
-          <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{user.username}</SubHeaderText>
-          {keychain.keys.map((keyState: KeyState) =>
-            <WalletRow keyState={keyState} conStyle={{ width: '50%' }} />
+          <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginBottom: Theme.SPACING.MD }}>{keychain.name}</SubHeaderText>
+          {keychain.keys.map((keyState: KeyState, i: number) =>
+            <WalletRow key={i} keyState={keyState} conStyle={{ width: '50%' }} />
           )}
         </View>
         <View style={styles.botCon}>

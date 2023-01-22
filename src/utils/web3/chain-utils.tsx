@@ -49,7 +49,6 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
             .then(res => {
                 // TODO parse out false positives
 
-                console.log("all token metadata: ", res);
                 const allNFTS: NFT [] = res.data.map((nft: any) => ({
                     owner: owner,
                     name: nft.onChainData.data.name,
