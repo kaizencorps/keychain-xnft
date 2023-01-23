@@ -37,6 +37,14 @@ export const nftsAtom = selector<NFT[]>({
     }
 })
 
+export const numBluechipsAtom = selector<Number>({
+    key: 'numCollections',
+    get: ({get}) => {
+        const nftsState: NFT[] = get(nftsAtom);
+        return nftsState.filter(nft => !!nft.collection).length
+    }
+})
+
 export interface WalletHoldings {
     nfts: NFT[]
 }

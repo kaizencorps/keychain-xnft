@@ -4,6 +4,9 @@ import React, { FC, ReactElement } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ThinText } from '../ui/text/text';
 
+//Svgs
+import CheckDecagram from '../../assets/svgs/Icons/check-decagram';
+
 //Types
 import { NFT } from '../../types/NFT';
 
@@ -27,7 +30,8 @@ export const GalleryNFT: FC<Props> = (props: Props) : ReactElement => {
     <TouchableOpacity onPress={goToFocusNFT} style={styles.con}>
       <Image style={styles.img} source={{ uri: props.nft.imageUrl }}/>
       <View style={styles.label}>
-        <ThinText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, fontSize: 10 }}>{props.nft.name}</ThinText>
+        {!!props.nft.collection && <CheckDecagram height={15} width={15} color={Theme.COLORS.ACTIVE_PINK} />}
+        <ThinText style={[styles.text, !!props.nft.collection && { marginLeft: Theme.SPACING.SM }]}>{props.nft.name}</ThinText>
       </View>
     </TouchableOpacity>
   );
@@ -47,11 +51,17 @@ const styles = StyleSheet.create({
   },
   label: {
     position: 'absolute',
+    flexDirection: 'row', 
+    alignItems: 'center', 
     bottom: Theme.SPACING.SM,
     left: Theme.SPACING.SM,
     backgroundColor: Theme.COLORS.LABEL_BLACK,
     borderRadius: Theme.BRADIUS.SM,
     paddingHorizontal: Theme.SPACING.SM
+  },
+  text: { 
+    color: Theme.COLORS.LABEL_TEXT_WHITE, 
+    fontSize: 10 
   }
 });
 

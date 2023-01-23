@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components
-import { View, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Box } from '../components/ui/text-box/text-box';
 import { HeaderText, NormalText } from '../components/ui/text/text';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
@@ -16,6 +16,7 @@ import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter
 
 //Hooks
 import { useWalletActions } from "../_actions/wallet.actions";
+import useAsyncEffect from 'use-async-effect';
 
 //SVGs
 import Chevron from '../assets/svgs/Icons/chevron';
@@ -28,7 +29,6 @@ import {keychainAtom} from "../_state";
 import {walletAtom} from "../_state";
 import {useKeychainActions} from "../_actions/keychain.actions";
 
-import useAsyncEffect from 'use-async-effect';
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Landing'> { }

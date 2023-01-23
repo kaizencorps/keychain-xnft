@@ -11,6 +11,7 @@ import Numeric1Box from '../../../assets/svgs/Icons/numeric-1-box';
 import Numeric2Box from '../../../assets/svgs/Icons/numeric-2-box';
 import Numeric4Box from '../../../assets/svgs/Icons/numeric-4-box';
 import Numeric5Box from '../../../assets/svgs/Icons/numeric-5-box';
+import CheckDecagram from '../../../assets/svgs/Icons/check-decagram';
 
 //Styles
 import * as Theme from '../../../constants/theme';
@@ -41,7 +42,8 @@ const NFTFocused : React.FC<any> = (props: props) : React.ReactElement => {
       <View style={[styles.walletInfo, { justifyContent: !!props.nft.collection ? 'space-between' : 'flex-end' }]}>
         {!!props.nft.collection &&
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <NormalText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{props.nft.collection}</NormalText>
+            <CheckDecagram color={Theme.COLORS.ACTIVE_PINK} />
+            <NormalText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginLeft: Theme.SPACING.SM }}>{props.nft.collection}</NormalText>
           </View>
         }
         {getIcon()}

@@ -6,7 +6,7 @@ import { NormalText, BannerText } from "../../components/ui/text/text";
 import { NewWallet, WalletRow } from "../../components/wallet-header/wallet-header";
 
 //Data
-import { keychainAtom, nftsAtom, userAtom } from "../../_state";
+import { keychainAtom, nftsAtom, numBluechipsAtom, userAtom } from "../../_state";
 import { useRecoilValue } from "recoil";
 
 //SVGs
@@ -30,6 +30,7 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
   const nfts = useRecoilValue(nftsAtom);
+  const numBluechips = useRecoilValue(numBluechipsAtom);
   // const user = useRecoilValue(userAtom);
 
   const goToWalletCreation = () => props.navigation.navigate('AddNewWallet');
@@ -52,7 +53,7 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
           </TouchableOpacity>
           <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{keychain.name}</BannerText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>{`${nfts.length} NFTs`}</NormalText>
-          {/*<NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>*/}
+          <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>{`${numBluechips} Bluechips`}</NormalText>
           <TouchableOpacity hitSlop={{ left: 20, bottom: 20 }} onPress={goToLogout} style={styles.dots}>
             <DotsVertical rotation={90} color={Theme.COLORS.INACTIVE_GRAY} />
           </TouchableOpacity>
