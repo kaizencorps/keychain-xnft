@@ -16,8 +16,8 @@ import {ProviderComponentWrapper} from "./components/provider-component-wrapper"
 //Styles
 
 // having this breaks the webpack build - need to comment out
-import './assets/css/solana-wallet-adapter-react-ui-styles.css';
-import './assets/fonts/BlenderPro/fonts.css';
+// import './assets/css/solana-wallet-adapter-react-ui-styles.css';
+// import './assets/fonts/BlenderPro/fonts.css';
 
 import * as Theme from './constants/theme';
 
