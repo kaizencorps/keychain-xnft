@@ -59,9 +59,6 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
             </View>
         </View>
         <View style={styles.card2}>
-          <View style={{ width: '100%', alignItems: 'center' }}>
-            <Image source={require('../assets/pngs/alpha-tag.png')} style={{ width: 200, height: 75 }} />
-          </View>
             <NormalText style={styles.text}>
               Keychain is more than just this app. It's a new framework and ecosystem that we're building, to allow
               you to manage and use your digital assets in new ways.
@@ -76,14 +73,16 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
               Welcome to the future of digital asset ownership. Welcome to Keychain.
                 {/*Welcome to your personalized blockchain experience. Welcome to Keychain.*/}
             </NormalText>
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <Image source={require('../assets/pngs/alpha-tag.png')} style={{ width: 200, height: 75 }} />
+          </View>
           <Text style={{ fontFamily: 'BlenderPro-Medium', textAlign: 'center', color: Theme.COLORS.LABEL_TEXT_WHITE, marginVertical: Theme.SPACING.MD }}>
-            {`This project is currently in ALPHA development. If you experience any bugs, please let us know at `}
+            {`* This project is currently in ALPHA. If you experience any issues, have feedback, or just want to get in contact, we'd love to hear from you at `}
             <TouchableOpacity onPress={() => copyEmailAndToast('team@kaizencorps.com')}>
               <Text style={{ fontFamily: 'BlenderPro-Medium', color: Theme.COLORS.ACTIVE_PINK }}>
                 team@kaizencorps.com
               </Text>
             </TouchableOpacity>
-            {` and we'll address it promptly.`}
           </Text>
             <View style={styles.card2_1}>
                 <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord width={25} height={25}/>} link={() => openTabTo("https://discord.gg/shyrW3CmTB")}/>
