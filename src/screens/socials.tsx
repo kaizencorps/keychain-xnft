@@ -62,15 +62,29 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
           <View style={{ width: '100%', alignItems: 'center' }}>
             <Image source={require('../assets/pngs/alpha-tag.png')} style={{ width: 200, height: 75 }} />
           </View>
-            <Text style={{ fontFamily: 'BlenderPro-Medium', textAlign: 'center', color: Theme.COLORS.LABEL_TEXT_WHITE, marginVertical: Theme.SPACING.MD }}>
-              {`This project is currently in ALPHA development. If you experience any bugs, please let us know at `}
-              <TouchableOpacity onPress={() => copyEmailAndToast('team@kaizencorps.com')}>
-                <Text style={{ fontFamily: 'BlenderPro-Medium', color: Theme.COLORS.ACTIVE_PINK }}>
-                  team@kaizencorps.com 
-                </Text>
-              </TouchableOpacity>
-              {` and we'll address it promptly.`}
-            </Text>
+            <NormalText style={styles.text}>
+              Keychain is more than just this app. It's a new framework and ecosystem that we're building, to allow
+              you to manage and use your digital assets in new and novel ways.
+              </NormalText>
+          <NormalText style={styles.text}>
+              Because managing the items you own on the blockchain should be as easy as managing the items you own in real life,
+              and should be securely accessible from any device, anywhere you go.
+              {/*Accessing your assets from a single*/}
+              {/*wallet, on a single device is too restrictive for the mobile world that we now live in. */}
+            </NormalText>
+            <NormalText style={styles.text}>
+              Welcome to the future of digital asset ownership. Welcome to Keychain.
+                {/*Welcome to your personalized blockchain experience. Welcome to Keychain.*/}
+            </NormalText>
+          <Text style={{ fontFamily: 'BlenderPro-Medium', textAlign: 'center', color: Theme.COLORS.LABEL_TEXT_WHITE, marginVertical: Theme.SPACING.MD }}>
+            {`This project is currently in ALPHA development. If you experience any bugs, please let us know at `}
+            <TouchableOpacity onPress={() => copyEmailAndToast('team@kaizencorps.com')}>
+              <Text style={{ fontFamily: 'BlenderPro-Medium', color: Theme.COLORS.ACTIVE_PINK }}>
+                team@kaizencorps.com
+              </Text>
+            </TouchableOpacity>
+            {` and we'll address it promptly.`}
+          </Text>
             <View style={styles.card2_1}>
                 <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord width={25} height={25}/>} link={() => openTabTo("https://discord.gg/shyrW3CmTB")}/>
                 <SocialMedia bgColor={Theme.COLORS.TWITTER} icon={<Twitter width={25} height={25}/>} link={() => openTabTo("https://twitter.com/KaizenCorps_")} />
@@ -117,7 +131,7 @@ const styles = StyleSheet.create({
   card2_1:{
     display: 'flex',
     flexDirection: 'row',
-    justifyContent : 'space-around',   
+    justifyContent : 'space-around',
     marginVertical: Theme.SPACING.MD
   },
   card2_2:{

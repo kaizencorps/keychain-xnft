@@ -95,7 +95,13 @@ class InlineJSPlugin {
       const asset = stats.compilation.assets[filename];
       const JSBundle = asset.children[0]._value;
       const template = fs.readFileSync(this.options.template).toString().split("####JS####");
-      fs.writeFileSync(path + "/../" + this.options.filename, template[0] + JSBundle + template[1]);
+      fs.writeFileSync(path + "../" + this.options.filename, template[0] + JSBundle + template[1]);
+
+
+      // xnft originally had this - which was causing weird webpack build issues: Uncaught SyntaxError: Unexpected token '<' (at 7.index.js:1:1)
+      // combination of this page: https://github.com/webpack/webpack-dev-middleware/issues/205
+      // and me not being able to build after destroying dist directory and noticing there was a weird path getting created with double slashes in in it when building
+      // fs.writeFileSync(path + "/../" + this.options.filename, template[0] + JSBundle + template[1]);
     });
   }
 }

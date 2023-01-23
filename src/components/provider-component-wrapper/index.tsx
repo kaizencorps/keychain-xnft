@@ -16,8 +16,8 @@ import {WalletModalProvider} from '@solana/wallet-adapter-react-ui';
 //Hooks
 import useToasts from '../../hooks/useToasts';
 
-// todo: can't figure out how to include this in webpack/build, so for now this is just stuck in index.html
-import '@solana/wallet-adapter-react-ui/styles.css';
+// having this breaks the webpack build
+// import '@solana/wallet-adapter-react-ui/styles.css';
 
 import {RPC_URL, SOLANA_NETWORK} from '../../types/utils/config';
 import { NOTI_STATUS } from '../../_state';
@@ -33,7 +33,7 @@ export const ProviderComponentWrapper : FC<Props> = ({ component }) : ReactEleme
   const onWalletError = useCallback(
       (error: any) => {
         createToast(
-          error.message ? `${error.name}: ${error.message}` : `Error interacting with wallet: ${error.name}`, 
+          error.message ? `${error.name}: ${error.message}` : `Error interacting with wallet: ${error.name}`,
           NOTI_STATUS.ERR
         )
       },

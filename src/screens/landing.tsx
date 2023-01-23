@@ -48,13 +48,13 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   React.useEffect(() => {
     if (wallet && !keychain.checked) {
       (async () => {
-        await keychainActions.checkKeychainByKey(); 
+        await keychainActions.checkKeychainByKey();
       })();
     } else if(!anchorWallet && wallet) {
       (async () => {
         await keychainActions.resetKeychain(true);
       })();
-    } 
+    }
   }, [wallet])
 
   React.useEffect(() => {
@@ -89,7 +89,13 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
         <View style={styles.card1}>
           <Image source={require("../assets/pngs/Keychain-Logo.png")} style={styles.logo} />
         </View>
-        <NormalText style={styles.text}>Keychain is an on-chain component that combines your NFTs from multiple wallets to be accessible by one account</NormalText>
+        <NormalText style={styles.text}>
+          Link multiple wallets to a single on-chain account and view your NFTs from any wallet you own.
+        </NormalText>
+        <NormalText style={styles.text}>
+          {/*Built on Keychain and brought to you by the Kaizen Corps team.*/}
+          -A Kaizen Corps product.
+        </NormalText>
         <View style={styles.card2}>
           <NormalText style={styles.text2}>HOW IT WORKS</NormalText>
           <Box letras='Connect a wallet to create a profile.' />

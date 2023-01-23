@@ -14,7 +14,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import {ProviderComponentWrapper} from "./components/provider-component-wrapper";
 
 //Styles
-import './assets/fonts/BlenderPro/fonts.css';
+
+// having this breaks the webpack build - need to comment out
+// import './assets/fonts/BlenderPro/fonts.css';
 import * as Theme from './constants/theme';
 
 function App() {
