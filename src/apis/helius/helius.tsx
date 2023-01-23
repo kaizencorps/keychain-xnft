@@ -1,8 +1,9 @@
 import axios from 'axios';
+import {HELIUS_API_KEY} from "../../types/utils/config";
 
 export const getMetadata = async (nftAddresses: string[]) => {
    return axios({
-      url: "https://api.helius.xyz/v0/tokens/metadata?api-key=d5b4e462-afa3-4ad9-9801-6637f225b0d5", 
+      url: "https://api.helius.xyz/v0/tokens/metadata?api-key=" + HELIUS_API_KEY,
       method: 'POST',
     data: { mintAccounts: nftAddresses },
    })

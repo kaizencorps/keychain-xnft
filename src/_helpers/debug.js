@@ -1,6 +1,6 @@
 export function isDev() {
     // return process.env.REACT_APP_ENV === 'dev';
-    return true;
+    return false;
 }
 
 export function consoleLog() {

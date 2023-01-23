@@ -27,22 +27,15 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
     props.navigation.navigate('NFTData', { walletAddress, nft })
   }
 
-  
   return (
     <ScreenWrapper>
       <View style={styles.maxCon}>
         {/* TODO Favorites */}
-        <WalletNFTs
-          key={0} index={0}
-          walletAddress={'MY FAVORITES'}
-          items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
-          goToFocusNFT={goToFocusNFT}
-        />
         {keychain.keys.map((key, i) => {
           return (
             <WalletNFTs
-              key={i + 1}
-              index={i + 1}
+              key={i}
+              index={i}
               items={useRecoilValue(walletNftsSelector(key.wallet))}
               walletAddress={key.wallet.toBase58()}
               goToFocusNFT={goToFocusNFT}

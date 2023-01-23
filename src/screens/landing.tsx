@@ -92,10 +92,10 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
         <NormalText style={styles.text}>
           Link multiple wallets to a single on-chain account and view your NFTs from any wallet you own.
         </NormalText>
-        <NormalText style={styles.text}>
+        {/*<NormalText style={styles.text}>*/}
           {/*Built on Keychain and brought to you by the Kaizen Corps team.*/}
-          -A Kaizen Corps product.
-        </NormalText>
+          {/*-A Kaizen Corps product.*/}
+        {/*</NormalText>*/}
         <View style={styles.card2}>
           <NormalText style={styles.text2}>HOW IT WORKS</NormalText>
           <Box letras='Connect a wallet to create a profile.' />

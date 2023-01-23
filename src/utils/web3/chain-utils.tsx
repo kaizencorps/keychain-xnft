@@ -1,31 +1,31 @@
 //Types
 import { CollectionsState, NFT } from '../../types/NFT';
 
-//Data
-import { collectionsAtom } from '../../_state';
-import { useRecoilState } from 'recoil';
-
 //Web3
 import { PublicKey } from '@solana/web3.js';
 import { getMetadata } from '../../apis/helius/helius';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { Connection } from "@solana/web3.js";
 import {HELIUS_RPC_URL} from "../../types/utils/config";
+import {consoleLog} from "../../_helpers/debug";
 
 const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) => {
     const creators = nftData.onChainData.data.creators
     const collectionProp = nftData.collection
+    let collection = null;
     // New way of verify NFT is authentic part of collection
-    if(!!collectionProp && collectionProp.verified === 1){
+    if (collectionProp && collectionProp.verified === 1) {
         const collection = collections.collections.find(collection => collection.verificationAddress === collectionProp.key)
-        return collection ?? null;
     // Old way of verifying NFT is authentic part of collection
-    } else if(!!creators){
+    } else if (creators) {
         const candyCreator = creators[0];
-        const collection = collections.collections.find(collection => collection.verificationAddress === candyCreator.address)
-        if(candyCreator.verified) return collection.name;
-        else return null;
-    } else return null
+        collection = collections.collections.find(collection => collection.verificationAddress === candyCreator.address)
+        if (!candyCreator.verified) {
+            // then unset it
+            collection = null;
+        }
+    }
+    return collection ? collection.name : null;
 }
 
 export async function getNFTsForOwner(owner: PublicKey, collections: CollectionsState): Promise<NFT[]> {
@@ -49,6 +49,8 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
             .then(res => {
                 // TODO parse out false positives
 
+                consoleLog('got back helius nft data: ', res.data);
+
                 const allNFTS: NFT [] = res.data.map((nft: any) => ({
                     owner: owner,
                     name: nft.onChainData.data.name,
@@ -56,11 +58,15 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
                     imageUrl: nft.offChainData.image,
                     collection: decideIfPartOfCollection(nft, collections),
                     isFavorited: false // TODO
-                }))
+                }));
 
+                consoleLog('allNFTS: ', allNFTS);
                 return allNFTS;
             })
-            .catch(e => [] as NFT[]);
+            .catch(e => {
+                consoleLog('error getting nft data: ', e);
+                return [];
+            });
     }
 
     return await getTokenMetaDatas(parsedTokens.map(tokenAccount => tokenAccount.mint));

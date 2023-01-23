@@ -52,7 +52,7 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
           </TouchableOpacity>
           <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{keychain.name}</BannerText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>{`${nfts.length} NFTs`}</NormalText>
-          <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>
+          {/*<NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>*/}
           <TouchableOpacity hitSlop={{ left: 20, bottom: 20 }} onPress={goToLogout} style={styles.dots}>
             <DotsVertical rotation={90} color={Theme.COLORS.INACTIVE_GRAY} />
           </TouchableOpacity>

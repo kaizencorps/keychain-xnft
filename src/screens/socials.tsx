@@ -64,7 +64,7 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
           </View>
             <NormalText style={styles.text}>
               Keychain is more than just this app. It's a new framework and ecosystem that we're building, to allow
-              you to manage and use your digital assets in new and novel ways.
+              you to manage and use your digital assets in new ways.
               </NormalText>
           <NormalText style={styles.text}>
               Because managing the items you own on the blockchain should be as easy as managing the items you own in real life,
