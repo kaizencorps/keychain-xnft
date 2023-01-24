@@ -64,8 +64,8 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
               you to manage and use your digital assets in new ways.
               </NormalText>
           <NormalText style={styles.text}>
-              Because managing the items you own on the blockchain should be as easy as managing the items you own in real life,
-              they should be securely accessible from any device, anywhere you go.
+              Because your digital assets should be as easy to use as your real life assets.
+              And they should be securely accessible from any device, anywhere you go.
               {/*Accessing your assets from a single*/}
               {/*wallet, on a single device is too restrictive for the mobile world that we now live in. */}
             </NormalText>

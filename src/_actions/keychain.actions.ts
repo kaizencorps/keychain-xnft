@@ -13,6 +13,8 @@ import {connection, KEYCHAIN_TREASURY} from "../types/utils/config";
 import {useWalletActions} from "./wallet.actions";
 import {Provider} from "@project-serum/anchor";
 import {sleep} from "../utils/misc";
+import { useAnalyticsActions } from './analytics.actions';
+import { EVENTS } from '../constants/analytics';
 
 
 function useKeychainActions() {
@@ -26,6 +28,7 @@ function useKeychainActions() {
     const resetKeychainState = useResetRecoilState(keychainAtom);
     const progs = useRecoilValue(programsAtom) as Programs;
     const walletActions = useWalletActions();
+    const analyticsActions = useAnalyticsActions();
 
     const provider = useRecoilValue(providerAtom);
 
@@ -138,7 +141,13 @@ function useKeychainActions() {
             systemProgram: SystemProgram.programId,
         }).rpc();
 
-        console.log(`created keychain txid: ${txid}`);
+        consoleLog(`created keychain txid: ${txid}`);
+
+        analyticsActions.identify(name);
+        analyticsActions.trackEvent(EVENTS.createdKeychain, {
+            keychain: keychainPda.toBase58(),
+            name: name,
+        });
 
         setKeychain(
             createKeychainState(
@@ -215,13 +224,28 @@ function useKeychainActions() {
         // get the key by index
         for (let x = 0; x < keychain.keys.length; x++) {
             if (keychain.keys[x].index === index) {
-                return await removeKey(keychain.keys[x]);
+                return await removeKey(keychain.keys[x].wallet);
             }
         }
         // todo: handle unknown key ..? shouldn't happe
     }
 
-    async function removeKey(keyState: KeyState): Promise<boolean> {
+    async function removeKey(keyWallet: PublicKey): Promise<boolean> {
+        // first find the key in the keychain
+        consoleLog('finding keystate in keys: ', keychain.keys);
+        consoleLog('looking for keyWallet: ', keyWallet);
+        let keyState = null;
+        for (let key of keychain.keys) {
+            if (key.wallet.equals(keyWallet)) {
+                consoleLog('found keyState: ', key);
+                keyState = key;
+            }
+        }
+        if (keyState === null) {
+            consoleLog('key not found in keychain!!');
+        }
+        // const keyState = keychain.keys.filter((key) => {key.wallet.equals(keyWallet)})[0];
+
         let keychainKeyPda = null;
         // if the key isn't verified, then the key account hasn't been created, and don't pass it in (it's optional)
         if (keyState.verified) {
@@ -231,7 +255,7 @@ function useKeychainActions() {
 
         try {
             const keychainProg = progs.keychain;
-            const txid = await keychainProg.methods.removeKey(keyState.wallet).accounts({
+            const txid = await keychainProg.methods.removeKey(keyWallet).accounts({
                 keychain: keychain.keychainAccount,
                 keychainState: keychainStatePda,
                 key: keychainKeyPda,
@@ -239,7 +263,20 @@ function useKeychainActions() {
                 authority: wallet.address,
                 treasury: KEYCHAIN_TREASURY,
             }).rpc();
-            console.log(`removed key txid: ${txid}`);
+
+            if (keyState.verified) {
+                analyticsActions.trackEvent(EVENTS.removedVerifiedKey, {
+                    keychain: keychain.keychainAccount.toBase58(),
+                    name: keychain.name,
+                });
+            } else {
+                analyticsActions.trackEvent(EVENTS.removedPendingKey, {
+                    keychain: keychain.keychainAccount.toBase58(),
+                    name: keychain.name,
+                });
+            }
+
+            consoleLog(`removed key txid: ${txid}`);
             await refreshKeychain();
             return true;
         } catch (err) {
@@ -273,6 +310,11 @@ function useKeychainActions() {
             consoleLog('sending tx...');
             let txid = await notNullProvider.sendAndConfirm(tx);
 
+            analyticsActions.trackEvent(EVENTS.addedKey, {
+                keychain: keychain.keychainAccount.toBase58(),
+                name: keychain.name,
+            });
+
             /*
             consoleLog(`confirming tx: ${txid}`);
             const latestBlockHash = await connection.getLatestBlockhash();
@@ -290,7 +332,7 @@ function useKeychainActions() {
             //     domain: KeychainDomainPda,
             //     authority: wallet.address,
             // }).rpc();
-            console.log(`added key ${addingWalletAddress.toBase58()} to keychain ${keychain.keychainAccount}: ${txid}`);
+            consoleLog(`added key ${addingWalletAddress.toBase58()} to keychain ${keychain.keychainAccount}: ${txid}`);
             // now refresh the keychain state
             await refreshKeychain();
             return true;
@@ -334,7 +376,13 @@ function useKeychainActions() {
                 userKey: wallet.address,
                 systemProgram: SystemProgram.programId,
             }).rpc();
-            // console.log(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
+            consoleLog(`verified key ${wallet.address} on keychain ${keychain.keychainAccount}: ${txid}`);
+
+            analyticsActions.trackEvent(EVENTS.removedPendingKey, {
+                keychain: keychain.keychainAccount.toBase58(),
+                name: keychain.name,
+            });
+
             // now refresh the keychain state
             await refreshKeychain();
             return true;

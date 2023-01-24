@@ -1,10 +1,12 @@
+import {ENABLE_LOGGING} from "../types/utils/config";
+
 export function isDev() {
     // return process.env.REACT_APP_ENV === 'dev';
     return true;
 }
 
 export function consoleLog() {
-    if (isDev()) {
+    if (ENABLE_LOGGING) {
         // eslint-disable-next-line prefer-rest-params
         // @ts-ignore
         const args = [...arguments];

@@ -1,6 +1,5 @@
 import { Idl } from '@project-serum/anchor';
 import keychainIdl from '../../programs/idl/keychain.json';
-import {consoleLog} from "../../_helpers/debug";
 
 /* stupid babel type error: TypeError: [BABEL] /Users/si/projects/crypto/sol/kaizen/keychain-xnft/node_modules/webpack/hot/dev-server.js: api.addExternalDependency is not a function (While processing: "/Users/si/projects/crypto/sol/kaizen/keychain-xnft/node_modules/react-native-dotenv/index.js")
 
@@ -39,8 +38,12 @@ export const RPC_URL: string = 'https://white-late-diagram.solana-mainnet.discov
 export const HELIUS_RPC_URL: string = 'https://rpc.helius.xyz/?api-key=df2f8e0d-099d-4110-b63e-7b5f6a53673e';
 export const HELIUS_API_KEY: string = 'df2f8e0d-099d-4110-b63e-7b5f6a53673e';
 
-consoleLog("RPC_URL: ", RPC_URL);
-consoleLog("SOLANA_NETWORK: ", SOLANA_NETWORK);
+// prod
+// export const MIXPANEL_API_KEY: string = 'c841c45811a097a8730142dbe699433e';
+// dev
+export const MIXPANEL_API_KEY: string = '2dd32ae4ea557933505be3e8754c04d0';
+export const ENABLE_ANALYTICS = true;
+export const ENABLE_LOGGING = true;
 
 
 const CONFIRM_TIMEOUT_MILLIS = 1000 * 30; // 30 sec

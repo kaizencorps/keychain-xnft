@@ -51,7 +51,8 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
   const removeWallet = async () => {
     try{
       toggleLoading(true);
-      await keychainActions.removeKey(keyState);
+      consoleLog('removing wallet>>> ', keyState);
+      await keychainActions.removeKey(keyState.wallet);
       createToast('Wallet removed.', NOTI_STATUS.DEFAULT);
       props.navigation.navigate('Profile');
     } catch (e) {

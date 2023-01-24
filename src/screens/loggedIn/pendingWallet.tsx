@@ -33,7 +33,6 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'PendingWallet'
 // TODO add functionality to remove a pending wallet. It's already built on keychain program
 const PendingWallet : FC<any> = (props: Props) : ReactElement => {
 
-  const { keyState } = props.route.params;
   const { createToast } = useToasts();
 
   const [loading, toggleLoading] = React.useState(false);
@@ -45,7 +44,7 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
   const removeWallet = async () => {
     try{
       toggleLoading(true);
-      await keychainActions.removeKey(keyState);
+      await keychainActions.removeKey(props.route.params.address);
       createToast('Wallet removed.', NOTI_STATUS.DEFAULT);
       props.navigation.navigate('Profile');
     } catch (e) {
@@ -64,7 +63,7 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
           <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
           <BannerText style={{ color: Theme.COLORS.ALERT_YELLOW, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>Wallet Pending</BannerText>
           <View style={styles.addressCon}>
-            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(props.route.params.keyState.wallet)}</HeaderText>
+            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(props.route.params.address)}</HeaderText>
           </View>
         </View>
         <View style={styles.botCon}>

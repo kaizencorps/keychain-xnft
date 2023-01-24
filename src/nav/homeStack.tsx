@@ -28,7 +28,7 @@ export type RootStackParamList = {
     AddNewWallet: undefined,
     RemoveWallet: { keyState: KeyState, index: number },
     VerifyWallet: undefined,
-    PendingWallet: { keyState: KeyState },
+    PendingWallet: { address: PublicKey },
     WalletDetails: { wallet: Wallet },
     WalletDetected: undefined,
     CreateKeychain: { address: string },

@@ -19,6 +19,7 @@ import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter
 
 //Styles
 import { keychainAtom } from '../../_state';
+import {consoleLog} from "../../_helpers/debug";
 
 
 export const AppContent : FC<any> = () : ReactElement => {
@@ -36,7 +37,7 @@ export const AppContent : FC<any> = () : ReactElement => {
   const { signMessage } = useWallet();
 
   React.useEffect(() => {
-    console.log("APP CONTENT anchorWallet changing");
+    consoleLog("APP CONTENT anchorWallet changing");
     autoConnect();
   }, [anchorWallet])
 
