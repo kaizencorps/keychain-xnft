@@ -31,11 +31,18 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
     <ScreenWrapper>
       <View style={styles.maxCon}>
         {/* TODO Favorites */}
+        <WalletNFTs
+          key={0} index={0}
+          walletAddress={'MY FAVORITES'}
+          items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
+          goToFocusNFT={goToFocusNFT}
+        />
         {keychain.keys.map((key, i) => {
           return (
             <WalletNFTs
               key={i}
-              index={i}
+              // index in keychain starts at 0, but we want to start at 1
+              index={key.index + 1}
               items={useRecoilValue(walletNftsSelector(key.wallet))}
               walletAddress={key.wallet.toBase58()}
               goToFocusNFT={goToFocusNFT}

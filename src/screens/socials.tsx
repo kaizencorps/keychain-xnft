@@ -77,12 +77,7 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
             <Image source={require('../assets/pngs/alpha-tag.png')} style={{ width: 200, height: 75 }} />
           </View>
           <Text style={{ fontFamily: 'BlenderPro-Medium', textAlign: 'center', color: Theme.COLORS.LABEL_TEXT_WHITE, marginVertical: Theme.SPACING.MD }}>
-            {`* This project is currently in ALPHA. If you experience any issues, have feedback, or just want to get in contact, we'd love to hear from you at `}
-            <TouchableOpacity onPress={() => copyEmailAndToast('team@kaizencorps.com')}>
-              <Text style={{ fontFamily: 'BlenderPro-Medium', color: Theme.COLORS.ACTIVE_PINK }}>
-                team@kaizencorps.com
-              </Text>
-            </TouchableOpacity>
+            {`* This project is currently in ALPHA. If you experience any issues, have feedback, or just want to get in contact, we'd love to hear from you! `}
           </Text>
             <View style={styles.card2_1}>
                 <SocialMedia bgColor={Theme.COLORS.DISCORD} icon={<Discord width={25} height={25}/>} link={() => openTabTo("https://discord.gg/shyrW3CmTB")}/>

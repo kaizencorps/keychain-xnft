@@ -36,11 +36,11 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
   const goToWalletCreation = () => props.navigation.navigate('AddNewWallet');
   const goToLogout = async () => props.navigation.navigate("Logout");
   const goToRemoveWallet = (keyState: KeyState, index: number) => props.navigation.navigate('RemoveWallet', { keyState, index })
-  const goToPendingWallet = (keyStateWallet: PublicKey) => props.navigation.navigate('PendingWallet', {address: keyStateWallet});
+  const goToPendingWallet = (keyState: KeyState) => props.navigation.navigate('PendingWallet', { keyState });
 
   const determineNavDirection = (keyState: KeyState, i: number) => {
-    if(keyState.verified) goToRemoveWallet(keyState, (i + 1))
-    else goToPendingWallet(keyState.wallet);
+    if(keyState.verified) goToRemoveWallet(keyState, (i))
+    else goToPendingWallet(keyState);
   }
 
 

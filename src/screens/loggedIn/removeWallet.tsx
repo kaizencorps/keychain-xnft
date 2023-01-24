@@ -45,13 +45,13 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
   const { createToast } = useToasts();
 
   const [loading, toggleLoading] = React.useState(false);
-  const nfts = useRecoilValue(nftsAtom);
 
   const keychainActions = useKeychainActions();
 
   const removeWallet = async () => {
     try{
-      await keychainActions.removeKey(keyState.wallet)
+      toggleLoading(true);
+      await keychainActions.removeKey(keyState);
       createToast('Wallet removed.', NOTI_STATUS.DEFAULT);
       props.navigation.navigate('Profile');
     } catch (e) {
@@ -87,8 +87,8 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
         </View>
         <View style={styles.botCon}>
           <View style={{ flex: 1, alignItems: 'center' }}>
-          <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>{`${nfts.length} NFTs`}</NormalText>
-            <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>
+          {/*<NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>{`${nfts.length} NFTs`}</NormalText>*/}
+          {/*  <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>*/}
             <FatButton
               text={loading ? 'REMOVING...' : "REMOVE WALLET"}
               color={Theme.COLORS.SCARY_RED}

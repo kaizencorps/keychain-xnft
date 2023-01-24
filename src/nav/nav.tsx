@@ -4,9 +4,6 @@ import React from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, StyleSheet } from 'react-native';
 
-//Libs
-import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-
 //Stacks
 import AboutStack from "./aboutStack";
 import HomeStack from "./homeStack";

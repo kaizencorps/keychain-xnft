@@ -264,7 +264,8 @@
         {
           "name": "key",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "isOptional": true
         },
         {
           "name": "keychainState",
@@ -511,6 +512,16 @@
       "code": 6011,
       "name": "InvalidKeychainVersion",
       "msg": "Wrong keychain version"
+    },
+    {
+      "code": 6012,
+      "name": "MissingKeyAccount",
+      "msg": "Missing required key account"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidKeyAccount",
+      "msg": "Invalid Key account"
     }
   ],
   "metadata": {

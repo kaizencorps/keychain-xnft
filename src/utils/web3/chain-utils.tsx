@@ -8,6 +8,8 @@ import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { Connection } from "@solana/web3.js";
 import {HELIUS_RPC_URL} from "../../types/utils/config";
 import {consoleLog} from "../../_helpers/debug";
+import {chunkArray} from "../misc";
+import {nftsAtom} from "../../_state";
 
 const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) => {
     const creators = nftData.onChainData.data.creators
@@ -45,13 +47,21 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
         });
 
     const getTokenMetaDatas = async (tokenAddresses: string[]) => {
+
+        // helius limits to 100 nfts at a time so chunk it
+        // const chunks = chunkArray(tokenAddresses, 100);
+
+        // todo: add in the chunking
         return await getMetadata(tokenAddresses)
             .then(res => {
                 // TODO parse out false positives
 
                 consoleLog('got back helius nft data: ', res.data);
 
-                const allNFTS: NFT [] = res.data.map((nft: any) => ({
+                const allNFTS: NFT [] = res.data.filter((nft: any) => {
+                    // filter out any non-NFTs
+                    return nft && nft.onChainData && nft.offChainData
+                }).map((nft: any) => ({
                     owner: owner,
                     name: nft.onChainData.data.name,
                     mint: nft.mint,
@@ -60,7 +70,6 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
                     isFavorited: false // TODO
                 }));
 
-                consoleLog('allNFTS: ', allNFTS);
                 return allNFTS;
             })
             .catch(e => {

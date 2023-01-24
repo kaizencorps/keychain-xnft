@@ -15,7 +15,7 @@ import Wallet from '../../assets/svgs/Icons/wallet';
 import * as Theme from '../../constants/theme';
 import { BannerText, HeaderText, SubHeaderText } from "../../components/ui/text/text";
 import Close from "../../assets/svgs/Icons/close";
-import { FatPinkButton } from "../../components/ui/buttons/buttons";
+import {FatButton, FatPinkButton} from "../../components/ui/buttons/buttons";
 
 //Utils
 import { formatAddress } from "../../utils/stringFormatting";
@@ -26,13 +26,35 @@ import {keychainAtom, NOTI_STATUS, walletAtom} from "../../_state";
 import {useUserActions} from "../../_actions/user.actions";
 import {useKeychainActions} from "../../_actions/keychain.actions";
 import useToasts from "../../hooks/useToasts";
+import {consoleLog} from "../../_helpers/debug";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'PendingWallet'> {}
 
 // TODO add functionality to remove a pending wallet. It's already built on keychain program
 const PendingWallet : FC<any> = (props: Props) : ReactElement => {
 
+  const { keyState } = props.route.params;
+  const { createToast } = useToasts();
+
+  const [loading, toggleLoading] = React.useState(false);
+
   const goBack = () => props.navigation.goBack();
+
+  const keychainActions = useKeychainActions();
+
+  const removeWallet = async () => {
+    try{
+      toggleLoading(true);
+      await keychainActions.removeKey(keyState);
+      createToast('Wallet removed.', NOTI_STATUS.DEFAULT);
+      props.navigation.navigate('Profile');
+    } catch (e) {
+      consoleLog('error removing wallet', e);
+      createToast('Error removing wallet from keychain', NOTI_STATUS.ERR);
+    } finally {
+      toggleLoading(false);
+    }
+  }
 
 
   return (
@@ -42,13 +64,19 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
           <Wallet color={Theme.COLORS.LABEL_TEXT_WHITE} height={75} width={75} />
           <BannerText style={{ color: Theme.COLORS.ALERT_YELLOW, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>Wallet Pending</BannerText>
           <View style={styles.addressCon}>
-            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(props.route.params.address)}</HeaderText>
+            <HeaderText style={{ color: Theme.COLORS.ALERT_YELLOW }}>{formatAddress(props.route.params.keyState.wallet)}</HeaderText>
           </View>
         </View>
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
             <SubHeaderText style={styles.pinkText}>To verify this added wallet, you'll need to logout of this keychain account and re-connect with the wallet to be verified.</SubHeaderText>
           </View>
+          <FatButton
+              text={loading ? 'REMOVING...' : "REMOVE WALLET"}
+              color={Theme.COLORS.SCARY_RED}
+              backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
+              func={removeWallet}
+          />
           <View style={styles.closeCon}>
             <TouchableOpacity onPress={goBack}>
               <Close color={Theme.COLORS.INACTIVE_GRAY} />

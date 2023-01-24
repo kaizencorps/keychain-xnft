@@ -8,7 +8,7 @@ import {findKeychainKeyPda, findKeychainPda, findKeychainStatePda, KeychainDomai
 import {consoleLog} from "../_helpers/debug";
 import {PublicKey, SystemProgram} from "@solana/web3.js";
 import {keychainAtom, Programs, programsAtom} from "../_state";
-import {KeychainState} from "../types/NFT";
+import {KeychainState, KeyState} from "../types/NFT";
 import {connection, KEYCHAIN_TREASURY} from "../types/utils/config";
 import {useWalletActions} from "./wallet.actions";
 import {Provider} from "@project-serum/anchor";
@@ -17,8 +17,8 @@ import {sleep} from "../utils/misc";
 
 function useKeychainActions() {
 
-    // hack confirmation time of 3.5 seconds
-    const CONFIRM_TIME = 3500;
+    // hack confirmation time of 5 seconds
+    const CONFIRM_TIME = 5000;
 
     const [user, setUser] = useRecoilState(userAtom);
     const wallet = useRecoilValue(walletAtom);
@@ -215,19 +215,23 @@ function useKeychainActions() {
         // get the key by index
         for (let x = 0; x < keychain.keys.length; x++) {
             if (keychain.keys[x].index === index) {
-                return await removeKey(keychain.keys[x].wallet);
+                return await removeKey(keychain.keys[x]);
             }
         }
         // todo: handle unknown key ..? shouldn't happe
     }
 
-    async function removeKey(keyWallet: PublicKey): Promise<boolean> {
-        const [keychainKeyPda] = findKeychainKeyPda(keyWallet);
+    async function removeKey(keyState: KeyState): Promise<boolean> {
+        let keychainKeyPda = null;
+        // if the key isn't verified, then the key account hasn't been created, and don't pass it in (it's optional)
+        if (keyState.verified) {
+            [keychainKeyPda] = findKeychainKeyPda(keyState.wallet);
+        }
         const [keychainStatePda] = findKeychainStatePda(keychain.keychainAccount);
 
         try {
             const keychainProg = progs.keychain;
-            const txid = await keychainProg.methods.removeKey(keyWallet).accounts({
+            const txid = await keychainProg.methods.removeKey(keyState.wallet).accounts({
                 keychain: keychain.keychainAccount,
                 keychainState: keychainStatePda,
                 key: keychainKeyPda,
@@ -246,7 +250,7 @@ function useKeychainActions() {
                 // don't worry be happy
                 return true;
             } else {
-                consoleLog(`error removing key ${keyWallet.toBase58()}: ${err}`);
+                consoleLog(`error removing key ${keyState.wallet.toBase58()}: ${err}`);
                 throw err;
             }
         }
