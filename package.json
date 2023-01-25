@@ -40,7 +40,6 @@
     "react-dom": "18.1.0",
     "react-error-overlay": "6.0.9",
     "react-native": "0.70.5",
-    "react-native-dotenv": "^3.4.7",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-pager-view": "6.0.1",
     "react-native-paper": "^4.7.2",

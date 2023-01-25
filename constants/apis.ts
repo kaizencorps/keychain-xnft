@@ -1,0 +1,1 @@
+export const HELIUS_RPC_URL="https://rpc.helius.xyz/?api-key="

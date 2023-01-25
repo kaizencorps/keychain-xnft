@@ -1,7 +1,0 @@
-{
-  "expo": {
-    "name": "Keychain",
-    "slug": "keychain",
-    "entryPoint": "./src/App",
-  }
-}

@@ -51,9 +51,10 @@ module.exports = async function (env, argv) {
     (plugin) => ["DefinePlugin", "CleanWebpackPlugin"].includes(plugin.constructor.name)
   )
 
+  // INVESTIGATE what this does and how it was changed from template: template.html
   config.plugins.push(
     new InlineJSPlugin({
-      template: "template.html",
+      template: "index.html",
       filename: "index.html"
     })
   );
