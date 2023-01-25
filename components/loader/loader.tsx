@@ -1,6 +1,5 @@
 import React from 'react';
-import { ViewStyle, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { ViewStyle, View, ActivityIndicator } from 'react-native';
 
 interface Props {
   conStyle?: ViewStyle,

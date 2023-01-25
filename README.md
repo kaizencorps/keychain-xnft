@@ -25,7 +25,7 @@ yarn dev
 ```
 
 ### Open the Simulator in Backpack
-
+<!-- This step doesn't work outside of normal browser development. Do the yarn build and yarn start to see it in the backpack simulator -->
 Now that you have your xNFT dev server running, open it in the Backpack simulator to see it run.
 
 That's it!
