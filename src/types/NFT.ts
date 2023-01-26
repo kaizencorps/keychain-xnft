@@ -19,8 +19,8 @@ export interface CollectionsState {
   collections: Collection[]
 }
 
-enum RANK { BLUECHIP = "BLUECHIP" }
-enum VERIFICATION { COLLECTION = "COLLECTION", CREATOR = "CREATOR" }
+export enum RANK { BLUECHIP = "BLUECHIP" }
+export enum VERIFICATION { COLLECTION = "COLLECTION", CREATOR = "CREATOR" }
 export interface Collection {
   name: string,
   rank: RANK,

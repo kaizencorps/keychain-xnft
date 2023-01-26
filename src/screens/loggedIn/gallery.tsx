@@ -38,7 +38,7 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
           goToFocusNFT={goToFocusNFT}
         />
         {keychain.keys.map((key, i) => {
-          return (
+          return key.verified ? (
             <WalletNFTs
               key={i}
               // index in keychain starts at 0, but we want to start at 1
@@ -47,7 +47,7 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
               walletAddress={key.wallet.toBase58()}
               goToFocusNFT={goToFocusNFT}
             />
-          )
+          ) : null
         })}
       </View>
     </ScreenWrapper>
