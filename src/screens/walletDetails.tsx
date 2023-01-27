@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useState} from "react";
+import React, {FC, ReactElement, useEffect, useState} from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
@@ -27,6 +27,7 @@ import { useKeychainActions } from "../_actions/keychain.actions";
 import {useRecoilValue} from "recoil";
 import {keychainAtom} from "../_state";
 import {consoleLog} from "../_helpers/debug";
+import { useAnalyticsActions } from "../_actions/analytics.actions";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'WalletDetails'> {
@@ -40,6 +41,11 @@ const WalletDetails : FC<any> = (props: Props) : ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
   const keychainActions = useKeychainActions();
+  const analyticsActions = useAnalyticsActions();
+
+  useEffect(() => {
+    analyticsActions.trackPage('Wallet Details');
+  });
 
   const getIcon = React.useMemo(() => {
     switch(index){

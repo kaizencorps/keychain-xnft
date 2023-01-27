@@ -1,4 +1,4 @@
-import React, { FC, ReactElement} from "react";
+import React, {FC, ReactElement, useEffect} from "react";
 
 //Components
 import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
@@ -22,6 +22,7 @@ import * as Theme from '../../constants/theme';
 import ScreenWrapper from "../../components/screenWrapper/screenWrapper";
 import { KeyState } from "../../types/NFT";
 import { PublicKey } from "@solana/web3.js";
+import {useAnalyticsActions} from "../../_actions/analytics.actions";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Profile'> {}
 
@@ -32,6 +33,7 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
   const nfts = useRecoilValue(nftsAtom);
   const numBluechips = useRecoilValue(numBluechipsAtom);
   // const user = useRecoilValue(userAtom);
+  const analyticsActions = useAnalyticsActions();
 
   const goToWalletCreation = () => props.navigation.navigate('AddNewWallet');
   const goToLogout = async () => props.navigation.navigate("Logout");
@@ -43,6 +45,9 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
     else goToPendingWallet(keyState.wallet);
   }
 
+  useEffect(() => {
+    analyticsActions.trackPage('Profile');
+  });
 
   return (
     <ScreenWrapper>

@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useState} from "react";
+import React, {FC, ReactElement, useEffect, useState} from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
@@ -30,6 +30,7 @@ import { useRecoilValue } from "recoil";
 import {keychainAtom, walletAtom } from "../_state";
 import useAsyncEffect from "use-async-effect";
 import {useWalletActions} from "../_actions/wallet.actions";
+import { useAnalyticsActions } from "../_actions/analytics.actions";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'WalletDetected'> {}
@@ -44,6 +45,7 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
   const userActions = useUserActions();
   const walletActions = useWalletActions();
   const keychainActions = useKeychainActions();
+  const analyticsActions = useAnalyticsActions();
 
   const [username, setUsername] = React.useState('')
   const [errorText, setErrorText] = React.useState('');
@@ -70,6 +72,11 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
       // todo: handle with message ..?
     }
   }
+
+  useEffect(() => {
+    analyticsActions.trackPage('Wallet Detected');
+  });
+
 
   useAsyncEffect(async () => {
     if (checked && keychain.checked) {

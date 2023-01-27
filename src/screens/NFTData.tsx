@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 //Components
 import { NFT } from '../types/NFT';
@@ -28,6 +28,8 @@ import { PublicKey } from '@solana/web3.js';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
 import useToasts from '../hooks/useToasts';
 import { NOTI_STATUS } from '../_state';
+import { useAnalyticsActions } from '../_actions/analytics.actions';
+import { EVENTS } from '../constants/analytics';
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'NFTData'> {}
 
@@ -43,6 +45,8 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const data: NFT[] = useRecoilValue(walletNftsSelector(new PublicKey(walletAddress)))
 
+  const analyticsActions = useAnalyticsActions();
+
   const [scrollIndex, setScrollIndex] = React.useState<number>(data.findIndex((element: NFT) => element.mint === nft.mint))
 
   const scrollCallback = React.useCallback(({ viewableItems }) => {
@@ -56,16 +60,22 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
   }, [dims.width])
 
   const toggleFavorite = () => {
+    analyticsActions.trackEvent(EVENTS.toggleFavorite, {
+      nft: nft.mint.toBase58(),
+    });
     createToast('Not available in alpha. Coming soon', NOTI_STATUS.DEFAULT);
   }
 
   const setProfilePic = () => {
+    analyticsActions.trackEvent(EVENTS.setProfilePic, {
+      nft: nft.mint.toBase58(),
+    });
     createToast('Not available in alpha. Coming soon', NOTI_STATUS.DEFAULT);
   }
 
   const goBack = () => props.navigation.goBack();
 
-  const renderItem = ({ item }) => <NFTFocused nft={item} wallet={walletAddress} widthOfCon={getItemWidth} /> 
+  const renderItem = ({ item }) => <NFTFocused nft={item} wallet={walletAddress} widthOfCon={getItemWidth} />
 
   const scroll = (direction: number) => {
     if(scrollRef?.current){
@@ -74,12 +84,23 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
     }
   }
 
+  useEffect(() => {
+    const pageProps = {
+      mint: nft.mint.toBase58(),
+      wallet: walletAddress
+    };
+    if (nft.collection) {
+      pageProps['collection'] = nft.collection;
+    }
+    analyticsActions.trackPage('NFT View', pageProps);
+  });
+
 
   return (
     <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={{ flex: 1 }}>
-          <FlatList 
+          <FlatList
             ref={scrollRef}
             showsHorizontalScrollIndicator={false}
             horizontal
@@ -95,35 +116,35 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
             initialScrollIndex={scrollIndex}
             contentContainerStyle={{ flex: 1 }}
             onViewableItemsChanged={scrollCallback}
-          /> 
+          />
         </View>
         <View style={styles.botCon}>
           <View style={styles.botCon}>
             {data[scrollIndex].isFavorited ?
-              <FatButton 
-                text="Unpin from favorites" 
+              <FatButton
+                text="Unpin from favorites"
                 borderColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
                 color={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
                 func={toggleFavorite}
                 icon={<StarCrossed color={"#373A47"} height={30} width={30} />}
               />
             :
-              <FatButton 
-                text="Pin to favorites" 
-                color={Theme.COLORS.FAV_GOLD} 
+              <FatButton
+                text="Pin to favorites"
+                color={Theme.COLORS.FAV_GOLD}
                 backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
                 func={toggleFavorite}
                 icon={<Star color={Theme.COLORS.FAV_GOLD} height={30} width={30} />}
               />
             }
-            <FatButton 
-              text="Make profile picture" 
+            <FatButton
+              text="Make profile picture"
               backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
               func={setProfilePic}
               icon={<AccountCircle color={Theme.COLORS.USER_GREEN} height={30} width={30} />}
               color={Theme.COLORS.USER_GREEN}
             />
-            <FatDownloadButton 
+            <FatDownloadButton
               text="Download picture"
               backgroundColor={Theme.COLORS.BUTTON_BACKGROUND_GRAY}
               downloadUrl={data[scrollIndex].imageUrl}
@@ -158,7 +179,7 @@ const styles = StyleSheet.create({
     padding: Theme.SPACING.SM,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center'
   },
   botCon: {

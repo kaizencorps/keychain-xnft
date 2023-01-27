@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, StyleSheet } from 'react-native';
 import ScreenWrapper from '../../components/screenWrapper/screenWrapper';
 
@@ -16,16 +16,22 @@ import { keychainAtom, walletNftsSelector } from '../../_state/keychain';
 
 //Styles
 import * as Theme from '../../constants/theme';
+import { useAnalyticsActions } from '../../_actions/analytics.actions';
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'GalleryLanding'> {}
 
 const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
+  const analyticsActions = useAnalyticsActions();
 
   const goToFocusNFT = (nft: NFT, walletAddress: string) => {
     props.navigation.navigate('NFTData', { walletAddress, nft })
   }
+
+  useEffect(() => {
+    analyticsActions.trackPage('Gallery');
+  });
 
   return (
     <ScreenWrapper>

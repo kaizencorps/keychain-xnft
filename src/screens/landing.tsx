@@ -28,6 +28,7 @@ import {useRecoilValue} from "recoil";
 import {keychainAtom} from "../_state";
 import {walletAtom} from "../_state";
 import {useKeychainActions} from "../_actions/keychain.actions";
+import { useAnalyticsActions } from '../_actions/analytics.actions';
 
 
 
@@ -38,6 +39,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const walletActions = useWalletActions();
   const keychainActions = useKeychainActions();
+  const analyticsActions = useAnalyticsActions();
 
   const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
   const { signMessage } = useWallet();
@@ -64,6 +66,10 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
       })();
     }
   }, [anchorWallet])
+
+  React.useEffect(() => {
+    analyticsActions.trackPage('Landing');
+  });
 
   useAsyncEffect(async () => {
     if (keychain.checked) {
