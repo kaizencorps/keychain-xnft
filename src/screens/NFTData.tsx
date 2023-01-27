@@ -30,6 +30,7 @@ import useToasts from '../hooks/useToasts';
 import { NOTI_STATUS } from '../_state';
 import { useAnalyticsActions } from '../_actions/analytics.actions';
 import { EVENTS } from '../constants/analytics';
+import {consoleLog} from "../_helpers/debug";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'NFTData'> {}
 
@@ -86,8 +87,9 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
 
   useEffect(() => {
     const pageProps = {
-      mint: nft.mint.toBase58(),
-      wallet: walletAddress
+      mint: nft.mint,
+      wallet: walletAddress,
+      favorite: nft.isFavorited
     };
     if (nft.collection) {
       pageProps['collection'] = nft.collection;
