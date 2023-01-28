@@ -62,14 +62,18 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const toggleFavorite = () => {
     analyticsActions.trackEvent(EVENTS.toggleFavorite, {
-      nft: nft.mint.toBase58(),
+      mint: nft.mint,
+      wallet: walletAddress,
+      favorite: nft.isFavorited,
     });
     createToast('Not available in alpha. Coming soon', NOTI_STATUS.DEFAULT);
   }
 
   const setProfilePic = () => {
     analyticsActions.trackEvent(EVENTS.setProfilePic, {
-      nft: nft.mint.toBase58(),
+      mint: nft.mint,
+      wallet: walletAddress,
+      favorite: nft.isFavorited,
     });
     createToast('Not available in alpha. Coming soon', NOTI_STATUS.DEFAULT);
   }
