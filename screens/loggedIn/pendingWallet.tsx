@@ -68,7 +68,9 @@ const PendingWallet : FC<any> = (props: Props) : ReactElement => {
         </View>
         <View style={styles.botCon}>
           <View style={{ justifyContent: 'center' }}>
-            <SubHeaderText style={styles.pinkText}>To verify this added wallet, you'll need to logout of this keychain account and re-connect with the wallet to be verified.</SubHeaderText>
+            <SubHeaderText style={styles.pinkText}>
+              Log in to Keychain with this added wallet to verify ownership.
+              </SubHeaderText>
           </View>
           <FatButton
               text={loading ? 'REMOVING...' : "REMOVE WALLET"}

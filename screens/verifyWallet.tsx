@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from "react";
+import React, {FC, ReactElement, useEffect} from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
@@ -33,6 +33,7 @@ import { NOTI_STATUS, walletAtom } from "../_state";
 import { useKeychainActions } from "../_actions/keychain.actions";
 import useToasts from "../hooks/useToasts";
 import {consoleLog} from "../_helpers/debug";
+import { useAnalyticsActions } from "../_actions/analytics.actions";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'VerifyWallet'> {}
 
@@ -49,6 +50,7 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
   // const user = useRecoilValue(userAtom);
 
   const keychainActions = useKeychainActions();
+  const analyticsActions = useAnalyticsActions();
 
   const [isWalletPending, toggleWalletPending] = React.useState(false);
 
@@ -72,6 +74,11 @@ const VerifyWallet : FC<any> = (props: Props) : ReactElement => {
       toggleLoading(false);
     }
   }
+
+  useEffect(() => {
+    analyticsActions.trackPage('Verify Wallet');
+  });
+
 
   /* nav.tsx will swap to profile automatically when walletVerified gets set
   useAsyncEffect(async () => {

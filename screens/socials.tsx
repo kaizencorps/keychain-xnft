@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 //Components
 import { View, StyleSheet, Image, Linking, Text, TouchableOpacity } from 'react-native';
@@ -24,6 +24,7 @@ import Twitter from '../assets/svgs/logos/twitter';
 import Email from '../assets/svgs/Icons/email';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
 import axios from "axios";
+import {useAnalyticsActions} from "../_actions/analytics.actions";
 
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
@@ -31,6 +32,7 @@ interface Props extends BottomTabScreenProps<RootStackParamList, 'Socials'> {}
 const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
 
   const { createToast } = useToasts();
+  const analyticsActions = useAnalyticsActions();
 
   const [inputValue, setInputValue] = React.useState("");
 
@@ -49,6 +51,10 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
     Linking.openURL(url);
   }
 
+  useEffect(() => {
+    analyticsActions.trackPage('About');
+  });
+
   return (
     <ScreenWrapper>
       <View style={styles.subCon}>
@@ -64,8 +70,8 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
               you to manage and use your digital assets in new ways.
               </NormalText>
           <NormalText style={styles.text}>
-              Because your digital assets should be as easy to use as your real life assets.
-              And they should be securely accessible from any device, anywhere you go.
+              Because your digital assets should be as easy to use as your real life assets,
+              and should be securely accessible from any device, anywhere you go.
               {/*Accessing your assets from a single*/}
               {/*wallet, on a single device is too restrictive for the mobile world that we now live in. */}
             </NormalText>

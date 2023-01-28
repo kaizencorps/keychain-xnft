@@ -131,7 +131,10 @@ function useKeychainActions() {
 
         const keychainProg = progs.keychain;
 
-        // todo: check if keychain already exists ..?
+        const existingAccount = await provider.connection.getAccountInfo(keychainPda);
+        if (existingAccount) {
+            throw new Error('Username taken');
+        }
 
         const txid = await keychainProg.methods.createKeychain(name).accounts({
             keychain: keychainPda,
@@ -213,6 +216,9 @@ function useKeychainActions() {
             }
             state.walletVerified = walletVerified;
             state.walletAdded = walletAdded;
+            if (walletVerified) {
+                analyticsActions.identify(state.name);
+            }
             setKeychain(state);
             return state;
         } else {

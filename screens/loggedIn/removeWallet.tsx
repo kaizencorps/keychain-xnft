@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from "react";
 
 //Components
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { BannerText, HeaderText, NormalText } from "../../components/ui/text/text";
+import {BannerText, HeaderText, NormalText, SubHeaderText} from "../../components/ui/text/text";
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -81,7 +81,7 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
           {getIcon}
-          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>{`Wallet ${index}`}</BannerText>
+          <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginTop: Theme.SPACING.LG, marginBottom: Theme.SPACING.SM }}>{`Wallet ${index + 1}`}</BannerText>
           <View style={styles.addressCon}>
             <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{formatAddress(keyState.wallet)}</HeaderText>
           </View>
@@ -90,6 +90,11 @@ const RemoveWallet : FC<any> = (props: Props) : ReactElement => {
           <View style={{ flex: 1, alignItems: 'center' }}>
           {/*<NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>{`${nfts.length} NFTs`}</NormalText>*/}
           {/*  <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK, marginBottom: Theme.SPACING.MD }}>--- Collections</NormalText>*/}
+            <View style={{ justifyContent: 'center' }}>
+              <SubHeaderText style={styles.pinkText}>
+                This will remove this wallet from your Keychain.
+              </SubHeaderText>
+            </View>
             <FatButton
               text={loading ? 'REMOVING...' : "REMOVE WALLET"}
               color={Theme.COLORS.SCARY_RED}

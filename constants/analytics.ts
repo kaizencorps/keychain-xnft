@@ -6,5 +6,7 @@ export const EVENTS = {
   removedPendingKey: "Removed Pending Key",
   removedVerifiedKey: "Removed Verified Key",
   verifiedKey: "Verified Key",
+  toggleFavorite: "Toggle Favorite",
+  setProfilePic: "Set Profile Pic",
 
 };

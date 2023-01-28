@@ -1,30 +1,29 @@
 //Types
-import { CollectionsState, NFT } from '../../types/NFT';
+import {CollectionsState, NFT, VERIFICATION} from '../../types/NFT';
 
 //Constants
 import Constants from 'expo-constants';
 import { HELIUS_RPC_URL } from '../../constants/apis';
 
 //Web3
-import { PublicKey } from '@solana/web3.js';
+import { Connection, PublicKey } from '@solana/web3.js';
 import { getMetadata } from '../../apis/helius/helius';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { Connection } from "@solana/web3.js";
-import {consoleLog} from "../../_helpers/debug";
-import {chunkArray} from "../misc";
-import {nftsAtom} from "../../_state";
+import { consoleLog } from "../../_helpers/debug";
 
 const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) => {
-    const creators = nftData.onChainData.data.creators
-    const collectionProp = nftData.collection
+    const creators = nftData.onChainData.data.creators;
+    const collectionProp = nftData.onChainData.collection;
     let collection = null;
-    // New way of verify NFT is authentic part of collection
-    if (collectionProp && collectionProp.verified === 1) {
-        const collection = collections.collections.find(collection => collection.verificationAddress === collectionProp.key)
+    // New way of verify NFT is authentic part of collection - metaplex collections
+    if (collectionProp && collectionProp.verified) {
+        collection = collections.collections.find(collection => collection.verification === VERIFICATION.COLLECTION &&
+                                                                collection.verificationAddress === collectionProp.key)
     // Old way of verifying NFT is authentic part of collection
     } else if (creators) {
         const candyCreator = creators[0];
-        collection = collections.collections.find(collection => collection.verificationAddress === candyCreator.address)
+        collection = collections.collections.find(collection => collection.verification === VERIFICATION.CREATOR &&
+                                                                collection.verificationAddress === candyCreator.address)
         if (!candyCreator.verified) {
             // then unset it
             collection = null;
@@ -52,15 +51,19 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
     const getTokenMetaDatas = async (tokenAddresses: string[]) => {
 
         // helius limits to 100 nfts at a time so chunk it
+
+       // todo: chunk this properly and fetch everything
         // const chunks = chunkArray(tokenAddresses, 100);
+        if (tokenAddresses.length > 100) {
+            tokenAddresses = tokenAddresses.slice(0, 100);
+        }
+
+        consoleLog('collections: ', collections);
 
         // todo: add in the chunking
         return await getMetadata(tokenAddresses)
             .then(res => {
-                // TODO parse out false positives
-
-                consoleLog('got back helius nft data: ', res.data);
-
+                // consoleLog('got back helius nft data: ', res.data);
                 const allNFTS: NFT [] = res.data.filter((nft: any) => {
                     // filter out any non-NFTs
                     return nft && nft.onChainData && nft.offChainData
