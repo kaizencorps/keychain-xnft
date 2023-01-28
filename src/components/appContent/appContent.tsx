@@ -20,6 +20,7 @@ import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter
 //Styles
 import { keychainAtom } from '../../_state';
 import {consoleLog} from "../../_helpers/debug";
+import useAsyncEffect from "use-async-effect";
 
 
 export const AppContent : FC<any> = () : ReactElement => {
@@ -50,6 +51,13 @@ export const AppContent : FC<any> = () : ReactElement => {
       setInitialLoad(false);
     }
   }
+
+  useAsyncEffect(async () => {
+    if (keychain.walletVerified) {
+      consoleLog(">>>>>> logging in >>>>> ");
+      await walletActions.login(signMessage)
+    }
+  }, [keychain]);
 
   if(initialLoad) return <Loader />
 
