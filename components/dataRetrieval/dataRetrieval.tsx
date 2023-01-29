@@ -8,9 +8,9 @@ import Loader from '../loader/loader';
 import { CollectionsState, Collection } from '../../types/NFT';
 
 //Data
-import { getQualifiedCollections } from '../../apis/keychainServer/keychainServer';
 import { useRecoilState } from 'recoil';
 import { collectionsAtom } from '../../_state';
+import useKeychainServer from '../../hooks/apis/keychainServer/useKeychainServer';
 
 interface Props {
   children: React.ReactNode
@@ -19,6 +19,7 @@ interface Props {
 
 export const DataRetrieval : FC<any> = (props: Props) : ReactElement => {
 
+  const keychainServer = useKeychainServer();
   const [isLoading, toggleLoading] = React.useState(true);
   const [_, setCollections] = useRecoilState<CollectionsState>(collectionsAtom);
 
@@ -27,7 +28,7 @@ export const DataRetrieval : FC<any> = (props: Props) : ReactElement => {
   }, [])
 
   const getCollections = () => {
-    getQualifiedCollections()
+    keychainServer.getQualifiedCollections()
       .then(res => setCollections({ collections: res.data.data as Collection[] }))
       .catch(e => console.log("Error retrieving collections: ", e))
       .finally(() => toggleLoading(false));
@@ -43,4 +44,4 @@ export const DataRetrieval : FC<any> = (props: Props) : ReactElement => {
 };
 
 
-export default DataRetrieval
+export default DataRetrieval;

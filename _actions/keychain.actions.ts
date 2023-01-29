@@ -1,14 +1,11 @@
 import {SetterOrUpdater, useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} from 'recoil';
 
-import {
-    providerAtom,
-    userAtom, walletAtom,
-} from '../_state';
+import { providerAtom, walletAtom } from '../_state';
 import {findKeychainKeyPda, findKeychainPda, findKeychainStatePda, KeychainDomainPda} from "../programs/keychain-utils";
 import {consoleLog} from "../_helpers/debug";
 import {PublicKey, SystemProgram} from "@solana/web3.js";
 import {keychainAtom, Programs, programsAtom} from "../_state";
-import {KeychainState, KeyState} from "../types/NFT";
+import { KeychainState } from "../types/NFT";
 import {useWalletActions} from "./wallet.actions";
 import {Provider} from "@project-serum/anchor";
 import {sleep} from "../utils/misc";
@@ -18,25 +15,20 @@ import { EVENTS } from '../constants/analytics';
 //Constants
 import Constants from 'expo-constants';
 
+// hack confirmation time of 5 seconds
+const CONFIRM_TIME = 5000;
 
 function useKeychainActions() {
 
-    // hack confirmation time of 5 seconds
-    const CONFIRM_TIME = 5000;
+    const walletActions = useWalletActions();
+    const analyticsActions = useAnalyticsActions();
 
-    const [user, setUser] = useRecoilState(userAtom);
     const wallet = useRecoilValue(walletAtom);
     const [keychain, setKeychain] = useRecoilState(keychainAtom);
     const resetKeychainState = useResetRecoilState(keychainAtom);
     const progs = useRecoilValue(programsAtom) as Programs;
-    const walletActions = useWalletActions();
-    const analyticsActions = useAnalyticsActions();
 
     const provider = useRecoilValue(providerAtom);
-
-    function setUsername(username: string) {
-        setUser({username})
-    }
 
     // given a name for a keychain, attempts to fetch the keychain and see if it exists or not
     // 3 options here:
@@ -409,7 +401,6 @@ function useKeychainActions() {
     }
 
     return {
-        setUsername,
         checkKeychainByName,
         checkKeychainByKey,
         createKeychain,

@@ -22,8 +22,7 @@ import { formatAddress } from "../../utils/stringFormatting";
 
 //Data
 import {useRecoilValue} from "recoil";
-import {keychainAtom, NOTI_STATUS, walletAtom} from "../../_state";
-import {useUserActions} from "../../_actions/user.actions";
+import { keychainAtom, NOTI_STATUS, walletAtom } from "../../_state";
 import {useKeychainActions} from "../../_actions/keychain.actions";
 import useToasts from "../../hooks/useToasts";
 import {consoleLog} from "../../_helpers/debug";

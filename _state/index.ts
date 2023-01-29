@@ -1,6 +1,6 @@
 export * from './wallet';
 export * from './auth';
-export * from './user';
+export * from './userProfile';
 export * from './_collections';
 export * from './keychain'
 export * from './programs'

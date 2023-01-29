@@ -59,7 +59,8 @@ export default {
       RPC_ENDPOINT: process.env.RPC_ENDPOINT,
       SOLANA_NETWORK: process.env.SOLANA_NETWORK,
       KEYCHAIN_TREASURY: process.env.KEYCHAIN_TREASURY,
-      HELIUS_API_KEY: process.env.HELIUS_API_KEY
+      HELIUS_API_KEY: process.env.HELIUS_API_KEY,
+      KAIZEN_CORPS_URL: process.env.KAIZEN_CORPS_URL
     },
   },
 };

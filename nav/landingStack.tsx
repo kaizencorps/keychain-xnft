@@ -11,12 +11,9 @@ import VerifyWallet from '../screens/verifyWallet';
 
 export type RootStackParamList = {
   Landing: undefined,
-  NewWalletConnect: { address: string },
   VerifyWallet: undefined,
-  // WalletDetails: { wallet: Wallet },
   WalletDetected: undefined,
-  CreateKeychain,
-  Logout: undefined,
+  CreateKeychain: undefined,
 }
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -35,12 +32,6 @@ export default () => {
         <Stack.Screen name="CreateKeychain" component={CreateKeychain} />
         <Stack.Screen name="WalletDetected" component={WalletDetected} />
         <Stack.Screen name="VerifyWallet" component={VerifyWallet} />
-
-        {/*<Stack.Screen name="Profile" component={Profile} />*/}
-        {/*<Stack.Screen name="AddNewWallet" component={AddNewWallet} />*/}
-        {/*<Stack.Screen name="WalletDetails" component={WalletDetails} />*/}
-        {/*<Stack.Screen name="RemoveWallet" component={RemoveWallet} />*/}
-
       </Stack.Navigator>
   );
 };

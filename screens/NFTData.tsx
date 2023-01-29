@@ -4,14 +4,16 @@ import React, {useEffect} from 'react';
 import { NFT } from '../types/NFT';
 import { View, StyleSheet, TouchableOpacity, FlatList, useWindowDimensions } from 'react-native';
 import NFTFocused from '../components/galleryNFT/focused/focused-nft';
+import ScreenWrapper from '../components/screenWrapper/screenWrapper';
 import { FatButton, FatDownloadButton } from '../components/ui/buttons/buttons';
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../nav/galleryStack';
+import { NOTI_STATUS, userProfileAtom } from '../_state';
 
 //Data
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { walletNftsSelector } from '../_state/keychain';
 
 //SVGs
@@ -22,15 +24,19 @@ import Download from '../assets/svgs/Icons/download';
 import AccountCircle from '../assets/svgs/Icons/account-circle';
 import Close from '../assets/svgs/Icons/close';
 
+//Constants
+import { EVENTS } from '../constants/analytics';
+
+//Hooks
+import useToasts from '../hooks/useToasts';
+import useKeychainServer from '../hooks/apis/keychainServer/useKeychainServer';
+import { useAnalyticsActions } from '../_actions/analytics.actions';
+
+//Web3
+import { PublicKey } from '@solana/web3.js';
+
 //Styles
 import * as Theme from '../constants/theme';
-import { PublicKey } from '@solana/web3.js';
-import ScreenWrapper from '../components/screenWrapper/screenWrapper';
-import useToasts from '../hooks/useToasts';
-import { NOTI_STATUS } from '../_state';
-import { useAnalyticsActions } from '../_actions/analytics.actions';
-import { EVENTS } from '../constants/analytics';
-import {consoleLog} from "../_helpers/debug";
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'NFTData'> {}
 
@@ -40,11 +46,13 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
   const { nft, walletAddress } = props.route.params;
 
   const dims = useWindowDimensions();
+  const keychainServer = useKeychainServer();
   const { createToast } = useToasts();
 
   const scrollRef: any = React.useRef();
 
   const data: NFT[] = useRecoilValue(walletNftsSelector(new PublicKey(walletAddress)))
+  const [_, setUserProfileState] = useRecoilState(userProfileAtom);
 
   const analyticsActions = useAnalyticsActions();
 
@@ -61,21 +69,34 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
   }, [dims.width])
 
   const toggleFavorite = () => {
+    const turnOn = !data[scrollIndex].isFavorited
     analyticsActions.trackEvent(EVENTS.toggleFavorite, {
-      mint: nft.mint,
+      mint: data[scrollIndex].mint,
       wallet: walletAddress,
-      favorite: nft.isFavorited,
+      favorite: data[scrollIndex].isFavorited,
     });
-    createToast('Not available in alpha. Coming soon', NOTI_STATUS.DEFAULT);
+    keychainServer.toggleFavorite(data[scrollIndex].mint, !data[scrollIndex].isFavorited);
+    // TODO change local NFT array in state
+    createToast(`${turnOn ? 'Added to' : 'Removed from'} favorites`, turnOn ? NOTI_STATUS.SUCCESS : NOTI_STATUS.DEFAULT);
   }
 
   const setProfilePic = () => {
-    analyticsActions.trackEvent(EVENTS.setProfilePic, {
-      mint: nft.mint,
+    const payload = {
+      mint: data[scrollIndex].mint,
       wallet: walletAddress,
-      favorite: nft.isFavorited,
-    });
-    createToast('Not available in alpha. Coming soon', NOTI_STATUS.DEFAULT);
+      favorite: data[scrollIndex].isFavorited,
+    }
+    analyticsActions.trackEvent(EVENTS.setProfilePic, payload);
+    keychainServer.setProfilePic(payload)
+    setUserProfileState(prev => ({
+        ...prev, 
+        profile: {
+          mint: data[scrollIndex].mint,
+          pic: data[scrollIndex].imageUrl,
+        }
+      }
+    ))
+    createToast('Profile picture updated', NOTI_STATUS.SUCCESS);
   }
 
   const goBack = () => props.navigation.goBack();

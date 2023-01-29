@@ -5,10 +5,19 @@ import { View, StyleSheet, Image } from 'react-native';
 import { Box } from '../components/ui/text-box/text-box';
 import { HeaderText, NormalText } from '../components/ui/text/text';
 import ScreenWrapper from '../components/screenWrapper/screenWrapper';
+import LoginToKaizenModal from '../components/modals/LoginToKaizen/loginToKaizen';
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from '../nav/homeStack';
+import { RootStackParamList } from '../nav/landingStack';
+import { KeychainState } from '../types/NFT';
+
+//Data
+import { isValidToken, keychainAtom, userProfileAtom } from '../_state';
+import { useAnalyticsActions } from '../_actions/analytics.actions';
+import { walletAtom } from "../_state";
+import { useKeychainActions } from "../_actions/keychain.actions";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 //Web3
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -17,6 +26,7 @@ import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter
 //Hooks
 import { useWalletActions } from "../_actions/wallet.actions";
 import useAsyncEffect from 'use-async-effect';
+import useKeychainServer from '../hooks/apis/keychainServer/useKeychainServer';
 
 //SVGs
 import Chevron from '../assets/svgs/Icons/chevron';
@@ -27,11 +37,8 @@ import Constants from 'expo-constants';
 
 //Styles
 import * as Theme from "../constants/theme";
-import {useRecoilValue} from "recoil";
-import {keychainAtom} from "../_state";
-import {walletAtom} from "../_state";
-import {useKeychainActions} from "../_actions/keychain.actions";
-import { useAnalyticsActions } from '../_actions/analytics.actions';
+import { PublicKey } from '@solana/web3.js';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -43,32 +50,17 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
   const walletActions = useWalletActions();
   const keychainActions = useKeychainActions();
   const analyticsActions = useAnalyticsActions();
+  const keychainServer = useKeychainServer();
+  const navigation = useNavigation();
 
   const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
   const { signMessage } = useWallet();
 
   const wallet = useRecoilValue(walletAtom);
+  const [userProfileState, setUserProfileState] = useRecoilState(userProfileAtom);
   const keychain = useRecoilValue(keychainAtom);
-
-  React.useEffect(() => {
-    if (wallet && !keychain.checked) {
-      (async () => {
-        await keychainActions.checkKeychainByKey();
-      })();
-    } else if(!anchorWallet && wallet) {
-      (async () => {
-        await keychainActions.resetKeychain(true);
-      })();
-    }
-  }, [wallet])
-
-  React.useEffect(() => {
-    if (anchorWallet && !wallet) {
-      (async () => {
-        await walletActions.connectWallet(anchorWallet, signMessage);
-      })();
-    }
-  }, [anchorWallet])
+  const isTokenExpired = useRecoilValue(isValidToken);
+  const [showModal, toggleModal] = React.useState(false);
 
   React.useEffect(() => {
     analyticsActions.trackPage('Landing');
@@ -80,20 +72,17 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
       // 1. if keychain exists and wallet is verified, go to home
       // 2. otherwise, navigate to the new wallet detected page
       if (keychain.walletVerified) {
-        // todo: navigate to profile page (logged in)
+        toggleModal(true); // Open modal to log in to kaizen server -> on success will navigate to Profile screen
       } else {
-        // todo: navigate to the verification screen
-        props.navigation.navigate('WalletDetected');
+        props.navigation.navigate("VerifyWallet");
       }
-    }
-    if (keychain.checked && keychain.walletVerified) {
-      // todo: then we need to navigate to the "logged in" profile stack
-        // then we need to navigate to new wallet detected screen
     }
   }, [keychain]);
 
   return (
     <ScreenWrapper>
+      <LoginToKaizenModal showModal={showModal} toggleModal={toggleModal} />
+
       <View style={styles.subCon}>
         <View style={styles.card1}>
           <Image source={require("../assets/pngs/Keychain-Logo.png")} style={styles.logo} />

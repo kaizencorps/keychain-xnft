@@ -10,9 +10,6 @@ import Input from "../components/ui/inputs/inputs";
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from "../nav/homeStack";
 
-//Hooks
-import { useUserActions } from "../_actions/user.actions";
-
 //SVGs
 import Close from "../assets/svgs/Icons/close";
 import Chevron from '../assets/svgs/Icons/chevron';
@@ -42,7 +39,6 @@ const WalletDetected : FC<any> = (props: Props) : ReactElement => {
   const wallet = useRecoilValue(walletAtom);
   const keychain = useRecoilValue(keychainAtom);
 
-  const userActions = useUserActions();
   const walletActions = useWalletActions();
   const keychainActions = useKeychainActions();
   const analyticsActions = useAnalyticsActions();

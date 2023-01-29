@@ -10,6 +10,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import { getMetadata } from '../../apis/helius/helius';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { consoleLog } from "../../_helpers/debug";
+import useHelius from '../../hooks/apis/helius/useHelius';
 
 const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) => {
     const creators = nftData.onChainData.data.creators;
@@ -33,6 +34,9 @@ const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) =
 }
 
 export async function getNFTsForOwner(owner: PublicKey, collections: CollectionsState): Promise<NFT[]> {
+
+    const helius = useHelius();
+
     const conn = new Connection(HELIUS_RPC_URL + Constants.expoConfig.extra.HELIUS_API_KEY);
 
     const tokenAccounts = await conn.getParsedTokenAccountsByOwner(owner, {
@@ -61,7 +65,7 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
         consoleLog('collections: ', collections);
 
         // todo: add in the chunking
-        return await getMetadata(tokenAddresses)
+        return await helius.getMetadata(tokenAddresses)
             .then(res => {
                 // consoleLog('got back helius nft data: ', res.data);
                 const allNFTS: NFT [] = res.data.filter((nft: any) => {

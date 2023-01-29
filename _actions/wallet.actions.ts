@@ -1,7 +1,6 @@
 import {useRecoilState, useRecoilTransaction_UNSTABLE, useSetRecoilState} from 'recoil';
 import { PublicKey } from '@solana/web3.js';
 import {AnchorWallet, useWallet} from '@solana/wallet-adapter-react';
-// import { toast } from 'react-toastify';
 
 import { useFetchWrapper, createErrorResponse } from '../_helpers';
 
@@ -79,7 +78,7 @@ function useWalletActions() {
 
         try {
             const walletPublicKey: PublicKey = anchorWallet.publicKey;
-            consoleLog('connecting wallet: ', walletPublicKey.toBase58());
+            // consoleLog('connecting wallet: ', walletPublicKey.toBase58());
 
             // this will set the wallet, provider, and programs atomically
             setWalletStates(anchorWallet);
@@ -215,27 +214,10 @@ function useWalletActions() {
         }
     }
 
-    async function login(signMessage: (message: Uint8Array) => Promise<Uint8Array>) {
-        // todo: complete
-        // algo: check the auth state to see if we're logged in yet or not. if not:
-        // fetch the nonce -> sign it -> send it back to the login endpoint -> get the jwt -> store it in local storage for future requests
-        // https://github.com/michaelhly/solana-py/issues/118
-        const message = 'hello world';
-        const encoded = new TextEncoder().encode(message);
-        const signature = await signMessage(encoded);
-        const decoder = new TextDecoder('utf-8');
-        const sigArray = Array.from(signature);
-        consoleLog('decoded: ', decoder.decode(encoded));
-        consoleLog('signature: ', signature);
-        consoleLog('sigarray: ', sigArray);
-
-    }
-
     return {
         connectWallet,
         disconnectWallet,
         addWalletToKeychain,
-        login
     };
 }
 

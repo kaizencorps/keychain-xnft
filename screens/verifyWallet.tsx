@@ -12,7 +12,7 @@ import { RootStackParamList } from "../nav/homeStack";
 
 //Data
 import { keychainAtom } from "../_state/keychain";
-import { userAtom } from "../_state/user";
+import { userAtom } from "../_state/userProfile";
 import { useRecoilValue } from "recoil";
 
 //Web3
