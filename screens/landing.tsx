@@ -66,16 +66,41 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
     analyticsActions.trackPage('Landing');
   });
 
+  React.useEffect(() => {
+    if (wallet && !keychain.checked) {
+      (async () => {
+        await keychainActions.checkKeychainByKey();
+      })();
+    } else if(!anchorWallet && wallet) {
+      (async () => {
+        await keychainActions.resetKeychain(true);
+      })();
+    }
+  }, [wallet])
+
+  React.useEffect(() => {
+    if (anchorWallet && !wallet) {
+      (async () => {
+        await walletActions.connectWallet(anchorWallet, signMessage);
+      })();
+    }
+  }, [anchorWallet])
+
   useAsyncEffect(async () => {
     if (keychain.checked) {
       // 2 options:
       // 1. if keychain exists and wallet is verified, go to home
       // 2. otherwise, navigate to the new wallet detected page
       if (keychain.walletVerified) {
-        toggleModal(true); // Open modal to log in to kaizen server -> on success will navigate to Profile screen
+        // todo: navigate to profile page (logged in)
       } else {
-        props.navigation.navigate("VerifyWallet");
+        // todo: navigate to the verification screen
+        props.navigation.navigate('WalletDetected');
       }
+    }
+    if (keychain.checked && keychain.walletVerified) {
+      // todo: then we need to navigate to the "logged in" profile stack
+        // then we need to navigate to new wallet detected screen
     }
   }, [keychain]);
 

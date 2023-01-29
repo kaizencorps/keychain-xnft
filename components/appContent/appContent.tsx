@@ -40,38 +40,38 @@ export const AppContent : FC<any> = () : ReactElement => {
 
   React.useEffect(() => {
     autoConnect();
-  }, []);
+  }, [anchorWallet]);
 
-  React.useEffect(() => {
-    console.log("wallet changed: ", wallet);
-  }, [wallet])
+  // React.useEffect(() => {
+  //   console.log("wallet changed: ", wallet);
+  // }, [wallet])
 
-  React.useEffect(() => {
-    if (wallet && !keychain.checked) {
-      (async () => {
-        console.log("1")
-        await keychainActions.checkKeychainByKey();
-      })();
-    } else if(!anchorWallet && wallet) {
-      (async () => {
-        console.log('2')
-        await keychainActions.resetKeychain(true);
-      })();
-    }
-  }, [wallet])
+  // React.useEffect(() => {
+  //   if (wallet && !keychain.checked) {
+  //     (async () => {
+  //       console.log("1")
+  //       await keychainActions.checkKeychainByKey();
+  //     })();
+  //   } else if(!anchorWallet && wallet) {
+  //     (async () => {
+  //       console.log('2')
+  //       await keychainActions.resetKeychain(true);
+  //     })();
+  //   }
+  // }, [wallet])
 
-  React.useEffect(() => {
-    if (anchorWallet && !wallet) {
-      (async () => {
-        console.log('3')
-        await walletActions.connectWallet(anchorWallet, signMessage);
-      })();
-    }
-  }, [anchorWallet])
+  // React.useEffect(() => {
+  //   if (anchorWallet && !wallet) {
+  //     (async () => {
+  //       console.log('3')
+  //       await walletActions.connectWallet(anchorWallet, signMessage);
+  //     })();
+  //   }
+  // }, [anchorWallet])
 
-  React.useEffect(() => {
-    console.log("keychain did change? ", keychain);
-  }, [keychain.keychainAccount])
+  // React.useEffect(() => {
+  //   console.log("keychain did change? ", keychain);
+  // }, [keychain.keychainAccount])
 
   const autoConnect = async () => {
     if (anchorWallet) {
@@ -88,45 +88,45 @@ export const AppContent : FC<any> = () : ReactElement => {
     }
   }
 
-  const autoConnectToKaizenServer = async () => {
-    console.log("Attempting auto connect to server...")
-    console.log("Token is valid: ", isTokenExpired);
-    if(!isTokenExpired){
-      try {
-        // Login without having to ask user to sign a transaction
-        const res = await keychainServer.refreshAccessToken();
-        console.log("Get user res: ", res);
-        const { profile, accessToken } = res.data.data;
-        localStorage.setItem('jwt', accessToken);
-        setUserProfileState({
-          jwt: accessToken,
-          profile: { 
-            profileNft: {
-              mint: profile.profileNft.mint,
-              pic: profile.profileNft.pic,
-            },
-            favorites: profile.favorites
-          }
-        })
-        // Setting userProfileState will automatically force a navigation to 'Profile' screen
-      } catch (e) {
-        resetState();
-      } finally {
-        setInitialLoad(false);
-      }
-    } else {
-      resetState();
-      setInitialLoad(false);
-    }
-  }
+  // const autoConnectToKaizenServer = async () => {
+  //   console.log("Attempting auto connect to server...")
+  //   console.log("Token is valid: ", isTokenExpired);
+  //   if(!isTokenExpired){
+  //     try {
+  //       // Login without having to ask user to sign a transaction
+  //       const res = await keychainServer.refreshAccessToken();
+  //       console.log("Get user res: ", res);
+  //       const { profile, accessToken } = res.data.data;
+  //       localStorage.setItem('jwt', accessToken);
+  //       setUserProfileState({
+  //         jwt: accessToken,
+  //         profile: { 
+  //           profileNft: {
+  //             mint: profile.profileNft.mint,
+  //             pic: profile.profileNft.pic,
+  //           },
+  //           favorites: profile.favorites
+  //         }
+  //       })
+  //       // Setting userProfileState will automatically force a navigation to 'Profile' screen
+  //     } catch (e) {
+  //       resetState();
+  //     } finally {
+  //       setInitialLoad(false);
+  //     }
+  //   } else {
+  //     resetState();
+  //     setInitialLoad(false);
+  //   }
+  // }
 
-  const resetState = () => {
-    localStorage.removeItem('jwt');
-    setUserProfileState(prev => ({
-      ...prev,
-      jwt: null
-    }))
-  }
+  // const resetState = () => {
+  //   localStorage.removeItem('jwt');
+  //   setUserProfileState(prev => ({
+  //     ...prev,
+  //     jwt: null
+  //   }))
+  // }
 
 
   if(initialLoad) return <Loader />
