@@ -1,6 +1,6 @@
 import {useRecoilState, useRecoilTransaction_UNSTABLE, useSetRecoilState} from 'recoil';
-import { PublicKey } from '@solana/web3.js';
-import {AnchorWallet, useWallet} from '@solana/wallet-adapter-react';
+import {PublicKey, SystemProgram, Transaction} from '@solana/web3.js';
+import {AnchorWallet, useWallet, WalletContextState} from '@solana/wallet-adapter-react';
 // import { toast } from 'react-toastify';
 
 import { useFetchWrapper, createErrorResponse } from '../_helpers';
@@ -20,6 +20,8 @@ import {getNFTsForOwner} from "../utils/web3/chain-utils";
 
 //Constants
 import Constants from 'expo-constants';
+import {connection} from "../types/utils/config";
+import axios from "axios";
 
 function useWalletActions() {
     const baseUrl = `${Constants.expoConfig.extra.BASE_API_URL}/wallet`;
@@ -231,11 +233,31 @@ function useWalletActions() {
 
     }
 
+    async function testSigning(wallet: WalletContextState) {
+        const tx = new Transaction().add(
+            SystemProgram.transfer({
+                fromPubkey: wallet.publicKey,
+                toPubkey: wallet.publicKey,
+                lamports: 1,
+            })
+        );
+        tx.feePayer = wallet.publicKey;
+        tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+
+        const signedTransaction = await wallet.signTransaction(tx);
+        const serializedTx = Array.from(signedTransaction.serialize());
+
+        // todo: replace with config
+        const response = await axios.post("https://keychain.kaizencorps.com/api/v1/auth/verify-transaction", { serialized: serializedTx});
+        consoleLog(`verified: ${response.data.data.verified}`);
+    }
+
     return {
         connectWallet,
         disconnectWallet,
         addWalletToKeychain,
-        login
+        login,
+        testSigning
     };
 }
 
