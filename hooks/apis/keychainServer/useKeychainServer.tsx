@@ -47,10 +47,10 @@ function useKeychainServer() {
       )
    }
    
-   const setProfilePic = async ({ mint, wallet, favorite }: { mint: PublicKey, wallet: string, favorite: boolean }) : Promise<setProfilePicRes> => {
-      return fetchWrapper.post(
+   const setProfilePic = async (mint: PublicKey) : Promise<setProfilePicRes> => {
+      return fetchWrapper.put(
          `${Constants.expoConfig.extra.KAIZEN_CORPS_URL}api/v1/user/profile/nft`,
-         { mint: mint.toBase58(), wallet, favorite }
+         { mint }
       )
    }
    

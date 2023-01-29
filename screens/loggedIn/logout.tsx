@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 
 //Components
-import { View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FatButton } from "../../components/ui/buttons/buttons";
 import { SubHeaderText } from "../../components/ui/text/text";
 import {WalletRow} from "../../components/wallet-header/wallet-header";
@@ -12,16 +12,14 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from "../../nav/homeStack";
 
 //Data
-import { keychainAtom, userAtom, walletAtom } from "../../_state";
+import { keychainAtom, profilePictureUrl } from "../../_state";
 import { useRecoilValue } from "recoil";
-import { useWalletActions } from "../../_actions/wallet.actions";
 
 //Types
 import { KeyState } from "../../types/NFT";
 
 //Hooks
 import { useKeychainActions } from "../../_actions/keychain.actions";
-import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 
 
 //SVGs
@@ -40,10 +38,10 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
 
   const keychain = useRecoilValue(keychainAtom);
   const keychainActions = useKeychainActions();
+  const profilePic = useRecoilValue(profilePictureUrl);
 
   const logout = async () => {
-    // TODO clear localStorage and all other data
-    
+    localStorage.clear();
     await keychainActions.resetKeychain(true);
     // Resetting keychain account will automatically force navigation back to Landing screen
   }
@@ -54,7 +52,13 @@ const Logout : FC<any> = (props: Props) : ReactElement => {
     <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
-          <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
+          <View style={styles.imageCon}>
+            {!!profilePic ?
+              <Image source={{ uri: profilePic }} style={{ height: 150, width: 150 }} />
+            :
+              <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
+            }
+          </View>
           <SubHeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE, marginBottom: Theme.SPACING.MD }}>{keychain.name}</SubHeaderText>
           {keychain.keys.map((keyState: KeyState, i: number) =>
             <WalletRow key={i} keyState={keyState} conStyle={{ width: '50%' }} />
@@ -115,6 +119,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: Theme.SPACING.XL
+  },
+  imageCon: {
+    borderRadius: 75,
+    overflow: 'hidden'
   }
 });
 

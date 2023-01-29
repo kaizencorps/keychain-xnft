@@ -5,6 +5,10 @@ import {CollectionsState, KeychainState, NFT} from '../types/NFT';
 import {collectionsAtom} from './_collections';
 import {consoleLog} from "../_helpers/debug";
 
+export interface WalletHoldings {
+    nfts: NFT[]
+}
+
 
 export const keychainAtom = atom<KeychainState>({
     key: 'keychain',
@@ -44,10 +48,6 @@ export const numBluechipsAtom = selector<Number>({
         return nftsState.filter(nft => !!nft.collection).length
     }
 })
-
-export interface WalletHoldings {
-    nfts: NFT[]
-}
 
 export const walletNftsSelector = selectorFamily<NFT[], PublicKey>({
     key: 'walletHoldings',

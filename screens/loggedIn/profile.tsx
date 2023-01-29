@@ -6,7 +6,7 @@ import { NormalText, BannerText } from "../../components/ui/text/text";
 import { NewWallet, WalletRow } from "../../components/wallet-header/wallet-header";
 
 //Data
-import { keychainAtom, nftsAtom, numBluechipsAtom, userAtom } from "../../_state";
+import { keychainAtom, nftsAtom, numBluechipsAtom, profilePictureUrl, userProfileAtom } from "../../_state";
 import { useRecoilValue } from "recoil";
 
 //SVGs
@@ -32,7 +32,8 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
   const keychain = useRecoilValue(keychainAtom);
   const nfts = useRecoilValue(nftsAtom);
   const numBluechips = useRecoilValue(numBluechipsAtom);
-  // const user = useRecoilValue(userAtom);
+  const userProfile = useRecoilValue(userProfileAtom);
+  const profilePic = useRecoilValue(profilePictureUrl);
   const analyticsActions = useAnalyticsActions();
 
   const goToWalletCreation = () => props.navigation.navigate('AddNewWallet');
@@ -53,8 +54,12 @@ const Profile : FC<any> = (props: Props) : ReactElement => {
     <ScreenWrapper>
       <View style={styles.maxCon}>
         <View style={styles.topCon}>
-          <TouchableOpacity onPress={goToLogout}>
-            <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
+          <TouchableOpacity style={styles.imageCon} onPress={goToLogout}>
+            {!!profilePic ?
+              <Image source={{ uri: profilePic }} style={{ height: 150, width: 150 }} />
+            :
+              <AccountCircle height={150} width={150} color={Theme.COLORS.INACTIVE_GRAY} />
+            }
           </TouchableOpacity>
           <BannerText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{keychain.name}</BannerText>
           <NormalText style={{ color: Theme.COLORS.ACTIVE_PINK }}>{`${nfts.length} NFTs`}</NormalText>
@@ -105,6 +110,10 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     zIndex: 999
+  },
+  imageCon: {
+    overflow: 'hidden',
+    borderRadius: 75
   }
 });
 

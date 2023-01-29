@@ -80,22 +80,25 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
     createToast(`${turnOn ? 'Added to' : 'Removed from'} favorites`, turnOn ? NOTI_STATUS.SUCCESS : NOTI_STATUS.DEFAULT);
   }
 
-  const setProfilePic = () => {
+  const setProfilePic = async () => {
     const payload = {
       mint: data[scrollIndex].mint,
       wallet: walletAddress,
       favorite: data[scrollIndex].isFavorited,
     }
     analyticsActions.trackEvent(EVENTS.setProfilePic, payload);
-    keychainServer.setProfilePic(payload)
+    const res = await keychainServer.setProfilePic(payload.mint);
+    console.log("What is profile res: ", res);
     setUserProfileState(prev => ({
-        ...prev, 
-        profile: {
+      jwt: prev.jwt,
+      profile: {
+        profileNft: {
           mint: data[scrollIndex].mint,
-          pic: data[scrollIndex].imageUrl,
-        }
+          pic: data[scrollIndex].imageUrl
+        },
+        favorites: prev.profile.favorites
       }
-    ))
+    }))
     createToast('Profile picture updated', NOTI_STATUS.SUCCESS);
   }
 

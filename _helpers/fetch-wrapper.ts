@@ -1,22 +1,22 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { authAtom } from '../_state';
+import { authAtom, userProfileAtom } from '../_state';
 import { consoleLog } from './debug';
 
 //Constants
 import Constants from 'expo-constants';
 
 function useFetchWrapper() {
-    const [auth] = useRecoilState(authAtom);
+    const userProfileState = useRecoilValue(userProfileAtom);
 
     // helper functions
 
     function authHeader(url: string) {
         // return auth header with basic auth credentials if user is logged in and request is to the api url
-        const isLoggedIn = !!auth?.accessToken;
-        const isApiUrl = url.startsWith(Constants.expoConfig.extra.BASE_API_URL as string);
-        if (isLoggedIn && isApiUrl) {
-            return { Authorization: `Bearer ${auth?.accessToken}` };
+        const isLoggedIn = !!userProfileState.jwt
+        // const isApiUrl = url.startsWith(Constants.expoConfig.extra.BASE_API_URL as string);
+        if (isLoggedIn) {
+            return { Authorization: `Bearer ${userProfileState.jwt}` };
         }
         return {};
     }
@@ -27,13 +27,14 @@ function useFetchWrapper() {
     }
 
     function handleResponse(response: any) {
+        consoleLog("Did we get a response? ", response);
         return response.text().then((text: string) => {
             const data = text && JSON.parse(text);
 
             if (!response.ok) {
-                if ([401, 403].includes(response.status) && auth?.token) {
+                if ([401, 403].includes(response.status) && userProfileState.jwt) {
                     // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-                    localStorage.removeItem('user');
+                    localStorage.removeItem('jwt');
                     consoleLog('>>>>> auto logout!');
 
                     // todo: re-add ..?
@@ -61,6 +62,8 @@ function useFetchWrapper() {
                 requestOptions.body = JSON.stringify(body);
             }
             try {
+                console.log("request options: ", requestOptions)
+                console.log(url);
                 return await fetch(url, requestOptions).then(handleResponse).catch(handleError);
             } catch (e) {
                 handleError(e);

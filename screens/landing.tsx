@@ -68,10 +68,12 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
   React.useEffect(() => {
     if (wallet && !keychain.checked) {
+      console.log("wallet, keychain not checked", keychain);
       (async () => {
         await keychainActions.checkKeychainByKey();
       })();
     } else if(!anchorWallet && wallet) {
+      console.log("no anchor no wallet ");
       (async () => {
         await keychainActions.resetKeychain(true);
       })();
@@ -80,6 +82,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
   React.useEffect(() => {
     if (anchorWallet && !wallet) {
+      console.log("Anchor wallet, no wallet");
       (async () => {
         await walletActions.connectWallet(anchorWallet, signMessage);
       })();
@@ -88,10 +91,14 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
 
   useAsyncEffect(async () => {
     if (keychain.checked) {
+      console.log("keychain checked", keychain);
       // 2 options:
       // 1. if keychain exists and wallet is verified, go to home
       // 2. otherwise, navigate to the new wallet detected page
       if (keychain.walletVerified) {
+        if(userProfileState.jwt === null){
+          toggleModal(true);
+        }
         // todo: navigate to profile page (logged in)
       } else {
         // todo: navigate to the verification screen
@@ -103,6 +110,7 @@ const Landing : React.FC<any> = (props: Props) : React.ReactElement => {
         // then we need to navigate to new wallet detected screen
     }
   }, [keychain]);
+
 
   return (
     <ScreenWrapper>

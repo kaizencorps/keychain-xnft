@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
-import { View, StyleSheet } from 'react-native';
-import ScreenWrapper from '../../components/screenWrapper/screenWrapper';
 
 //Components
+import ScreenWrapper from '../../components/screenWrapper/screenWrapper';
+import { View, StyleSheet } from 'react-native';
 import WalletNFTs from '../../components/wallet-NFTs/wallet-NFTs';
 
 //Types
@@ -10,13 +10,15 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../../nav/galleryStack';
 import { NFT } from '../../types/NFT';
 
+//Hooks
+import { useAnalyticsActions } from '../../_actions/analytics.actions';
+
 //Data
 import {useRecoilValue} from "recoil";
 import { keychainAtom, walletNftsSelector } from '../../_state/keychain';
 
 //Styles
 import * as Theme from '../../constants/theme';
-import { useAnalyticsActions } from '../../_actions/analytics.actions';
 
 interface Props extends BottomTabScreenProps<RootStackParamList, 'GalleryLanding'> {}
 
@@ -36,7 +38,6 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
   return (
     <ScreenWrapper>
       <View style={styles.maxCon}>
-        {/* TODO Favorites */}
         <WalletNFTs
           key={0} index={0}
           walletAddress={'MY FAVORITES'}

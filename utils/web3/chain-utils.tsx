@@ -7,10 +7,9 @@ import { HELIUS_RPC_URL } from '../../constants/apis';
 
 //Web3
 import { Connection, PublicKey } from '@solana/web3.js';
-import { getMetadata } from '../../apis/helius/helius';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { consoleLog } from "../../_helpers/debug";
 import useHelius from '../../hooks/apis/helius/useHelius';
+
 
 const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) => {
     const creators = nftData.onChainData.data.creators;
@@ -54,27 +53,15 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
 
     const getTokenMetaDatas = async (tokenAddresses: string[]) => {
 
-        // helius limits to 100 nfts at a time so chunk it
-
-       // todo: chunk this properly and fetch everything
-        // const chunks = chunkArray(tokenAddresses, 100);
-        if (tokenAddresses.length > 100) {
-            tokenAddresses = tokenAddresses.slice(0, 100);
-        }
-
-        consoleLog('collections: ', collections);
-
-        // todo: add in the chunking
         return await helius.getMetadata(tokenAddresses)
             .then(res => {
-                // consoleLog('got back helius nft data: ', res.data);
-                const allNFTS: NFT [] = res.data.filter((nft: any) => {
+                const allNFTS: NFT [] = res.filter((nft: any) => {
                     // filter out any non-NFTs
                     return nft && nft.onChainData && nft.offChainData
                 }).map((nft: any) => ({
                     owner: owner,
                     name: nft.onChainData.data.name,
-                    mint: nft.mint,
+                    mint: new PublicKey(nft.mint),
                     imageUrl: nft.offChainData.image,
                     collection: decideIfPartOfCollection(nft, collections),
                     isFavorited: false // TODO
@@ -83,7 +70,7 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
                 return allNFTS;
             })
             .catch(e => {
-                consoleLog('error getting nft data: ', e);
+                console.log('error getting nft data: ', e);
                 return [];
             });
     }

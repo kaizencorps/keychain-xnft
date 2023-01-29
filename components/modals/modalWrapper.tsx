@@ -37,7 +37,7 @@ const ModalWrapper: FC<any> = (props: Props) : ReactElement => {
     >
       <View style={[styles.modalCon]}>
         <View style={styles.topCon}>
-          <HeaderText>{props.title ?? ''}</HeaderText>
+          <HeaderText style={{ color: Theme.COLORS.LABEL_TEXT_WHITE }}>{props.title ?? ''}</HeaderText>
           <TouchableOpacity
             hitSlop={{bottom: 30, right: 10, top: 10, left: 30}} 
             onPress={props.toggleModal}
@@ -62,10 +62,12 @@ const styles = StyleSheet.create({
     maxHeight: '80%',
     width: '100%',
     maxWidth: 700,
+    minHeight: 250,
     borderRadius: Theme.BRADIUS.LG, 
     borderWidth: StyleSheet.hairlineWidth,
     overflow: 'hidden',
     alignSelf: 'center',
     backgroundColor: Theme.COLORS.MAIN_BACKGROUND_GRAY,
+    padding: Theme.SPACING.MD
   }
 })

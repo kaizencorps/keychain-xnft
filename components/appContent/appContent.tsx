@@ -38,10 +38,6 @@ export const AppContent : FC<any> = () : ReactElement => {
   const [userProfileState, setUserProfileState] = useRecoilState(userProfileAtom);
   // const wallet = useRecoilValue(walletAtom);
 
-  React.useEffect(() => {
-    autoConnect();
-  }, [anchorWallet]);
-
   // React.useEffect(() => {
   //   console.log("wallet changed: ", wallet);
   // }, [wallet])
@@ -73,17 +69,16 @@ export const AppContent : FC<any> = () : ReactElement => {
   //   console.log("keychain did change? ", keychain);
   // }, [keychain.keychainAccount])
 
+  React.useEffect(() => {
+    autoConnect();
+  }, [anchorWallet])
+
   const autoConnect = async () => {
     if (anchorWallet) {
-      console.log("anchor wallet exists");
-      // TODODODODODOD THIS is what's not auto triggering ^^^^^^^^^^^^^^^^^^^^^^
       await walletActions.connectWallet(anchorWallet, signMessage);
-      // TODO automatic connection to keychain
-      // TODO if keychain is connected, autoConnectToKaizenServer();
-      setInitialLoad(false); 
+      setInitialLoad(false);
     } else {
-      console.log("Disconnecting....")
-      // await walletActions.disconnectWallet();
+      await walletActions.disconnectWallet();
       setInitialLoad(false);
     }
   }

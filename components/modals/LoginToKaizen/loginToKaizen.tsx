@@ -7,6 +7,7 @@ import ModalWrapper from '../modalWrapper';
 
 //Web3
 import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from '@solana/web3.js';
 
 //Data
 import { userProfileAtom } from '../../../_state';
@@ -47,12 +48,13 @@ export const LoginToKaizen : FC<any> = (props: Props) : ReactElement => {
         jwt: accessToken,
         profile: { 
           profileNft: {
-            mint: profile.profileNft?.mint,
-            pic: profile.profileNft?.pic,
+            mint: profile.profileNft?.mint ? new PublicKey(profile.profileNft?.mint) : null,
           },
-          favorites: profile.favorites
+          favorites: profile.favorites.map(key => ({ mint: new PublicKey(key.mint)}))
         },
       }
+
+      console.log("Setting a state? ", state);
       setUserProfileState(state)
       // Setting userProfileState will force a navigation to 'Profile' screen
     }
@@ -60,7 +62,7 @@ export const LoginToKaizen : FC<any> = (props: Props) : ReactElement => {
 
   return (
     <ModalWrapper showModal={props.showModal} toggleModal={props.toggleModal} title="Sign transaction">
-      <View>
+      <View style={styles.con}>
         <FatPinkButton text='VERIFY WALLET' func={login} />
       </View>
     </ModalWrapper>
@@ -69,7 +71,9 @@ export const LoginToKaizen : FC<any> = (props: Props) : ReactElement => {
 
 const styles = StyleSheet.create({
   con: {
-
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   }
 });
 

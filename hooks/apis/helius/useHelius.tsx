@@ -9,7 +9,7 @@ function useHelius() {
       let oldestTransaction = '';
       let transactions = [];
    
-      while (transactions.length <= totalNum){
+      while (transactions.length < totalNum){
          const { data } = await axios({
             url: "https://api.helius.xyz/v0/tokens/metadata?api-key=" + Constants.expoConfig.extra.HELIUS_API_KEY + `&before=${oldestTransaction}`,
             method: 'POST',
@@ -19,17 +19,14 @@ function useHelius() {
          if (data.length === 0) {
             return transactions; // Exhausted all transactions 
          }
-   
-         console.log(`Got ${data.length} transactions from page ${page}!`);
-   
+      
          // API data is already sorted in descending order
          oldestTransaction = data[data.length - 1].signature;
          transactions.push(...data);
          page += 1;
       }
    
-      console.log(`Got ${transactions.length} total transactions!`);
-      console.log("Looks like: ", transactions);
+      // console.log(`Got ${transactions.length} total transactions!`);
       return transactions;
    }
 
