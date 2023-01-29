@@ -41,13 +41,14 @@ export const LoginToKaizen : FC<any> = (props: Props) : ReactElement => {
     const res = await authActions.login(signMessage, keychain.name, keychain.keychainAccount.toBase58(), wallet.publicKey.toBase58());
     if(res.data.success){
       const { accessToken, profile } = res.data.data;
+      console.log("Login to kaizen gets back: ", res);
       localStorage.setItem('jwt', res.data.data.accessToken);
       const state : UserProfileState = {
         jwt: accessToken,
         profile: { 
           profileNft: {
-            mint: profile.profileNft.mint,
-            pic: profile.profileNft.pic,
+            mint: profile.profileNft?.mint,
+            pic: profile.profileNft?.pic,
           },
           favorites: profile.favorites
         },

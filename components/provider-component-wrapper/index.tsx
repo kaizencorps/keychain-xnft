@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, useCallback, useMemo} from 'react';
-import {ConnectionProvider, WalletProvider} from '@solana/wallet-adapter-react';
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import {
   BackpackWalletAdapter,
   CloverWalletAdapter,

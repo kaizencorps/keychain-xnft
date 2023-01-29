@@ -30,17 +30,21 @@ export const AppContent : FC<any> = () : ReactElement => {
   const keychainActions = useKeychainActions();
   const keychainServer = useKeychainServer();
   const anchorWallet: AnchorWallet | undefined = useAnchorWallet();
-  const { signMessage } = useWallet();
+  const { signMessage, wallet } = useWallet();
 
   const [initialLoad, setInitialLoad] = React.useState(true);
   const [keychain, setKeychain] = useRecoilState(keychainAtom);
   const isTokenExpired = useRecoilValue(isValidToken);
   const [userProfileState, setUserProfileState] = useRecoilState(userProfileAtom);
-  const wallet = useRecoilValue(walletAtom);
+  // const wallet = useRecoilValue(walletAtom);
 
   React.useEffect(() => {
     autoConnect();
   }, []);
+
+  React.useEffect(() => {
+    console.log("wallet changed: ", wallet);
+  }, [wallet])
 
   React.useEffect(() => {
     if (wallet && !keychain.checked) {
@@ -78,7 +82,8 @@ export const AppContent : FC<any> = () : ReactElement => {
       // TODO if keychain is connected, autoConnectToKaizenServer();
       setInitialLoad(false); 
     } else {
-      await walletActions.disconnectWallet();
+      console.log("Disconnecting....")
+      // await walletActions.disconnectWallet();
       setInitialLoad(false);
     }
   }
