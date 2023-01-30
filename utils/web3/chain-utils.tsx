@@ -12,6 +12,9 @@ import useHelius from '../../hooks/apis/helius/useHelius';
 
 
 const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) => {
+    console.log("Deciding if part of collection: ", nftData, collections);
+
+
     const creators = nftData.onChainData.data.creators;
     const collectionProp = nftData.onChainData.collection;
     let collection = null;
@@ -32,7 +35,11 @@ const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) =
     return collection ? collection.name : null;
 }
 
-export async function getNFTsForOwner(owner: PublicKey, collections: CollectionsState): Promise<NFT[]> {
+export async function getNFTsForOwner(
+        owner: PublicKey, 
+        collections: CollectionsState, 
+        favorites: { mint: PublicKey }[]
+    ) : Promise<NFT[]> {
 
     const helius = useHelius();
 
@@ -55,18 +62,21 @@ export async function getNFTsForOwner(owner: PublicKey, collections: Collections
 
         return await helius.getMetadata(tokenAddresses)
             .then(res => {
-                const allNFTS: NFT [] = res.filter((nft: any) => {
-                    // filter out any non-NFTs
-                    return nft && nft.onChainData && nft.offChainData
-                }).map((nft: any) => ({
-                    owner: owner,
-                    name: nft.onChainData.data.name,
-                    mint: new PublicKey(nft.mint),
-                    imageUrl: nft.offChainData.image,
-                    collection: decideIfPartOfCollection(nft, collections),
-                    isFavorited: false // TODO
-                }));
-
+                // Maps and filters nfts simultaneously
+                const allNFTS: NFT [] = res.reduce((array: NFT[], nft: any) => {
+                    if(nft && nft.onChainData && nft.offChainData){
+                        const parsedNFT = {
+                            owner: owner,
+                            name: nft.onChainData.data.name,
+                            mint: new PublicKey(nft.mint),
+                            imageUrl: nft.offChainData.image,
+                            collection: decideIfPartOfCollection(nft, collections),
+                            isFavorited: favorites.map(fav => fav.mint.toBase58()).includes(nft.mint)
+                        }
+                        array.push(parsedNFT);
+                    }
+                    return array;
+                }, []);
                 return allNFTS;
             })
             .catch(e => {

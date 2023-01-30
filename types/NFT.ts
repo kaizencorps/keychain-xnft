@@ -36,7 +36,8 @@ export interface KeychainState {
   walletAdded: boolean,    // true if the connected wallet is on the keychain
   walletVerified: boolean,    // true if the connected wallet is a verified key
   checked: boolean,           // signal that we've checked the status
-  keys: KeyState[]
+  keys: KeyState[],
+  nfts: NFT[]
 }
 
 export interface NFT {

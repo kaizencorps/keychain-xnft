@@ -1,7 +1,8 @@
 import { atom, selector } from 'recoil';
 import { PublicKey } from '@solana/web3.js';
 import jwt_decode from 'jwt-decode';
-import { nftsAtom } from './keychain';
+import { keychainAtom } from './keychain';
+import { KeychainState } from '../types/NFT';
 import { NFT } from '../types/NFT';
 
 export interface UserProfileState {
@@ -27,18 +28,19 @@ export const profilePictureUrl = selector<string | undefined>({
     key: 'profilePic',
     get: async ({get}) => {
         const userProfile = get(userProfileAtom);
-        console.log("Trying to get profile pic: ", userProfile.profile.profileNft.mint);
         if(userProfile.profile.profileNft.mint === undefined) return undefined;
 
-        const nfts: NFT[] = get(nftsAtom);
-        const profileNft = nfts.find(nft => {
-            console.log("NFT MINT: ", nft.mint)
-            console.log("PROFILE NFT MINT: ", userProfile.profile.profileNft.mint);
-            return nft.mint.toBase58() === userProfile.profile.profileNft.mint.toBase58();
-        })
-
-        console.log("Found a profile nft??? ", profileNft);
+        const keychainState: KeychainState = get(keychainAtom);
+        const profileNft = keychainState.nfts.find(nft => nft.mint.toBase58() === userProfile.profile.profileNft.mint.toBase58())
         return !!profileNft ? profileNft.imageUrl : undefined;
+    }
+})
+
+export const favoriteNfts = selector<NFT[]>({
+    key: 'favoriteUrls',
+    get: async ({get}) => {
+        const keychainState: KeychainState = get(keychainAtom);
+        return keychainState.nfts.filter(nft => nft.isFavorited);
     }
 })
 

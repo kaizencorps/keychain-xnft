@@ -10,11 +10,11 @@ import { FatButton, FatDownloadButton } from '../components/ui/buttons/buttons';
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../nav/galleryStack';
-import { NOTI_STATUS, userProfileAtom } from '../_state';
+import { favoriteNfts, NOTI_STATUS, userProfileAtom } from '../_state';
 
 //Data
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { walletNftsSelector } from '../_state/keychain';
+import { keychainAtom, walletNftsSelector } from '../_state/keychain';
 
 //SVGs
 import Chevron from '../assets/svgs/Icons/chevron';
@@ -50,13 +50,28 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
   const { createToast } = useToasts();
 
   const scrollRef: any = React.useRef();
-
-  const data: NFT[] = useRecoilValue(walletNftsSelector(new PublicKey(walletAddress)))
-  const [_, setUserProfileState] = useRecoilState(userProfileAtom);
+  
+  const data: NFT[] = useRecoilValue(walletAddress === "MY FAVORITES" ?
+      favoriteNfts
+    :
+      walletNftsSelector(new PublicKey(walletAddress)))
+  const [scrollIndex, setScrollIndex] = React.useState<number>(data.findIndex((element: NFT) => element.mint === nft.mint))
+  const [userProfileState, setUserProfileState] = useRecoilState(userProfileAtom);
+  const [keychain, setKeychain] = useRecoilState(keychainAtom);
 
   const analyticsActions = useAnalyticsActions();
 
-  const [scrollIndex, setScrollIndex] = React.useState<number>(data.findIndex((element: NFT) => element.mint === nft.mint))
+  useEffect(() => {
+    const pageProps = {
+      mint: nft.mint,
+      wallet: walletAddress,
+      favorite: nft.isFavorited
+    };
+    if (nft.collection) {
+      pageProps['collection'] = nft.collection;
+    }
+    analyticsActions.trackPage('NFT View', pageProps);
+  });
 
   const scrollCallback = React.useCallback(({ viewableItems }) => {
     if(viewableItems?.length){
@@ -70,15 +85,45 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const toggleFavorite = () => {
     const turnOn = !data[scrollIndex].isFavorited
+    const newFavMint = { mint: data[scrollIndex].mint };
     analyticsActions.trackEvent(EVENTS.toggleFavorite, {
       mint: data[scrollIndex].mint,
       wallet: walletAddress,
       favorite: data[scrollIndex].isFavorited,
     });
     keychainServer.toggleFavorite(data[scrollIndex].mint, !data[scrollIndex].isFavorited);
-    // TODO change local NFT array in state
+    const newFavoriteArray = turnOn ?
+        [...userProfileState.profile.favorites, newFavMint]
+      :
+        userProfileState.profile.favorites.filter(element => element.mint.toBase58() !== newFavMint.mint.toBase58());
+
+    // Update local favorites list
+    setUserProfileState(prev => ({
+      ...prev,
+      profile: {
+        ...prev.profile,
+        favorites: newFavoriteArray
+      }
+    }))
+
+    // Update nft isFavorited value in keychainAtom
+    setKeychain(prev => ({
+      ...prev,
+      nfts: prev.nfts.map(nft => (
+        nft.mint.toBase58() === data[scrollIndex].mint.toBase58() ? 
+          { ...nft, isFavorited: turnOn } 
+        : 
+          nft
+        )
+      )
+    }))
+    
     createToast(`${turnOn ? 'Added to' : 'Removed from'} favorites`, turnOn ? NOTI_STATUS.SUCCESS : NOTI_STATUS.DEFAULT);
   }
+
+  const getWalletIndex = React.useMemo(() => {
+    return keychain.keys.findIndex(key => key.wallet.toBase58() === walletAddress);
+  }, [walletAddress])
 
   const setProfilePic = async () => {
     const payload = {
@@ -87,8 +132,7 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
       favorite: data[scrollIndex].isFavorited,
     }
     analyticsActions.trackEvent(EVENTS.setProfilePic, payload);
-    const res = await keychainServer.setProfilePic(payload.mint);
-    console.log("What is profile res: ", res);
+    keychainServer.setProfilePic(payload.mint);
     setUserProfileState(prev => ({
       jwt: prev.jwt,
       profile: {
@@ -104,7 +148,8 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
 
   const goBack = () => props.navigation.goBack();
 
-  const renderItem = ({ item }) => <NFTFocused nft={item} wallet={walletAddress} widthOfCon={getItemWidth} />
+  const renderItem = ({ item }) => 
+    <NFTFocused nft={item} wallet={{ name: walletAddress, index: getWalletIndex}} widthOfCon={getItemWidth} />
 
   const scroll = (direction: number) => {
     if(scrollRef?.current){
@@ -112,18 +157,6 @@ const NFTData : React.FC<any> = (props: Props) : React.ReactElement => {
       setScrollIndex(prev => (prev + direction));
     }
   }
-
-  useEffect(() => {
-    const pageProps = {
-      mint: nft.mint,
-      wallet: walletAddress,
-      favorite: nft.isFavorited
-    };
-    if (nft.collection) {
-      pageProps['collection'] = nft.collection;
-    }
-    analyticsActions.trackPage('NFT View', pageProps);
-  });
 
 
   return (

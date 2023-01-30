@@ -9,8 +9,6 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from "../../nav/homeStack";
 
 //Data
-import { useRecoilValue } from "recoil";
-import { nftsAtom } from "../../_state/keychain";
 import { NOTI_STATUS } from "../../_state";
 
 //SVGs

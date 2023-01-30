@@ -19,42 +19,26 @@ export const keychainAtom = atom<KeychainState>({
         walletAdded: false,
         walletVerified: false,
         checked: false,
-        keys: []
+        keys: [],
+        nfts: [] as NFT[]
     }
 });
-
-export const nftsAtom = selector<NFT[]>({
-    key: 'nfts',
-    get: async ({get}) => {
-        let nfts: NFT[] = [];
-        const keychainState: KeychainState = get(keychainAtom);
-        const collectionsState: CollectionsState = get(collectionsAtom);
-        if (keychainState.walletVerified) {
-            for (let key of keychainState.keys) {
-                if (key.verified) {
-                    const walletSetOfNFTS = await getNFTsForOwner(key.wallet, collectionsState);
-                    nfts = nfts.concat(walletSetOfNFTS);
-                }
-            }
-        }
-        return nfts;
-    }
-})
 
 export const numBluechipsAtom = selector<Number>({
     key: 'numCollections',
     get: ({get}) => {
-        const nftsState: NFT[] = get(nftsAtom);
-        return nftsState.filter(nft => !!nft.collection).length
+        const keychain: KeychainState = get(keychainAtom);
+        console.log("What is my keychain state: ", keychain)
+        return keychain.nfts.filter((nft: NFT) => !!nft.collection).length
     }
 })
 
 export const walletNftsSelector = selectorFamily<NFT[], PublicKey>({
     key: 'walletHoldings',
     get: (walletAddress: PublicKey) => async ({get}) => {
-        const nfts: NFT[] = get(nftsAtom);
-        consoleLog(`filtering nfts by wallet: ${walletAddress.toBase58()}`);
-        return nfts.filter(nft => nft.owner.equals(walletAddress));
+        const keychain: KeychainState = get(keychainAtom);
+        console.log("What is my keychain state: ", keychain)
+        return keychain.nfts.filter(nft => nft.owner.equals(walletAddress));
 
         /* -- test: see if these guys can return independently of each other (for loading early)
         // consoleLog(`filtering nfts by wallet: ${walletAddress.toBase58()}`);

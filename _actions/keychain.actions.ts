@@ -5,7 +5,7 @@ import {findKeychainKeyPda, findKeychainPda, findKeychainStatePda, KeychainDomai
 import {consoleLog} from "../_helpers/debug";
 import {PublicKey, SystemProgram} from "@solana/web3.js";
 import {keychainAtom, Programs, programsAtom} from "../_state";
-import { KeychainState } from "../types/NFT";
+import { KeychainState, NFT } from "../types/NFT";
 import {useWalletActions} from "./wallet.actions";
 import {Provider} from "@project-serum/anchor";
 import {sleep} from "../utils/misc";
@@ -110,7 +110,8 @@ function useKeychainActions() {
             walletAdded,
             walletVerified,
             checked,
-            keys
+            keys,
+            nfts: [] as NFT[]
         };
         return state;
     }
@@ -188,7 +189,8 @@ function useKeychainActions() {
                 walletAdded: true,
                 walletVerified: true,
                 checked: true,
-                keys: []
+                keys: [],
+                nfts: [] as NFT[]
             }
             let walletAdded = false;
             let walletVerified = false;

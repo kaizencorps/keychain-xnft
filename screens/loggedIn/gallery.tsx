@@ -16,6 +16,7 @@ import { useAnalyticsActions } from '../../_actions/analytics.actions';
 //Data
 import {useRecoilValue} from "recoil";
 import { keychainAtom, walletNftsSelector } from '../../_state/keychain';
+import { favoriteNfts } from '../../_state';
 
 //Styles
 import * as Theme from '../../constants/theme';
@@ -28,6 +29,7 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
   const analyticsActions = useAnalyticsActions();
 
   const goToFocusNFT = (nft: NFT, walletAddress: string) => {
+    console.log("Going to focus NFT ", walletAddress);
     props.navigation.navigate('NFTData', { walletAddress, nft })
   }
 
@@ -41,7 +43,7 @@ const Gallery : React.FC<any> = (props: Props) : React.ReactElement => {
         <WalletNFTs
           key={0} index={0}
           walletAddress={'MY FAVORITES'}
-          items={useRecoilValue(walletNftsSelector(keychain.keychainAccount))}
+          items={useRecoilValue(favoriteNfts)}
           goToFocusNFT={goToFocusNFT}
         />
         {keychain.keys.map((key, i) => {
