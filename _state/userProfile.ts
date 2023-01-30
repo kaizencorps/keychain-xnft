@@ -31,7 +31,7 @@ export const profilePictureUrl = selector<string | undefined>({
         if(userProfile.profile.profileNft.mint === undefined) return undefined;
 
         const keychainState: KeychainState = get(keychainAtom);
-        const profileNft = keychainState.nfts.find(nft => nft.mint.toBase58() === userProfile.profile.profileNft.mint.toBase58())
+        const profileNft = keychainState.nfts.find(nft => nft.mint.equals(userProfile.profile.profileNft.mint));
         return !!profileNft ? profileNft.imageUrl : undefined;
     }
 })
@@ -47,7 +47,7 @@ export const favoriteNfts = selector<NFT[]>({
 export const isValidToken = selector<Boolean>({
     key: 'validToken',
     get: async ({get}) => {
-        const userProfileState: UserProfileState = get(userProfileAtom);    
+        const userProfileState: UserProfileState = get(userProfileAtom);
         if(userProfileState.jwt === null) return false;
 
         const decoded: any = jwt_decode(userProfileState.jwt);
