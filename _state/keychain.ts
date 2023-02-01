@@ -28,7 +28,6 @@ export const numBluechipsAtom = selector<Number>({
     key: 'numCollections',
     get: ({get}) => {
         const keychain: KeychainState = get(keychainAtom);
-        console.log("What is my keychain state: ", keychain)
         return keychain.nfts.filter((nft: NFT) => !!nft.collection).length
     }
 })

@@ -7,6 +7,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@bugsnag/js": "^7.20.0",
+    "@bugsnag/plugin-react": "^7.19.0",
     "@coral-xyz/common-public": "^0.2.0-latest.1931",
     "@expo-google-fonts/dev": "*",
     "@expo-google-fonts/inter": "^0.2.2",
