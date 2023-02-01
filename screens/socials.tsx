@@ -37,6 +37,7 @@ const Socials: React.FC<any> = (props: Props) : React.ReactElement => {
   const [inputValue, setInputValue] = React.useState("");
 
   const handleSubscribe = async () => {
+    // todo: replace w/config
     const response = await axios.post("https://keychain.kaizencorps.com/api/v1/misc/email", { email: inputValue});
     createToast('Email successfully subscribed!', NOTI_STATUS.SUCCESS);
   }

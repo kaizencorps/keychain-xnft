@@ -5,13 +5,13 @@ import { View } from 'react-native';
 import Loader from '../loader/loader';
 
 //Types
-import { CollectionsState, Collection, NFT } from '../../types/NFT';
+import { CollectionsState, Collection, NFT } from 'types/NFT';
 
 //Data
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { collectionsAtom, keychainAtom, userProfileAtom } from '../../_state';
-import useKeychainServer from '../../hooks/apis/keychainServer/useKeychainServer';
-import { getNFTsForOwner } from '../../utils/web3/chain-utils';
+import { collectionsAtom, keychainAtom, userProfileAtom } from '_state';
+import useKeychainServer from 'hooks/apis/keychainServer/useKeychainServer';
+import { getNFTsForOwner } from 'utils/web3/chain-utils';
 
 interface Props {
   children: React.ReactNode

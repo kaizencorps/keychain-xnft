@@ -1,26 +1,26 @@
 import React, { FC, ReactElement } from 'react';
 
 //Compponents
-import GalleryNFT from '../galleryNFT/galleryNFT';
-import { SubHeaderText, ThinText } from '../ui/text/text';
+import GalleryNFT from 'components/galleryNFT/galleryNFT';
+import { SubHeaderText, ThinText } from 'components/ui/text/text';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';  
 
 //SVGs
-import ChevronRight from '../../assets/svgs/Icons/chevron';
-import Star from '../../assets/svgs/Icons/star';
-import Numeric1Box from '../../assets/svgs/Icons/numeric-1-box';
-import Numeric2Box from '../../assets/svgs/Icons/numeric-2-box';
-import Numeric3Box from '../../assets/svgs/Icons/numeric-3-box';
-import Numeric4Box from '../../assets/svgs/Icons/numeric-4-box';
-import Numeric5Box from '../../assets/svgs/Icons/numeric-5-box';
-import useWindowDimensions from '../../hooks/useWindowDimensions';
-import {NFT} from "../../types/NFT";
+import ChevronRight from 'assets/svgs/Icons/chevron';
+import Star from 'assets/svgs/Icons/star';
+import Numeric1Box from 'assets/svgs/Icons/numeric-1-box';
+import Numeric2Box from 'assets/svgs/Icons/numeric-2-box';
+import Numeric3Box from 'assets/svgs/Icons/numeric-3-box';
+import Numeric4Box from 'assets/svgs/Icons/numeric-4-box';
+import Numeric5Box from 'assets/svgs/Icons/numeric-5-box';
+import useWindowDimensions from 'hooks/useWindowDimensions';
+import {NFT} from "types/NFT";
 
 //Utils
-import { formatAddress } from '../../utils/stringFormatting';
+import { formatAddress } from 'utils/stringFormatting';
 
 //Styles
-import * as Theme from '../../constants/theme';
+import * as Theme from 'constants/theme';
 
 interface Props {
     items: NFT[],

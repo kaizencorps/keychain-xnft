@@ -1,6 +1,6 @@
 import mixpanel from 'mixpanel-browser';
-import { EVENTS } from '../constants/analytics';
-import {ENABLE_ANALYTICS, MIXPANEL_API_KEY} from "../types/utils/config";
+import { EVENTS } from 'constants/analytics';
+import {ENABLE_ANALYTICS, MIXPANEL_API_KEY} from "types/utils/config";
 
 function useAnalyticsActions() {
   const enabled = ENABLE_ANALYTICS;

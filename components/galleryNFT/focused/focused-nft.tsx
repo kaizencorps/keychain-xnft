@@ -1,20 +1,20 @@
 import React from 'react';
-import { NFT } from '../../../types/NFT';
+import { NFT } from 'types/NFT';
 
 //Components
-import { HeaderText, NormalText } from '../../ui/text/text';
+import { HeaderText, NormalText } from 'components/ui/text/text';
 import { View, StyleSheet, Image } from 'react-native';
 
 //SVGs
-import Star from '../../../assets/svgs/Icons/star';
-import Numeric1Box from '../../../assets/svgs/Icons/numeric-1-box';
-import Numeric2Box from '../../../assets/svgs/Icons/numeric-2-box';
-import Numeric4Box from '../../../assets/svgs/Icons/numeric-4-box';
-import Numeric5Box from '../../../assets/svgs/Icons/numeric-5-box';
-import CheckDecagram from '../../../assets/svgs/Icons/check-decagram';
+import Star from 'assets/svgs/Icons/star';
+import Numeric1Box from 'assets/svgs/Icons/numeric-1-box';
+import Numeric2Box from 'assets/svgs/Icons/numeric-2-box';
+import Numeric4Box from 'assets/svgs/Icons/numeric-4-box';
+import Numeric5Box from 'assets/svgs/Icons/numeric-5-box';
+import CheckDecagram from 'assets/svgs/Icons/check-decagram';
 
 //Styles
-import * as Theme from '../../../constants/theme';
+import * as Theme from 'constants/theme';
 
 interface props {
   nft: NFT,

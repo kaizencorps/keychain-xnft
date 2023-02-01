@@ -1,26 +1,26 @@
 import React, { FC, ReactElement } from 'react';
 
 //Components
-import TabNavigator from '../../nav/nav';
+import TabNavigator from 'nav/nav';
 import Loader from '../loader/loader';
 import { View } from 'react-native';
 import Toasts from '../toast/toast';
 
 //Hooks
-import useKeychainServer from '../../hooks/apis/keychainServer/useKeychainServer';
+import useKeychainServer from 'hooks/apis/keychainServer/useKeychainServer';
 
 //Data
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useWalletActions } from '../../_actions/wallet.actions';
-import { isValidToken } from '../../_state';
-import { userProfileAtom } from '../../_state';
-import { walletAtom } from '../../_state';
+import { useWalletActions } from '_actions/wallet.actions';
+import { isValidToken } from '_state';
+import { userProfileAtom } from '_state';
+import { walletAtom } from '_state';
 
 //Web3
 import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
-import { keychainAtom } from '../../_state';
+import { keychainAtom } from '_state';
 import { PublicKey } from '@solana/web3.js';
-import { useKeychainActions } from '../../_actions/keychain.actions';
+import { useKeychainActions } from '_actions/keychain.actions';
 
 
 

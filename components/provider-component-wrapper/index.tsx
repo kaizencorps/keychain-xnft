@@ -14,17 +14,17 @@ import {
 import {WalletModalProvider} from '@solana/wallet-adapter-react-ui';
 
 //Hooks
-import useToasts from '../../hooks/useToasts';
+import useToasts from 'hooks/useToasts';
 
 // having this breaks the webpack build
 // import '@solana/wallet-adapter-react-ui/styles.css';
 
 //Constants
-import { HELIUS_RPC_URL } from '../../constants/apis';
+import { HELIUS_RPC_URL } from 'constants/apis';
 import Constants from 'expo-constants';
 
 //Types
-import { NOTI_STATUS } from '../../_state';
+import { NOTI_STATUS } from '_state';
 
 interface Props {
   component: any

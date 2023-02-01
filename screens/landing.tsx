@@ -2,43 +2,43 @@ import React from 'react';
 
 //Components
 import { View, StyleSheet, Image } from 'react-native';
-import { Box } from '../components/ui/text-box/text-box';
-import { HeaderText, NormalText } from '../components/ui/text/text';
-import ScreenWrapper from '../components/screenWrapper/screenWrapper';
-import LoginToKaizenModal from '../components/modals/LoginToKaizen/loginToKaizen';
+import { Box } from 'components/ui/text-box/text-box';
+import { HeaderText, NormalText } from 'components/ui/text/text';
+import ScreenWrapper from 'components/screenWrapper/screenWrapper';
+import LoginToKaizenModal from 'components/modals/LoginToKaizen/loginToKaizen';
 
 //Types
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from '../nav/landingStack';
-import { KeychainState } from '../types/NFT';
+import { RootStackParamList } from 'nav/landingStack';
+import { KeychainState } from 'types/NFT';
 
 //Data
-import { isValidToken, keychainAtom, userProfileAtom } from '../_state';
-import { useAnalyticsActions } from '../_actions/analytics.actions';
-import { walletAtom } from "../_state";
-import { useKeychainActions } from "../_actions/keychain.actions";
+import { isValidToken, keychainAtom, userProfileAtom } from '_state';
+import { useAnalyticsActions } from '_actions/analytics.actions';
+import { walletAtom } from "_state";
+import { useKeychainActions } from "_actions/keychain.actions";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 //Web3
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { AnchorWallet, useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from '@solana/web3.js';
 
 //Hooks
-import { useWalletActions } from "../_actions/wallet.actions";
+import { useNavigation } from '@react-navigation/native';
+import { useWalletActions } from "_actions/wallet.actions";
 import useAsyncEffect from 'use-async-effect';
-import useKeychainServer from '../hooks/apis/keychainServer/useKeychainServer';
+import useKeychainServer from 'hooks/apis/keychainServer/useKeychainServer';
 
 //SVGs
-import Chevron from '../assets/svgs/Icons/chevron';
-import Wallet from '../assets/svgs/Icons/wallet'
+import Chevron from 'assets/svgs/Icons/chevron';
+import Wallet from 'assets/svgs/Icons/wallet'
 
 //Constants
 import Constants from 'expo-constants';
 
 //Styles
-import * as Theme from "../constants/theme";
-import { PublicKey } from '@solana/web3.js';
-import { useNavigation } from '@react-navigation/native';
+import * as Theme from "constants/theme";
 
 
 

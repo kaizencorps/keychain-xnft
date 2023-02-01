@@ -1,21 +1,17 @@
-import {useRecoilState, useRecoilTransaction_UNSTABLE, useSetRecoilState} from 'recoil';
-import { PublicKey } from '@solana/web3.js';
+import {useRecoilState, useSetRecoilState} from 'recoil';
 import {AnchorWallet, useWallet} from '@solana/wallet-adapter-react';
+import { PublicKey } from '@solana/web3.js';
 
-import { useFetchWrapper, createErrorResponse } from '../_helpers';
+import { useFetchWrapper, createErrorResponse } from '_helpers';
 
-import {
-    // authAtom,
-    walletAtom,
-} from '../_state';
+import { walletAtom } from '_state';
 
-import { LOCAL_STORAGE_KEYS } from '../_state/_constants';
-import { consoleLog } from '../_helpers/debug';
-import {createProvider, getKeychainProgram} from "../programs/keychain-utils";
+import { LOCAL_STORAGE_KEYS } from '_state/_constants';
+import { consoleLog } from '_helpers/debug';
+import {createProvider, getKeychainProgram} from "programs/keychain-utils";
 import {Wallet} from "@project-serum/anchor";
-import {providerAtom} from "../_state";
-import {programsAtom} from "../_state";
-import {getNFTsForOwner} from "../utils/web3/chain-utils";
+import {providerAtom} from "_state";
+import {programsAtom} from "_state";
 
 //Constants
 import Constants from 'expo-constants';

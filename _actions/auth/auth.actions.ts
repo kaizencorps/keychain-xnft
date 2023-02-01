@@ -1,4 +1,4 @@
-import useKeychainServer from "../../hooks/apis/keychainServer/useKeychainServer";
+import useKeychainServer from "hooks/apis/keychainServer/useKeychainServer";
 
 
 function useAuthActions() {

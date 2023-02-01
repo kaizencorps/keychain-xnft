@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil';
 
-import { toastsAtom } from '../../_state';
+import { toastsAtom } from '_state';
 
 
 function useToastsActions() {

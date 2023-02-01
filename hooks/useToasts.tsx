@@ -1,4 +1,4 @@
-import { toastsAtom, ToastsState, NOTI_STATUS } from '../_state';
+import { toastsAtom, ToastsState, NOTI_STATUS } from '_state';
 import { useRecoilState } from 'recoil';
 
 

@@ -1,4 +1,4 @@
-import { consoleLog } from "../_helpers/debug"
+import { consoleLog } from "_helpers/debug"
 
 export const formatAddress = (address: any) => {
   if (!address) return '';

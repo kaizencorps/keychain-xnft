@@ -2,23 +2,23 @@ import React, { FC, ReactElement } from "react";
 
 //Components
 import { StyleSheet, TouchableOpacity, GestureResponderEvent, ViewStyle } from 'react-native';
-import { SubHeaderText } from "../ui/text/text";
+import { SubHeaderText } from "components/ui/text/text";
 
 //SVGs
-import Numeric1Box from '../../assets/svgs/Icons/numeric-1-box';
-import Numeric2Box from '../../assets/svgs/Icons/numeric-2-box';
-import Numeric3Box from '../../assets/svgs/Icons/numeric-3-box';
-import Numeric4Box from '../../assets/svgs/Icons/numeric-4-box';
-import Numeric5Box from '../../assets/svgs/Icons/numeric-5-box';
-import Plus from "../../assets/svgs/Icons/plus";
-import Alert from "../../assets/svgs/Icons/alert";
+import Numeric1Box from 'assets/svgs/Icons/numeric-1-box';
+import Numeric2Box from 'assets/svgs/Icons/numeric-2-box';
+import Numeric3Box from 'assets/svgs/Icons/numeric-3-box';
+import Numeric4Box from 'assets/svgs/Icons/numeric-4-box';
+import Numeric5Box from 'assets/svgs/Icons/numeric-5-box';
+import Plus from "assets/svgs/Icons/plus";
+import Alert from "assets/svgs/Icons/alert";
 
 //Styles
-import * as Theme from '../../constants/theme';
+import * as Theme from 'constants/theme';
 
 //Utils
-import { formatAddress } from "../../utils/stringFormatting";
-import { KeyState } from "../../types/NFT";
+import { formatAddress } from "utils/stringFormatting";
+import { KeyState } from "types/NFT";
 
 interface WalletRowProps {
   keyState: KeyState,

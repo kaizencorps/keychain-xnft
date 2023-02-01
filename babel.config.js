@@ -8,12 +8,12 @@ module.exports = function(api) {
         'module-resolver',
         {
           alias: {
+            _actions: './_actions',
+            _state: './_state',
+            _helpers: './_helpers',
             apis: './apis',
             assets: './assets',
             components: './components',
-            helpers: './helpers',
-            state: './_state',
-            actions: './_actions',
             screens: './screens',
             models: './models',
             constants: './constants',

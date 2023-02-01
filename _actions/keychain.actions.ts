@@ -1,16 +1,16 @@
 import {SetterOrUpdater, useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} from 'recoil';
 
-import { providerAtom, walletAtom } from '../_state';
-import {findKeychainKeyPda, findKeychainPda, findKeychainStatePda, KeychainDomainPda} from "../programs/keychain-utils";
-import {consoleLog} from "../_helpers/debug";
+import { providerAtom, walletAtom } from '_state';
+import {findKeychainKeyPda, findKeychainPda, findKeychainStatePda, KeychainDomainPda} from "programs/keychain-utils";
+import {consoleLog} from "_helpers/debug";
 import {PublicKey, SystemProgram} from "@solana/web3.js";
-import {keychainAtom, Programs, programsAtom} from "../_state";
-import { KeychainState, NFT } from "../types/NFT";
+import {keychainAtom, Programs, programsAtom} from "_state";
+import { KeychainState, NFT } from "types/NFT";
 import {useWalletActions} from "./wallet.actions";
 import {Provider} from "@project-serum/anchor";
-import {sleep} from "../utils/misc";
+import {sleep} from "utils/misc";
 import { useAnalyticsActions } from './analytics.actions';
-import { EVENTS } from '../constants/analytics';
+import { EVENTS } from 'constants/analytics';
 
 //Constants
 import Constants from 'expo-constants';

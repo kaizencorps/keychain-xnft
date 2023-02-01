@@ -2,16 +2,16 @@ import React, { FC, ReactElement } from 'react';
 
 //Components
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { ThinText } from '../ui/text/text';
+import { ThinText } from 'components/ui/text/text';
 
 //Svgs
-import CheckDecagram from '../../assets/svgs/Icons/check-decagram';
+import CheckDecagram from 'assets/svgs/Icons/check-decagram';
 
 //Types
-import { NFT } from '../../types/NFT';
+import { NFT } from 'types/NFT';
 
 //Styles
-import * as Theme from '../../constants/theme';
+import * as Theme from 'constants/theme';
 
 interface Props {
   nft: NFT,

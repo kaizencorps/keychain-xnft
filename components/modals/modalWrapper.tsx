@@ -3,13 +3,13 @@ import React, { FC, ReactElement } from 'react';
 //Components
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
-import { HeaderText } from '../ui/text/text';
+import { HeaderText } from 'components/ui/text/text';
 
 //SVGs
-import Close from '../../assets/svgs/Icons/close';
+import Close from 'assets/svgs/Icons/close';
 
 //Styles
-import * as Theme from '../../constants/theme';
+import * as Theme from 'constants/theme';
 
 interface Props {
   title: string,

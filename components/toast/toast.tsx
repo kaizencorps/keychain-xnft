@@ -2,15 +2,15 @@ import * as React from 'react';
 
 //Components
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { NormalText } from '../ui/text/text';
+import { NormalText } from 'components/ui/text/text';
 
 //Data
-import { toastsAtom, ToastsState, NOTI_STATUS } from '../../_state/notifications/toasts';
+import { toastsAtom, ToastsState, NOTI_STATUS } from '_state/notifications/toasts';
 
 //Styles
-import * as Theme from '../../constants/theme';
+import * as Theme from 'constants/theme';
 import { useRecoilValue } from 'recoil';
-import { useToastsActions } from '../../_actions/notifications/toasts';
+import { useToastsActions } from '_actions/notifications/toasts';
 
 export const Toasts = () => {
 

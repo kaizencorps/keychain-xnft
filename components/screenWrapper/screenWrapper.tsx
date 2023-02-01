@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import * as Theme from '../../constants/theme';
+import * as Theme from 'constants/theme';
 
 interface Props {
   children: React.ReactNode

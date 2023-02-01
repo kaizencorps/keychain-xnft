@@ -1,14 +1,14 @@
 //Types
-import {CollectionsState, NFT, VERIFICATION} from '../../types/NFT';
+import {CollectionsState, NFT, VERIFICATION} from 'types/NFT';
 
 //Constants
 import Constants from 'expo-constants';
-import { HELIUS_RPC_URL } from '../../constants/apis';
+import { HELIUS_RPC_URL } from 'constants/apis';
 
 //Web3
 import { Connection, PublicKey } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import useHelius from '../../hooks/apis/helius/useHelius';
+import useHelius from 'hooks/apis/helius/useHelius';
 
 
 const decideIfPartOfCollection = (nftData: any, collections: CollectionsState) => {
